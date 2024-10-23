@@ -47,7 +47,7 @@ export default function DashboardTopNav({ children }: { children: ReactNode }) {
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
-                                <Link href="/dashboard/projects">
+                                <Link href="/dashboard/events">
                                     <Button
                                         variant="outline"
                                         className="w-full"
@@ -58,7 +58,7 @@ export default function DashboardTopNav({ children }: { children: ReactNode }) {
                                 </Link>
                             </DialogClose>
                             <DialogClose asChild>
-                                <Link href="/dashboard/finance">
+                                <Link href="/dashboard/payments">
                                     <Button
                                         variant="outline"
                                         className="w-full"
