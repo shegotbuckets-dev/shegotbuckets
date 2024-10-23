@@ -18,7 +18,7 @@ export default function DashboardSideBar() {
                         className="flex items-center gap-2 font-semibold ml-1"
                         href="/"
                     >
-                        <span className="">SGB User Portal</span>
+                        <span className="">SGB Home</span>
                     </Link>
                 </div>
                 <div className="flex-1 overflow-auto py-2 ">

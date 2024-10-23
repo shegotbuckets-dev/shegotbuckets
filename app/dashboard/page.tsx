@@ -8,13 +8,14 @@ import {
 } from "@/components/ui/card";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import UpcomingEvents from "@/components/upcoming-events";
 // import { BarChartComponent } from "./_components/bar-chart";
 // import { BarChartBetter } from "./_components/bar-chart-better";
 
 export default async function Dashboard() {
     return (
         <div className="flex flex-col justify-center items-start flex-wrap px-4 pt-4 gap-4">
-            <Card className="w-1/2">
+            <Card className="w-full max-w-5xl">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                         SGB User Portal
@@ -30,7 +31,7 @@ export default async function Dashboard() {
                 <BarChartComponent />
                 <BarChartBetter />
             </div> */}
-            <div className="grid md:grid-cols-2 sm:grid-cols-1 w-full gap-3">
+            <div className="w-full max-w-5xl">
                 <Card className="">
                     <CardHeader className="flex flex-row items-center">
                         <div className="grid gap-2">
@@ -68,6 +69,16 @@ export default async function Dashboard() {
                     </CardContent>
                 </Card>
             </div>
+            <Card className={`shadow-lg "w-full max-w-5xl"`}>
+                <CardHeader>
+                    <CardTitle className="text-2xl">Upcoming Events</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex flex-wrap gap-4 justify-start">
+                        <UpcomingEvents />
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 }

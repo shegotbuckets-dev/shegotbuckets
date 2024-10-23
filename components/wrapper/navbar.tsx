@@ -20,7 +20,6 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import config from "@/config";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
 import { Dialog, DialogClose } from "@radix-ui/react-dialog";
@@ -180,6 +179,16 @@ export default function NavBar() {
                 </NavigationMenuList>
             </NavigationMenu>
             <div className="flex items-center gap-2 max-[825px]:hidden">
+                {userId && (
+                    <Link href="/dashboard">
+                        <Button
+                            variant="outline"
+                            className="rounded-md text-sm font-semibold"
+                        >
+                            User Portal
+                        </Button>
+                    </Link>
+                )}
                 {userId && <UserProfile />}
                 <ModeToggle />
             </div>
