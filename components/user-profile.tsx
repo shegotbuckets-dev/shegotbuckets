@@ -1,8 +1,4 @@
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,30 +7,25 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu"
-import config from "@/config"
-import { SignOutButton, useUser } from "@clerk/nextjs"
-import {
-    CreditCard,
-    LogOut,
-    Settings,
-    User
-} from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import config from "@/config";
+import { SignOutButton, useUser } from "@clerk/nextjs";
+import { CreditCard, LogOut, Settings, User } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function UserProfile() {
-    const router = useRouter()
+    const router = useRouter();
 
     if (!config?.auth?.enabled) {
-        router.back()
+        router.back();
     }
     const { user } = useUser();
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="w-[2.25rem] h-[2.25rem]">
-                <Avatar >
+                <Avatar>
                     <AvatarImage src={user?.imageUrl} alt="User Profile" />
                     <AvatarFallback></AvatarFallback>
                 </Avatar>
@@ -67,5 +58,5 @@ export function UserProfile() {
                 </SignOutButton>
             </DropdownMenuContent>
         </DropdownMenu>
-    )
+    );
 }

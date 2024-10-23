@@ -4,45 +4,45 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export const userUpdate = async ({
-  email,
-  first_name,
-  last_name,
-  profile_image_url,
-  user_id,
+    email,
+    first_name,
+    last_name,
+    profile_image_url,
+    user_id,
 }: userUpdateProps) => {
-  const cookieStore = cookies();
+    const cookieStore = cookies();
 
-  const supabase = createServerClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value;
-        },
-      },
-    }
-  );
-
-  try {
-    const { data, error } = await supabase
-      .from("user")
-      .update([
+    const supabase = createServerClient(
+        process.env.SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_KEY!,
         {
-          email,
-          first_name,
-          last_name,
-          profile_image_url,
-          user_id,
-        },
-      ])
-      .eq("email", email)
-      .select();
+            cookies: {
+                get(name: string) {
+                    return cookieStore.get(name)?.value;
+                },
+            },
+        }
+    );
 
-    if (data) return data;
+    try {
+        const { data, error } = await supabase
+            .from("user")
+            .update([
+                {
+                    email,
+                    first_name,
+                    last_name,
+                    profile_image_url,
+                    user_id,
+                },
+            ])
+            .eq("email", email)
+            .select();
 
-    if (error) return error;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
+        if (data) return data;
+
+        if (error) return error;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
 };
