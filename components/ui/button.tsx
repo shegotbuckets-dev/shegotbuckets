@@ -60,8 +60,6 @@ export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement>,
         VariantProps<typeof buttonVariants> {
     asChild?: boolean;
-    size?: keyof typeof buttonVariants.variants.size;
-    variant?: keyof typeof buttonVariants.variants.variant;
 }
 
 export type ButtonIconProps = IconProps | IconRefProps;

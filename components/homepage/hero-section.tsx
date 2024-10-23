@@ -23,7 +23,9 @@ export default function HeroSection() {
             <div className="relative text-white px-4 sm:px-6 lg:px-8 w-1/2">
                 <h1 className="scroll-m-20 font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4">
                     <span className="block">TAKE THE SHOT</span>
-                    <span className="block">BECAUSE "SHE GOT BUCKETS"</span>
+                    <span className="block">
+                        BECAUSE &quot;SHE GOT BUCKETS&quot;
+                    </span>
                 </h1>
                 <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-6">
                     Empowering Asian women through basketball by fostering
