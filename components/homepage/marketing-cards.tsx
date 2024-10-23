@@ -79,13 +79,6 @@ const ProjectsData = [
         image: "https://utfs.io/f/ee162388-f998-4740-bfc4-9d9a7050f485-90gb5l.png",
         url: "https://tanstack.com/query/v5",
     },
-    {
-        id: 10,
-        name: "Upstash (Redis)",
-        description: "Redis-based cloud database service for rate-limiting.",
-        image: "https://utfs.io/f/c01790c1-7c12-4a5e-b50f-a44358124853-3mzznq.png",
-        url: "https://upstash.com/",
-    },
 ];
 
 const SpringAnimatedFeatures = () => {
