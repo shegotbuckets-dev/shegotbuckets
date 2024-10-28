@@ -72,6 +72,8 @@
         "zod": "^3.23.5"
     },
     "devDependencies": {
+        "@commitlint/cli": "^19.5.0",
+        "@commitlint/config-conventional": "^19.5.0",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@types/node": "latest",
         "@types/react": "latest",
@@ -80,6 +82,7 @@
         "eslint": "latest",
         "eslint-config-next": "latest",
         "husky": "^9.1.6",
+        "lint-staged": "^15.2.10",
         "postcss": "latest",
         "prettier": "^3.3.3",
         "tailwindcss": "^3.3.5",
