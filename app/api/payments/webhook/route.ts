@@ -28,6 +28,7 @@ async function getCustomerEmail(customerId: string): Promise<string | null> {
         const customer = await stripe.customers.retrieve(customerId);
         return (customer as Stripe.Customer).email;
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Error fetching customer:", error);
         return null;
     }
@@ -73,6 +74,7 @@ async function handleSubscriptionEvent(
                 .update({ subscription: null })
                 .eq("email", customerEmail);
             if (userError) {
+                // eslint-disable-next-line no-console
                 console.error(
                     "Error updating user subscription status:",
                     userError
@@ -94,6 +96,7 @@ async function handleSubscriptionEvent(
     }
 
     if (error) {
+        // eslint-disable-next-line no-console
         console.error(`Error during subscription ${type}:`, error);
         return NextResponse.json({
             status: 500,
@@ -140,6 +143,7 @@ async function handleInvoiceEvent(
         .insert([invoiceData]);
 
     if (error) {
+        // eslint-disable-next-line no-console
         console.error(`Error inserting invoice (payment ${status}):`, error);
         return NextResponse.json({
             status: 500,
@@ -186,6 +190,7 @@ async function handleCheckoutSessionCompleted(
                 message: "Subscription metadata updated successfully",
             });
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error("Error updating subscription metadata:", error);
             return NextResponse.json({
                 status: 500,
@@ -213,7 +218,7 @@ async function handleCheckoutSessionCompleted(
                 currency: session.currency,
             };
 
-            const { data: paymentsData, error: paymentsError } = await supabase
+            const { error: paymentsError } = await supabase
                 .from("payments")
                 .insert([paymentData]);
             if (paymentsError) throw new Error("Error inserting payment");
@@ -232,6 +237,7 @@ async function handleCheckoutSessionCompleted(
                 updatedUser,
             });
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error("Error handling checkout session:", error);
             return NextResponse.json({
                 status: 500,
@@ -275,6 +281,7 @@ async function webhooksHandler(
                 });
         }
     } catch (err) {
+        // eslint-disable-next-line no-console
         console.error("Error constructing Stripe event:", err);
         return NextResponse.json({
             status: 500,

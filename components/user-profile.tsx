@@ -12,7 +12,7 @@ import {
 import config from "@/config";
 
 import { SignOutButton, useUser } from "@clerk/nextjs";
-import { CreditCard, LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 

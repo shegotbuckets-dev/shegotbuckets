@@ -1,4 +1,3 @@
-import EventsSection from "@/components/homepage/events-section";
 import HeroSection from "@/components/homepage/hero-section";
 import GetInvolvedSection from "@/components/homepage/involve-section";
 import SideBySide from "@/components/homepage/side-by-side";
