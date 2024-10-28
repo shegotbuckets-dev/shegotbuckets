@@ -1,11 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+
+import { useState } from "react";
+
 import { CheckCircle, Clock, Menu, Shield, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export function LandingPage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

@@ -1,8 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
-
 import {
     Card,
     CardContent,
@@ -17,6 +14,10 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
+
+import { TrendingUp } from "lucide-react";
+import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
+
 const chartData = [
     { browser: "chrome", visitors: 187, fill: "var(--color-chrome)" },
     { browser: "safari", visitors: 200, fill: "var(--color-safari)" },

@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
 import UpcomingEvents from "@/components/upcoming-events";
+
+import React from "react";
+
 export default function EventsPage() {
     return (
         <div className="flex flex-col justify-center items-start flex-wrap px-4 pt-4 gap-4">

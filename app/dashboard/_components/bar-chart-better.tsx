@@ -1,8 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-
 import {
     Card,
     CardContent,
@@ -16,6 +13,11 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
+
+import * as React from "react";
+
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+
 const chartData = [
     { date: "2024-04-01", desktop: 222, mobile: 150 },
     { date: "2024-04-02", desktop: 97, mobile: 180 },

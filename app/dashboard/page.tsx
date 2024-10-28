@@ -6,9 +6,11 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import UpcomingEvents from "@/components/upcoming-events";
+
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import UpcomingEvents from "@/components/upcoming-events";
+
 // import { BarChartComponent } from "./_components/bar-chart";
 // import { BarChartBetter } from "./_components/bar-chart-better";
 

@@ -1,6 +1,8 @@
 "use client";
+
 import PageWrapper from "@/components/wrapper/page-wrapper";
 import config from "@/config";
+
 import { SignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 

@@ -1,9 +1,10 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import clsx from "clsx";
-import { CircleDollarSign, Icon, HomeIcon, Settings } from "lucide-react";
+
 import { basketball } from "@lucide/lab";
+import clsx from "clsx";
+import { CircleDollarSign, HomeIcon, Icon, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
