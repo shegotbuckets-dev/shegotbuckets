@@ -11,7 +11,7 @@ export default function Home() {
             <div className="flex flex-col justify-center items-center w-full">
                 <HeroSection />
             </div>
-            <div className="flex w-full justify-center items-center bg-black/60">
+            <div className="flex w-full justify-center items-center bg-black/80">
                 <TeamMarquee />
             </div>
             <div className="flex w-full justify-center items-center bg-gray-100/25">
