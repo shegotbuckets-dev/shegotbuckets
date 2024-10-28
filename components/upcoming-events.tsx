@@ -156,11 +156,7 @@ function EventDialog({ event }: { event: Event }) {
     );
 }
 
-interface UpcomingEventsProps {
-    className?: string;
-}
-
-export default function UpcomingEvents({ className }: UpcomingEventsProps) {
+export default function UpcomingEvents() {
     return (
         <div className="flex flex-wrap gap-4 justify-start">
             {upcomingEvents.map((event) => (

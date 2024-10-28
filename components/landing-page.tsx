@@ -7,11 +7,12 @@ import { useState } from "react";
 import { CheckCircle, Clock, Menu, Shield, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+// import { useRouter } from "next/navigation";
 
 export function LandingPage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const router = useRouter();
+    // const router = useRouter();
 
     return (
         <div className="flex flex-col min-h-screen">

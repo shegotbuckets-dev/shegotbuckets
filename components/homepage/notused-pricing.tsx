@@ -226,11 +226,13 @@ export default function Pricing() {
 
                 return response;
             } else {
+                // eslint-disable-next-line no-console
                 console.error("Failed to create checkout session");
                 toast("Failed to create checkout session");
                 return;
             }
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error("Error during checkout:", error);
             toast("Error during checkout");
             return;

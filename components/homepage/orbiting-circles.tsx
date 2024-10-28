@@ -1,6 +1,6 @@
 import OrbitingCircles from "@/components/magicui/orbiting-circles";
 
-import { IconProps } from "@radix-ui/react-icons/dist/types";
+// import { IconProps } from "@radix-ui/react-icons/dist/types";
 import Image from "next/image";
 
 export function OrbitingCirclesComponent() {
@@ -51,7 +51,7 @@ export function OrbitingCirclesComponent() {
 }
 
 const Icons = {
-    typescript: (props: IconProps) => (
+    typescript: () => (
         <Image
             src="https://utfs.io/f/5b51351d-218b-4931-a296-0a9275030aaf-8myeez.png"
             alt=""
@@ -59,7 +59,7 @@ const Icons = {
             height={100}
         />
     ),
-    tailwind: (props: IconProps) => (
+    tailwind: () => (
         <Image
             src="https://utfs.io/f/666774c0-dc3a-4d5a-84b7-cc96e682db61-bhgw4o.png"
             alt=""
@@ -68,7 +68,7 @@ const Icons = {
             // className="bg-black p-2 rounded"
         />
     ),
-    supabase: (props: IconProps) => (
+    supabase: () => (
         <Image
             src="https://utfs.io/f/c62a5d13-91e4-476f-9d36-786d9995c97f-rqpuxo.png"
             alt=""
@@ -77,7 +77,7 @@ const Icons = {
             // className="bg-black p-2 rounded"
         />
     ),
-    nextjs: (props: IconProps) => (
+    nextjs: () => (
         <Image
             src="https://utfs.io/f/a8df6965-e6df-417a-ab0b-b3ad33d701d7-hcfblw.png"
             alt=""
