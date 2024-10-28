@@ -11,7 +11,6 @@ import {
 } from "../ui/sheet";
 import { UserProfile } from "../user-profile";
 import ModeToggle from "../mode-toggle";
-import { BlocksIcon } from "lucide-react";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -24,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
 import { Dialog, DialogClose } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 const components: { title: string; href: string; description: string }[] = [
     {
@@ -51,7 +51,6 @@ const navItems: {
     {
         title: "Home",
         href: "/",
-        components: components,
     },
     {
         title: "About Us",
@@ -60,6 +59,7 @@ const navItems: {
     {
         title: "Gallery",
         href: "/",
+        components: components,
     },
     {
         title: "Get Involved",
@@ -76,7 +76,7 @@ export default function NavBar() {
     return (
         <div
             className={cn(
-                "flex min-w-full fixed justify-between p-2 border-b z-30",
+                "flex min-w-full fixed justify-between p-2 border-b z-30 overflow-hidden",
                 theme === "dark" ? "bg-black" : "bg-white dark:bg-opacity-50"
             )}
         >
@@ -123,14 +123,32 @@ export default function NavBar() {
                 </Dialog>
                 <ModeToggle />
             </div>
-            <NavigationMenu>
-                <NavigationMenuList className="max-[825px]:hidden flex gap-3 w-[100%] justify-between">
+            <NavigationMenu className="py-1">
+                <NavigationMenuList className="max-[825px]:hidden flex gap-4 w-[100%] justify-between pr-3">
                     <Link
                         href="/"
-                        className="pl-2 flex items-center"
+                        className="flex items-center h-16"
                         aria-label="Home"
                     >
-                        <BlocksIcon aria-hidden="true" />
+                        {theme === "dark" ? (
+                            <Image
+                                src="/images/sgb-dark.png"
+                                alt="SGBLogo"
+                                width={120}
+                                height={60}
+                                className="w-[120px] h-[60px]"
+                                priority
+                            />
+                        ) : (
+                            <Image
+                                src="/images/sgb-light.png"
+                                alt="SGB Logo"
+                                width={120}
+                                height={60}
+                                className="w-[120px] h-[60px]"
+                                priority
+                            />
+                        )}
                         <span className="sr-only">Home</span>
                     </Link>
                 </NavigationMenuList>
@@ -138,14 +156,14 @@ export default function NavBar() {
                     {navItems.map((item) =>
                         item.components ? (
                             <NavigationMenuItem
-                                className="max-[825px]:hidden ml-5"
+                                className="max-[825px]:hidden ml-6"
                                 key={item.title}
                             >
-                                <NavigationMenuTrigger className="dark:bg-black dark:bg-opacity-50">
+                                <NavigationMenuTrigger className="dark:bg-black dark:bg-opacity-50 text-base">
                                     {item.title}
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    <ul className="flex flex-col w-[400px] gap-3 p-4 lg:w-[500px]">
+                                    <ul className="flex flex-col w-[400px] gap-4 p-5 lg:w-[500px]">
                                         {item.components.map((component) => (
                                             <ListItem
                                                 key={component.title}
@@ -169,7 +187,10 @@ export default function NavBar() {
                                     passHref
                                     key={item.title}
                                 >
-                                    <Button variant="ghost">
+                                    <Button
+                                        variant="ghost"
+                                        className="text-base px-4 py-1"
+                                    >
                                         {item.title}
                                     </Button>
                                 </Link>
@@ -178,12 +199,12 @@ export default function NavBar() {
                     )}
                 </NavigationMenuList>
             </NavigationMenu>
-            <div className="flex items-center gap-2 max-[825px]:hidden">
+            <div className="flex items-center gap-4 max-[825px]:hidden">
                 {userId && (
                     <Link href="/dashboard">
                         <Button
                             variant="outline"
-                            className="rounded-md text-sm font-semibold"
+                            className="rounded-md text-base font-semibold px-4 py-1"
                         >
                             User Portal
                         </Button>
@@ -206,12 +227,12 @@ const ListItem = React.forwardRef<
                 <a
                     ref={ref}
                     className={cn(
-                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        "block select-none space-y-2 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                         className
                     )}
                     {...props}
                 >
-                    <div className="text-sm font-medium leading-none">
+                    <div className="text-base font-medium leading-none">
                         {title}
                     </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
