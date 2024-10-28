@@ -92,7 +92,6 @@ const config: Config = {
                     from: { transform: "translateX(0)" },
                     to: { transform: "translateX(calc(-100% - 4rem))" },
                 },
-
                 orbit: {
                     "0%": {
                         transform:
@@ -140,6 +139,9 @@ const config: Config = {
                         transform: "scale(1)",
                     },
                 },
+                marquee: {
+                    to: { transform: "translateX(-50%)" },
+                },
             },
             animation: {
                 "logo-cloud": "logo-cloud 30s linear infinite", // Adjust duration and timing as needed for your design.
@@ -152,6 +154,7 @@ const config: Config = {
                 "border-beam":
                     "border-beam calc(var(--duration)*1s) infinite linear",
                 "background-shine": "background-shine 2s linear infinite",
+                marquee: "marquee var(--duration, 45s) linear infinite",
             },
         },
     },

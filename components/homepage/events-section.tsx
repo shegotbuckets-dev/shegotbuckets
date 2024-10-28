@@ -1,7 +1,7 @@
 import { TITLE_TAILWIND_CLASS } from "@/utils/constants";
 import UpcomingEvents from "@/components/upcoming-events";
 
-export default function EventsHome() {
+export default function EventsSection() {
     return (
         <div className="w-full flex flex-col items-center my-8">
             <header className="text-center">
@@ -16,7 +16,7 @@ export default function EventsHome() {
                 <div className="relative left-1/2 -translate-x-1/2 h-px bg-gray-200 dark:bg-gray-700 w-screen max-w-[75vw] mb-6" />
             </header>
 
-            <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex flex-wrap justify-start gap-6 w-full">
                 <UpcomingEvents />
             </div>
         </div>
