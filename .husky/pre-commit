@@ -1,0 +1,8 @@
+# Format and lint staged files
+npx lint-staged
+
+# Run TypeScript compiler
+npm run type-check
+
+# Run tests related to staged files. Until we have tests added, this is disabled.
+# npm test -- --watchAll=false --findRelatedTests $(git diff --staged --name-only)
