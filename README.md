@@ -18,13 +18,14 @@
     ```
 
 2. Install dependencies and start project:
-   ```
-   npm install
-   npm run build
-   npm run dev
-   ```
 
-7. Open your browser and navigate to `http://localhost:3000` to see your application running.
+    ```
+    npm install
+    npm run build
+    npm run dev
+    ```
+
+3. Open your browser and navigate to `http://localhost:3000` to see your application running.
 
 ## Additional Configuration
 
