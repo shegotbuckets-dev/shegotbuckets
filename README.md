@@ -1,5 +1,32 @@
 # Getting Started
 
+## Commit to this Project
+
+This project uses Husky and lint-staged to format and lint staged files on commit.
+Here is an example of how to commit:
+
+```
+git add .
+git commit -m "feat: add new feature"
+```
+
+The commit message type must be one of the following:
+
+```
+[
+    "feat", // New feature
+    "fix", // Bug fix
+    "docs", // Documentation
+    "style", // Formatting, missing semi colons, etc
+    "refactor", // Code change that neither fixes a bug or adds a feature
+    "perf", // Performance improvements
+    "test", // Adding tests
+    "chore", // Maintain
+    "revert", // Revert changes
+    "wip", // Work in progress
+],
+```
+
 ## Prerequisites
 
 -   Node.js and yarn/bun installed
