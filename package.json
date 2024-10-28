@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "next lint",
         "format": "prettier --write .",
-        "prepare": "husky"
+        "prepare": "husky",
+        "type-check": "tsc --noEmit"
     },
     "dependencies": {
         "@clerk/nextjs": "^5.0.7",
@@ -89,6 +90,12 @@
         "typescript": "latest"
     },
     "lint-staged": {
-        "**/*": "prettier --write --ignore-unknown"
+        "*.{js,jsx,ts,tsx}": [
+            "prettier --write",
+            "eslint --fix"
+        ],
+        "*.{json,css,md,yml,yaml}": [
+            "prettier --write"
+        ]
     }
 }
