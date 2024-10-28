@@ -1,17 +1,19 @@
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
-    DialogTrigger,
+    DialogClose,
+    DialogContainer,
     DialogContent,
-    DialogTitle,
+    DialogDescription,
     DialogImage,
     DialogSubtitle,
-    DialogClose,
-    DialogDescription,
-    DialogContainer,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/motion-dialog";
-import { PlusIcon } from "lucide-react";
+
 import React from "react";
+
+import { PlusIcon } from "lucide-react";
 
 // Mock data for upcoming events
 const upcomingEvents = [

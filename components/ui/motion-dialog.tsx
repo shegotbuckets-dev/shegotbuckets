@@ -1,5 +1,8 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import useClickOutside from "@/utils/hook/useClickOutside";
+
 import React, {
     useCallback,
     useContext,
@@ -9,16 +12,15 @@ import React, {
     useRef,
     useState,
 } from "react";
+import { createPortal } from "react-dom";
+
 import {
-    motion,
     AnimatePresence,
     MotionConfig,
     Transition,
     Variant,
+    motion,
 } from "framer-motion";
-import { createPortal } from "react-dom";
-import { cn } from "@/lib/utils";
-import useClickOutside from "@/utils/hook/useClickOutside";
 import { XIcon } from "lucide-react";
 
 interface DialogContextType {

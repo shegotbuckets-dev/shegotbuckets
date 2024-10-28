@@ -1,5 +1,5 @@
-import { TITLE_TAILWIND_CLASS } from "@/utils/constants";
 import UpcomingEvents from "@/components/upcoming-events";
+import { TITLE_TAILWIND_CLASS } from "@/utils/constants";
 
 export default function EventsSection() {
     return (

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+
 import {
+    ArrowRight,
+    BriefcaseBusiness,
+    HandshakeIcon,
     Heart,
     Users,
-    HandshakeIcon,
-    BriefcaseBusiness,
-    ArrowRight,
 } from "lucide-react";
 
 interface InvolvementOption {

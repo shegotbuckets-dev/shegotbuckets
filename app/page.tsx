@@ -1,9 +1,9 @@
 import EventsSection from "@/components/homepage/events-section";
 import HeroSection from "@/components/homepage/hero-section";
-import SideBySide from "@/components/homepage/side-by-side";
-import PageWrapper from "@/components/wrapper/page-wrapper";
-import TeamMarquee from "@/components/homepage/team-marquee";
 import GetInvolvedSection from "@/components/homepage/involve-section";
+import SideBySide from "@/components/homepage/side-by-side";
+import TeamMarquee from "@/components/homepage/team-marquee";
+import PageWrapper from "@/components/wrapper/page-wrapper";
 
 export default function Home() {
     return (

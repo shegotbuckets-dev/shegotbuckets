@@ -12,10 +12,12 @@ import {
 } from "@/components/ui/sheet";
 import { UserProfile } from "@/components/user-profile";
 import config from "@/config";
+
+import { ReactNode } from "react";
+
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Banknote, Folder, HomeIcon, Settings } from "lucide-react";
 import Link from "next/link";
-import { ReactNode } from "react";
 
 export default function DashboardTopNav({ children }: { children: ReactNode }) {
     return (

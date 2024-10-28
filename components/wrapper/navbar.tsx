@@ -1,16 +1,5 @@
 "use client";
-import Link from "next/link";
-import * as React from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { Button } from "../ui/button";
-import {
-    SheetContent,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "../ui/sheet";
-import { UserProfile } from "../user-profile";
-import ModeToggle from "../mode-toggle";
+
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -20,10 +9,25 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+
+import * as React from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+
 import { useAuth } from "@clerk/nextjs";
 import { Dialog, DialogClose } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import Link from "next/link";
+
+import ModeToggle from "../mode-toggle";
+import { Button } from "../ui/button";
+import {
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "../ui/sheet";
+import { UserProfile } from "../user-profile";
 
 const components: { title: string; href: string; description: string }[] = [
     {

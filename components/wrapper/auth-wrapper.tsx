@@ -1,6 +1,8 @@
-import { ReactNode } from "react";
-import { ClerkProvider } from "@clerk/nextjs";
 import config from "@/config";
+
+import { ReactNode } from "react";
+
+import { ClerkProvider } from "@clerk/nextjs";
 
 interface AuthWrapperProps {
     children: ReactNode;

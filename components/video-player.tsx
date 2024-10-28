@@ -1,11 +1,13 @@
 "use client";
+
 import React, {
+    useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState,
-    useCallback,
-    useMemo,
 } from "react";
+
 import {
     Maximize,
     Minimize,
