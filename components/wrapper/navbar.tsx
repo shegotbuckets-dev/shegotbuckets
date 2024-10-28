@@ -68,16 +68,30 @@ const navItems: {
 ];
 
 export default function NavBar() {
-    const { theme } = useTheme();
+    const { theme, systemTheme } = useTheme();
+    const [mounted, setMounted] = React.useState(false);
     let userId = null;
     const user = useAuth();
     userId = user?.userId;
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Default to light theme while mounting
+    const currentTheme = mounted
+        ? theme === "system"
+            ? systemTheme
+            : theme
+        : "light";
 
     return (
         <div
             className={cn(
                 "flex min-w-full fixed justify-between p-2 border-b z-30 overflow-hidden",
-                theme === "dark" ? "bg-black" : "bg-white dark:bg-opacity-50"
+                currentTheme === "dark"
+                    ? "bg-black"
+                    : "bg-white dark:bg-opacity-50"
             )}
         >
             <div className="flex justify-between w-full min-[825px]:hidden">
@@ -130,7 +144,7 @@ export default function NavBar() {
                         className="flex items-center h-16"
                         aria-label="Home"
                     >
-                        {theme === "dark" ? (
+                        {currentTheme === "dark" ? (
                             <Image
                                 src="/images/sgb-dark.png"
                                 alt="SGBLogo"
