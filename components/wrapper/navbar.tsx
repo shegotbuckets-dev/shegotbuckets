@@ -29,28 +29,28 @@ import {
 } from "../ui/sheet";
 import { UserProfile } from "../user-profile";
 
-const components: { title: string; href: string; description: string }[] = [
+const components: { id: string; title: string; subtitle: string }[] = [
     {
-        title: "Marketing Page",
-        href: "/marketing-page",
-        description: "Write some wavy here to get them to click.",
+        id: "event1",
+        title: "College Basketball League",
+        subtitle: "Spring 2024 Season",
     },
     {
-        title: "Marketing Page",
-        href: "/marketing-page",
-        description: "Write some wavy here to get them to click.",
+        id: "event2",
+        title: "Summer Skills Camp",
+        subtitle: "Spring 2024 Season",
     },
     {
-        title: "Marketing Page",
-        href: "/marketing-page",
-        description: "Write some wavy here to get them to click.",
+        id: "event2",
+        title: "National Tournament",
+        subtitle: "Championship Series",
     },
 ];
 
 const navItems: {
     title: string;
     href: string;
-    components?: { title: string; href: string; description: string }[];
+    components?: { id: string; title: string; subtitle: string }[];
 }[] = [
     {
         title: "Home",
@@ -61,7 +61,7 @@ const navItems: {
         href: "/",
     },
     {
-        title: "Gallery",
+        title: "Events",
         href: "/",
         components: components,
     },
@@ -92,7 +92,7 @@ export default function NavBar() {
     return (
         <div
             className={cn(
-                "flex min-w-full fixed justify-between p-2 border-b z-30 overflow-hidden",
+                "flex min-w-full fixed justify-between p-2 border-b z-30",
                 currentTheme === "dark"
                     ? "bg-black"
                     : "bg-white dark:bg-opacity-50"
@@ -181,14 +181,21 @@ export default function NavBar() {
                                     {item.title}
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    <ul className="flex flex-col w-[400px] gap-4 p-5 lg:w-[500px]">
+                                    <ul
+                                        className={cn(
+                                            "flex flex-col w-[300px] gap-2 p-2 lg:w-[500px] rounded-md",
+                                            currentTheme === "dark"
+                                                ? "bg-black"
+                                                : "bg-white dark:bg-opacity-50"
+                                        )}
+                                    >
                                         {item.components.map((component) => (
                                             <ListItem
                                                 key={component.title}
                                                 title={component.title}
-                                                href={component.href}
+                                                href={`/eventpage/${component.id}`}
                                             >
-                                                {component.description}
+                                                {component.subtitle}
                                             </ListItem>
                                         ))}
                                     </ul>
@@ -245,17 +252,15 @@ const ListItem = React.forwardRef<
                 <a
                     ref={ref}
                     className={cn(
-                        "block select-none space-y-2 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        "block select-none rounded-md p-3 text-[15px] leading-none no-underline outline-none transition-colors hover:bg-accent focus:shadow-[0_0_0_2px] focus:shadow-violet7",
                         className
                     )}
                     {...props}
                 >
-                    <div className="text-base font-medium leading-none">
+                    <div className="mb-[5px] font-medium leading-[1.2] text-violet12">
                         {title}
                     </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        {children}
-                    </p>
+                    <p className="leading-[1.4] text-mauve11">{children}</p>
                 </a>
             </NavigationMenuLink>
         </li>
