@@ -1,24 +1,16 @@
-import UpcomingEvents from "@/components/common/upcoming-events";
-import { TITLE_TAILWIND_CLASS } from "@/utils/constants";
+import EventsCarousel from "@/components/common/events-carousel";
+import { Separator } from "@/components/ui/separator";
 
 export default function EventsSection() {
     return (
-        <div className="w-full flex flex-col items-center my-8">
-            <header className="text-center">
-                <h1
-                    className={`${TITLE_TAILWIND_CLASS} font-semibold tracking-tight dark:text-white text-gray-900 mb-4`}
-                >
-                    Upcoming Events
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400 pb-6">
-                    Checkout our upcoming events this year!
-                </p>
-                <div className="relative left-1/2 -translate-x-1/2 h-px bg-gray-200 dark:bg-gray-700 w-screen max-w-[75vw] mb-6" />
-            </header>
-
-            <div className="flex flex-wrap justify-start gap-6 w-full">
-                <UpcomingEvents />
+        <section className="w-4/5 mx-auto my-12 md:my-16 lg:my-20">
+            <div className="container">
+                <h2 className="text-3xl font-bold text-center mb-4">
+                    Inspiring Events
+                </h2>
+                <Separator className="mb-16 mx-auto w-96" />
+                <EventsCarousel carouselNavPosition="default" />
             </div>
-        </div>
+        </section>
     );
 }

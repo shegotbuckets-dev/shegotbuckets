@@ -1,4 +1,4 @@
-import UpcomingEvents from "@/components/common/upcoming-events";
+import EventsCarousel from "@/components/common/events-carousel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -32,7 +32,7 @@ export default function EventsPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="flex flex-wrap gap-4 justify-start">
-                            <UpcomingEvents />
+                            <EventsCarousel carouselNavPosition="top" />
                         </div>
                     </CardContent>
                 </Card>

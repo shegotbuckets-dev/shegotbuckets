@@ -1,9 +1,9 @@
 import BannerSection from "@/components/homepage/banner-section";
+import EventsSection from "@/components/homepage/events-section";
 import HeroSection from "@/components/homepage/hero-section";
 import GetInvolvedSection from "@/components/homepage/involve-section";
 import SideBySide from "@/components/homepage/side-by-side";
 import TestimonialSection from "@/components/homepage/testimonial-section";
-// import EventDialog from "@/components/upcoming-events";
 import PageWrapper from "@/components/wrapper/page-wrapper";
 
 export default function Home() {
@@ -24,9 +24,9 @@ export default function Home() {
             <div className="flex w-full justify-center items-center bg-gray-200/25">
                 <GetInvolvedSection />
             </div>
-            {/* <div className="flex w-full justify-center items-center bg-white dark:bg-gray-900">
-                <EventDialog />
-            </div> */}
+            <div className="flex w-full justify-center items-center bg-white/10">
+                <EventsSection />
+            </div>
         </PageWrapper>
     );
 }

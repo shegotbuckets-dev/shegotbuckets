@@ -134,8 +134,8 @@ const SocialLink = ({ link }: SocialLinkProps) => {
 
 export default function Footer() {
     return (
-        <footer className="bg-background">
-            <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 mt-8">
+        <footer className="bg-gray-200/25">
+            <div className="mx-auto max-w-7xl px-4 pt-16 pb-8 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
                     <div>
                         <p className="font-medium text-foreground mb-4">
