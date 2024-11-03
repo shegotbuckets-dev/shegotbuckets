@@ -214,7 +214,7 @@ const DesktopMenuItems = () => (
                         {item.title}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                        <ul className="flex flex-col w-[300px] gap-2 p-2 lg:w-[500px] rounded-md">
+                        <ul className="flex flex-col w-[300px] gap-2 p-2 lg:w-[500px] rounded-md bg-background border mt-4">
                             {item.components.map((component) => (
                                 <ListItem
                                     key={component.title}
