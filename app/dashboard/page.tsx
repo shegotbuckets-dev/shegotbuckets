@@ -11,9 +11,6 @@ import UpcomingEvents from "@/components/upcoming-events";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
-// import { BarChartComponent } from "./_components/bar-chart";
-// import { BarChartBetter } from "./_components/bar-chart-better";
-
 export default async function Dashboard() {
     return (
         <div className="flex flex-col justify-center items-start flex-wrap px-4 pt-4 gap-4">
@@ -29,10 +26,6 @@ export default async function Dashboard() {
                     </p>
                 </CardContent>
             </Card>
-            {/* <div className="flex flex-wrap gap-2">
-                <BarChartComponent />
-                <BarChartBetter />
-            </div> */}
             <div className="w-full max-w-5xl">
                 <Card className="">
                     <CardHeader className="flex flex-row items-center">
@@ -51,8 +44,6 @@ export default async function Dashboard() {
                     </CardHeader>
                     <CardContent>
                         <div style={{ maxHeight: "320px", overflowY: "auto" }}>
-                            {" "}
-                            {/* Adjust maxHeight according to your design */}
                             <main className="flex flex-col gap-2 lg:gap-2 h-[300px] w-full">
                                 <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
                                     <div className="flex flex-col items-center text-center">

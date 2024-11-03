@@ -58,7 +58,7 @@ const navItems: {
     },
     {
         title: "About Us",
-        href: "/",
+        href: "/about",
     },
     {
         title: "Events",
@@ -67,7 +67,7 @@ const navItems: {
     },
     {
         title: "Get Involved",
-        href: "/dashboard",
+        href: "/get-involved",
     },
 ];
 
