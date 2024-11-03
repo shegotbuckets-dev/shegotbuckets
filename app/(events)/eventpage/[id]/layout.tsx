@@ -1,3 +1,4 @@
+import Footer from "@/components/wrapper/footer";
 import NavBar from "@/components/wrapper/navbar";
 
 export default function EventPageLayout({
@@ -8,7 +9,8 @@ export default function EventPageLayout({
     return (
         <div>
             <NavBar />
-            {children}
+            <main>{children}</main>
+            <Footer />
         </div>
     );
 }

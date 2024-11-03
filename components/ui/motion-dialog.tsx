@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useClickOutside from "@/utils/hook/useClickOutside";
 
@@ -22,6 +23,7 @@ import {
     motion,
 } from "framer-motion";
 import { XIcon } from "lucide-react";
+import Link from "next/link";
 
 interface DialogContextType {
     isOpen: boolean;
@@ -381,6 +383,44 @@ function DialogClose({ children, className, variants }: DialogCloseProps) {
     );
 }
 
+type DialogButtonProps = {
+    href: string;
+    buttonText: string;
+    buttonVariant?: "default" | "outline" | "secondary" | "ghost" | "link";
+    className?: string;
+    buttonClassName?: string;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
+
+function DialogButton({
+    href,
+    buttonText,
+    buttonVariant,
+    className,
+    buttonClassName,
+    onClick,
+}: DialogButtonProps) {
+    const { setIsOpen } = useDialog();
+
+    const handleClick = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            setIsOpen(false);
+            onClick?.(e as any);
+        },
+        [setIsOpen, onClick]
+    );
+
+    return (
+        <motion.button onClick={handleClick} className={className}>
+            <Link href={href} className="w-full sm:w-auto">
+                <Button variant={buttonVariant} className={buttonClassName}>
+                    {buttonText}
+                </Button>
+            </Link>
+        </motion.button>
+    );
+}
+
 export {
     Dialog,
     DialogTrigger,
@@ -391,4 +431,5 @@ export {
     DialogSubtitle,
     DialogDescription,
     DialogImage,
+    DialogButton,
 };

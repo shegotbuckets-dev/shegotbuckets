@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sheet";
 import config from "@/config";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 import { Banknote, Folder, HomeIcon, Settings } from "lucide-react";
@@ -23,10 +23,11 @@ import Link from "next/link";
 
 // Define navigation items for mobile menu
 const mobileNavItems = [
-    { href: "/dashboard", icon: HomeIcon, label: "Dashboard" },
-    { href: "/dashboard/events", icon: Folder, label: "Events" },
-    { href: "/dashboard/payments", icon: Banknote, label: "Payments" },
+    { id: 1, href: "/dashboard", icon: HomeIcon, label: "Dashboard" },
+    { id: 2, href: "/dashboard/events", icon: Folder, label: "Events" },
+    { id: 3, href: "/dashboard/payments", icon: Banknote, label: "Payments" },
     {
+        id: 4,
         href: "/dashboard/settings",
         icon: Settings,
         label: "Settings",
@@ -39,24 +40,38 @@ const MobileNavLink = ({
     href,
     icon: Icon,
     label,
+    separator,
 }: {
     href: string;
     icon: any;
     label: string;
+    separator?: boolean;
 }) => (
-    <DialogClose asChild>
-        <Link
-            href={href}
-            className="px-4 py-2 hover:bg-accent rounded-md flex items-center"
-        >
-            <Icon className="mr-2 h-4 w-4" />
-            {label}
-        </Link>
-    </DialogClose>
+    <>
+        {separator && <Separator className="my-3" />}
+        <DialogClose asChild>
+            <Link
+                href={href}
+                className="px-4 py-2 hover:bg-accent rounded-md flex items-center"
+            >
+                <Icon className="mr-2 h-4 w-4" />
+                {label}
+            </Link>
+        </DialogClose>
+    </>
 );
 
 export default function DashboardTopNav({ children }: { children: ReactNode }) {
     const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null; // or a loading skeleton
+    }
 
     return (
         <div className="flex flex-col">
@@ -80,14 +95,13 @@ export default function DashboardTopNav({ children }: { children: ReactNode }) {
                             </Link>
                         </SheetHeader>
                         <nav className="flex flex-col space-y-1 mt-2">
-                            {mobileNavItems.map((item, index) => (
-                                <>
-                                    {item.separator && (
-                                        <Separator className="my-3" />
-                                    )}
-                                    <MobileNavLink key={item.href} {...item} />
-                                </>
-                            ))}
+                            <ul>
+                                {mobileNavItems.map((item) => (
+                                    <li key={item.id}>
+                                        <MobileNavLink {...item} />
+                                    </li>
+                                ))}
+                            </ul>
                         </nav>
                     </SheetContent>
                 </Dialog>
