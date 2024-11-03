@@ -8,6 +8,7 @@ import {
     Heart,
     Users,
 } from "lucide-react";
+import Link from "next/link";
 
 interface InvolvementOption {
     icon: React.ReactNode;
@@ -70,19 +71,21 @@ export default function GetInvolvedSection() {
                             <p className="text-gray-800 dark:text-white mb-6">
                                 {option.description}
                             </p>
-                            <Button
-                                variant="expandIcon"
-                                className="w-full max-w-[130px] flex gap-1 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 text-sm py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
-                                Icon={() => (
-                                    <ArrowRight
-                                        className="w-3.5 h-3.5"
-                                        aria-hidden="true"
-                                    />
-                                )}
-                                iconPlacement="right"
-                            >
-                                {option.action}
-                            </Button>
+                            <Link href="/get-involved">
+                                <Button
+                                    variant="expandIcon"
+                                    className="w-full max-w-[130px] flex gap-1 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 text-sm py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+                                    Icon={() => (
+                                        <ArrowRight
+                                            className="w-3.5 h-3.5"
+                                            aria-hidden="true"
+                                        />
+                                    )}
+                                    iconPlacement="right"
+                                >
+                                    {option.action}
+                                </Button>
+                            </Link>
                         </div>
                     ))}
                 </div>
