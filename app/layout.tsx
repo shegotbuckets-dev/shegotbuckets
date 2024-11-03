@@ -38,6 +38,16 @@ export const metadata: Metadata = {
             "https://utfs.io/f/8a428f85-ae83-4ca7-9237-6f8b65411293-eun6ii.png",
         ],
     },
+    other: {
+        link: [
+            { rel: "preconnect", href: "https://www.youtube.com" } as any,
+            {
+                rel: "preconnect",
+                href: "https://www.youtube-nocookie.com",
+            } as any,
+            { rel: "preconnect", href: "https://i.ytimg.com" } as any,
+        ],
+    },
 };
 
 export default function RootLayout({

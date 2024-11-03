@@ -1,41 +1,9 @@
-import { Suspense } from "react";
+import YouTubePlayer from "@/components/youtube";
 
 import { ArrowRight } from "lucide-react";
-import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "../ui/button";
-
-const YouTubeVideo = dynamic(() => loadYouTubeVideo(), {
-    ssr: false,
-});
-
-const loadYouTubeVideo = async () => {
-    const VideoComponent = () => (
-        <iframe
-            src="https://www.youtube.com/embed/fzOtrEZ9Nsk?autoplay=1&controls=0&mute=1&loop=1&playlist=fzOtrEZ9Nsk&enablejsapi=1"
-            allow="autoplay; encrypted-media"
-            frameBorder="0"
-            className="absolute top-1/2 left-1/2 h-[56.25vw] min-h-full min-w-full w-[177.77777778vh] -translate-x-1/2 -translate-y-1/2"
-            style={{ border: "none" }}
-            title="Background video"
-        />
-    );
-    return VideoComponent;
-};
-
-function VideoPlaceholder() {
-    return (
-        <Image
-            src="/images/sgb-homevideo-placeholder.png"
-            alt="She Got Buckets background"
-            fill
-            className="object-cover"
-            priority
-        />
-    );
-}
 
 export default function HeroSection() {
     return (
@@ -45,12 +13,20 @@ export default function HeroSection() {
         >
             {/* YouTube Video Background */}
             <div className="absolute inset-0 h-full">
-                <Suspense fallback={<VideoPlaceholder />}>
-                    <YouTubeVideo />
-                </Suspense>
+                <YouTubePlayer
+                    videoId="fzOtrEZ9Nsk"
+                    title="She Got Buckets Background Video"
+                    autoplay={true}
+                    muted={true}
+                    controls={false}
+                    loop={true}
+                    hidePlayButton={true}
+                />
             </div>
+
             {/* Overlay */}
             <div className="absolute inset-0 bg-black/60" />
+
             {/* Content */}
             <div className="relative text-white px-4 sm:px-6 lg:px-8 w-full md:w-1/2">
                 <h1 className="scroll-m-20 font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4">

@@ -11,6 +11,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
+import YouTubePlayer from "@/components/youtube";
 
 import { useEffect, useState } from "react";
 
@@ -70,13 +71,14 @@ export default function TestimonialSection() {
                     {/* YouTube Video */}
                     <div className="lg:flex-1">
                         <div className="aspect-video">
-                            <iframe
-                                className="w-full h-full rounded-lg"
-                                src="https://www.youtube.com/embed/MEwtLELK0DM"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
+                            <YouTubePlayer
+                                videoId="MEwtLELK0DM"
+                                title="Asian women age 5-71 answering 'Why basketball?'"
+                                autoplay={false}
+                                muted={false}
+                                controls={true}
+                                loop={false}
+                            />
                         </div>
                         <p className="text-sm text-center mt-2 text-muted-foreground">
                             Asian women age 5-71 answering &ldquo;Why

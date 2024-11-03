@@ -40,7 +40,7 @@ const nextConfig = {
                 pathname: "/**",
             },
         ],
-        domains: ["mp.weixin.qq.com"],
+        domains: ["mp.weixin.qq.com", "i.ytimg.com"],
     },
 };
 module.exports = nextConfig;
