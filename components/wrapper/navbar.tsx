@@ -1,6 +1,7 @@
 "use client";
 
 import { HeartBeatButton } from "@/components/common/heartbeat-button";
+import { Logos } from "@/components/common/logos";
 import ModeToggle from "@/components/common/mode-toggle";
 import { UserProfile } from "@/components/common/user-profile";
 import { Button } from "@/components/ui/button";
@@ -26,7 +27,6 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { useAuth } from "@clerk/nextjs";
 import { Dialog, DialogClose } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
-import Image from "next/image";
 import Link from "next/link";
 
 const components: { id: string; title: string; subtitle: string }[] = [
@@ -99,7 +99,7 @@ export default function NavBar() {
             {/* Mobile Navigation */}
             <div className="flex justify-between w-full items-center min-[825px]:hidden">
                 <MobileMenu />
-                <Logo currentTheme={currentTheme ?? "light"} size="small" />
+                <Logos.sgbLogo currentTheme={currentTheme ?? "light"} />
                 <div className="flex items-center gap-2">
                     {userId && <UserProfile />}
                     {!userId && (
@@ -117,7 +117,7 @@ export default function NavBar() {
             <NavigationMenu className="py-1 flex-grow max-[825px]:hidden">
                 <div className="flex justify-between items-center w-full">
                     <NavigationMenuList className="flex items-center gap-6">
-                        <Logo
+                        <Logos.sgbLogo
                             currentTheme={currentTheme ?? "light"}
                             size="large"
                         />
@@ -146,32 +146,6 @@ export default function NavBar() {
         </div>
     );
 }
-
-const Logo = ({
-    currentTheme,
-    size = "large",
-}: {
-    currentTheme: string;
-    size?: "large" | "small";
-}) => (
-    <Link
-        href="/"
-        className={cn("flex items-center", size === "large" ? "h-16" : "h-8")}
-        aria-label="Home"
-    >
-        <Image
-            src={`/images/sgb-${currentTheme === "dark" ? "dark" : "light"}.png`}
-            alt="SGB Logo"
-            width={size === "large" ? 120 : 60}
-            height={size === "large" ? 60 : 30}
-            className={cn(
-                size === "large" ? "w-[120px] h-[60px]" : "w-[60px] h-[30px]"
-            )}
-            priority
-        />
-        <span className="sr-only">Home</span>
-    </Link>
-);
 
 const MobileMenu = () => (
     <Dialog>

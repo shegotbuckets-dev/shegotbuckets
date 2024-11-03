@@ -15,16 +15,11 @@ export default async function Dashboard() {
     return (
         <div className="flex flex-col justify-center items-start flex-wrap px-4 pt-4 gap-4">
             <Card className="w-full max-w-5xl">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                        SGB User Portal
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 mb-2">
+                    <CardTitle className="text-2xl font-bold">
+                        Welcome to She Got Buckets!
                     </CardTitle>
                 </CardHeader>
-                <CardContent>
-                    <p className="text-2xl font-bold">
-                        Welcome to She Got Buckets!
-                    </p>
-                </CardContent>
             </Card>
             <div className="w-full max-w-5xl">
                 <Card className="">
