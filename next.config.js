@@ -11,36 +11,11 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
-                hostname: "images.unsplash.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "seo-heist.s3.amazonaws.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "github.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "ansubkhan.com",
-                port: "",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "utfs.io",
+                hostname: "mp.weixin.qq.com",
                 port: "",
                 pathname: "/**",
             },
         ],
-        domains: ["mp.weixin.qq.com"],
     },
 };
 module.exports = nextConfig;

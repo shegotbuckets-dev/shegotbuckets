@@ -1,6 +1,6 @@
+import UpcomingEvents from "@/components/common/upcoming-events";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import UpcomingEvents from "@/components/upcoming-events";
 
 import React from "react";
 

@@ -1,5 +1,5 @@
+import { VideoPlayer } from "@/components/common/video-player";
 import { Button } from "@/components/ui/button";
-import { VideoPlayer } from "@/components/video-player";
 import PageWrapper from "@/components/wrapper/page-wrapper";
 
 import { Metadata } from "next";

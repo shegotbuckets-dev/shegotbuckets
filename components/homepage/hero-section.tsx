@@ -1,11 +1,12 @@
+import { HeartBeatButton } from "@/components/common/heartbeat-button";
+import { Button } from "@/components/ui/button";
+
 import { Suspense } from "react";
 
 import { ArrowRight } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-
-import { Button } from "../ui/button";
 
 const YouTubeVideo = dynamic(() => loadYouTubeVideo(), {
     ssr: false,
@@ -64,11 +65,7 @@ export default function HeroSection() {
                     unity, inclusion, and opportunity on and off the court.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center gap-3">
-                    <Link href="/dashboard">
-                        <Button className="animate-buttonheartbeat rounded-md bg-orange-600 hover:bg-orange-500 text-base font-semibold text-white py-3 px-6 w-full sm:w-auto">
-                            Become an Athlete
-                        </Button>
-                    </Link>
+                    <HeartBeatButton>Become an Athlete</HeartBeatButton>
                     <Link href="/dashboard">
                         <Button
                             variant="expandIcon"

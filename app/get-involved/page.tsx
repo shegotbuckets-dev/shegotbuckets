@@ -1,4 +1,4 @@
-import WorkInProgress from "@/components/wip";
+import WorkInProgress from "@/components/common/wip";
 
 export default function GetInvolved() {
     return (
