@@ -1,6 +1,7 @@
 "use client";
 
-import ModeToggle from "@/components/mode-toggle";
+import ModeToggle from "@/components/common/mode-toggle";
+import { UserProfile } from "@/components/common/user-profile";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
@@ -10,7 +11,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { UserProfile } from "@/components/user-profile";
 import config from "@/config";
 
 import { ReactNode } from "react";

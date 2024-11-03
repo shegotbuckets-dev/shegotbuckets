@@ -1,5 +1,5 @@
 import Provider from "@/app/provider";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import AuthWrapper from "@/components/wrapper/auth-wrapper";
 

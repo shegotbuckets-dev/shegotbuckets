@@ -1,3 +1,4 @@
+import UpcomingEvents from "@/components/common/upcoming-events";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -6,7 +7,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import UpcomingEvents from "@/components/upcoming-events";
 
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";

@@ -28,7 +28,7 @@ const SOCIAL_LINKS = [
                 />
             </svg>
         ),
-        label: "公众号 WeChat",
+        label: "WeChat 公众号",
         type: "popover" as const,
         qrCode: "https://mp.weixin.qq.com/mp/qrcode?scene=10000005&size=102&__biz=Mzg4ODgxNzcwMg==&mid=2247484703&idx=1&sn=2a0e7cd9883282d50127bb088493580c&send_time=",
     },
@@ -45,7 +45,7 @@ const SOCIAL_LINKS = [
                 />
             </svg>
         ),
-        label: "小红书 RED",
+        label: "RED 小红书",
         href: "https://www.xiaohongshu.com/",
     },
     {
