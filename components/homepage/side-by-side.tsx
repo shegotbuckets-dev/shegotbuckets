@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function SideBySide() {
     return (
-        <section className="my-16 px-4 md:px-6 lg:px-8">
-            <div className="container mx-auto py-8">
+        <section className="w-4/5 mx-auto my-16">
+            <div className="container py-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:items-start">
                     {/* Text content - Add order-2 for mobile, order-1 for md+ */}
                     <div className="space-y-6 md:pt-8 order-2 md:order-1">

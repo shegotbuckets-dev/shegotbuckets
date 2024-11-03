@@ -1,5 +1,6 @@
 "use client";
 
+import TeamMarquee from "@/components/homepage/team-marquee";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -11,7 +12,6 @@ import {
     BookOpen,
     Calendar,
     ChevronRight,
-    Clock,
     Flag,
     MapPin,
     Trophy,
@@ -112,7 +112,9 @@ export default function EventPage() {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent"></div>
             </section>
-
+            <div className="flex w-full justify-center items-center bg-black/80">
+                <TeamMarquee />
+            </div>
             <div className="pt-16">
                 {/* About the League Section */}
                 <section id="about" className="py-16">

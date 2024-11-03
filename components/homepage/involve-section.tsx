@@ -49,12 +49,12 @@ const involvementOptions: InvolvementOption[] = [
 
 export default function GetInvolvedSection() {
     return (
-        <section className="my-16 bg-gray-50 dark:bg-black">
-            <div className="container mx-auto py-8">
+        <section className="w-4/5 mx-auto my-16 bg-gray-50 dark:bg-black">
+            <div className="container py-8">
                 <h2 className="text-3xl font-bold text-center mb-4 text-gray-800 dark:text-white">
                     Ways to Get Involved
                 </h2>
-                <Separator className="mb-16 mx-auto w-1/4" />
+                <Separator className="mb-16 mx-auto w-72" />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                     {involvementOptions.map((option, index) => (
                         <div
