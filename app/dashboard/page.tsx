@@ -14,14 +14,14 @@ import Link from "next/link";
 export default async function Dashboard() {
     return (
         <div className="flex flex-col justify-center items-start flex-wrap px-4 pt-4 gap-4">
-            <Card className="w-full max-w-5xl">
+            <Card className="w-full max-w-6xl">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 mb-2">
                     <CardTitle className="text-2xl font-bold">
                         Welcome to She Got Buckets!
                     </CardTitle>
                 </CardHeader>
             </Card>
-            <Card className="w-full max-w-5xl">
+            <Card className="w-full max-w-6xl">
                 <CardHeader className="flex flex-row items-center">
                     <div className="grid gap-2">
                         <CardTitle>Previous Events</CardTitle>
@@ -54,7 +54,7 @@ export default async function Dashboard() {
                     </div>
                 </CardContent>
             </Card>
-            <Card className="shadow-lg w-full max-w-5xl">
+            <Card className="shadow-lg w-full max-w-6xl">
                 <CardHeader>
                     <CardTitle className="text-2xl">Upcoming Events</CardTitle>
                 </CardHeader>

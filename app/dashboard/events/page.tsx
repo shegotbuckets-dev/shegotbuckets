@@ -8,7 +8,7 @@ export default function EventsPage() {
     return (
         <div className="flex flex-col justify-center items-start flex-wrap px-4 pt-4 gap-4">
             <div className="grid md:grid-cols-1 sm:grid-cols-1 w-full gap-3">
-                <Card className="shadow-lg">
+                <Card className="shadow-lg w-full max-w-6xl">
                     <CardHeader>
                         <CardTitle className="text-2xl">My Events</CardTitle>
                     </CardHeader>
@@ -24,7 +24,7 @@ export default function EventsPage() {
                         </div>
                     </CardContent>
                 </Card>
-                <Card className={`shadow-lg "w-full max-w-5xl"`}>
+                <Card className="shadow-lg w-full max-w-6xl">
                     <CardHeader>
                         <CardTitle className="text-2xl">
                             Upcoming Events
