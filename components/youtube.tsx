@@ -33,7 +33,7 @@ export default function YouTubePlayer({
     const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
     const videoUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${
         muted ? 1 : 0
-    }&controls=${controls ? 1 : 0}&loop=${loop ? 1 : 0}&playlist=${videoId}`;
+    }&controls=${controls ? 1 : 0}&loop=${loop ? 1 : 0}&playlist=${videoId}&rel=0`;
     const directYouTubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
     // Check if iframe is supported
