@@ -11,9 +11,9 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: "https",
-                hostname: "mp.weixin.qq.com",
+                hostname: "gdzjjimhuijepuaqyybd.supabase.co",
                 port: "",
-                pathname: "/**",
+                pathname: "/storage/v1/object/public/**",
             },
         ],
     },
