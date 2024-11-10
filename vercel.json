@@ -1,0 +1,7 @@
+{
+    "functions": {
+        "api/media.ts": {
+            "regions": ["iad1", "pdx1"]
+        }
+    }
+}
