@@ -13,7 +13,7 @@ export async function fetchMediaFromBlob(
         // Convert the response to a Buffer
         return Buffer.from(await response.arrayBuffer());
     } catch (error) {
-        console.error(`Error fetching media from Blob: ${error}`);
+        console.error("Error fetching media from Blob:", error);
         return null;
     }
 }

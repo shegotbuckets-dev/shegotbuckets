@@ -20,7 +20,7 @@ export default function HeroSectionEvent({
         >
             <div className="absolute inset-0">
                 <Image
-                    src={getMediaSrcFromVercelBlob(image ?? "")}
+                    src={getMediaSrcFromVercelBlob(image)}
                     alt="Event background"
                     fill
                     className="object-cover"

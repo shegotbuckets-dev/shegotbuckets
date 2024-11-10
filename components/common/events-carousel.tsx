@@ -47,7 +47,7 @@ function EventDialog({
             >
                 <div className="h-40 w-full">
                     <DialogImage
-                        src={getMediaSrcFromVercelBlob(event.image ?? "")}
+                        src={getMediaSrcFromVercelBlob(event.image)}
                         alt={event.title}
                         className="h-full w-full object-cover"
                     />
@@ -80,7 +80,7 @@ function EventDialog({
                     className="pointer-events-auto relative flex h-auto w-[95%] sm:w-[90%] max-w-[400px] sm:max-w-[500px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 mx-auto"
                 >
                     <DialogImage
-                        src={getMediaSrcFromVercelBlob(event.image ?? "")}
+                        src={getMediaSrcFromVercelBlob(event.image)}
                         alt={event.title}
                         className="h-48 sm:h-64 w-full object-cover"
                     />
