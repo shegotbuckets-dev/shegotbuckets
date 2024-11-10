@@ -9,7 +9,7 @@ export default function PageWrapper({
     return (
         <>
             <NavBar />
-            <main className="flex min-w-screen min-h-screen flex-col items-center dark:bg-black bg-white justify-between">
+            <main className="flex min-w-screen min-h-screen flex-col items-center dark:bg-black bg-white justify-between pt-16">
                 <div className="absolute z-[-99] pointer-events-none inset-0 flex items-center justify-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
                 {children}
             </main>

@@ -12,11 +12,18 @@ export const userUpdate = async ({
     profile_image_url,
     user_id,
 }: userUpdateProps) => {
-    const cookieStore = cookies();
+    // Verify environment variables
+    if (
+        !process.env.SUPABASE_SERVICE_ROLE_KEY ||
+        !process.env.NEXT_PUBLIC_SUPABASE_URL
+    ) {
+        throw new Error("Missing required Supabase configuration");
+    }
 
+    const cookieStore = cookies();
     const supabase = createServerClient(
-        process.env.SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_KEY!,
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.SUPABASE_SERVICE_ROLE_KEY,
         {
             cookies: {
                 get(name: string) {
@@ -27,24 +34,36 @@ export const userUpdate = async ({
     );
 
     try {
-        const { data, error } = await supabase
-            .from("user")
-            .update([
-                {
-                    email,
-                    first_name,
-                    last_name,
-                    profile_image_url,
-                    user_id,
-                },
-            ])
-            .eq("email", email)
-            .select();
+        const { error } = await supabase
+            .from("users")
+            .update({
+                email,
+                first_name,
+                last_name,
+                profile_image_url,
+            })
+            .eq("user_id", user_id);
 
-        if (data) return data;
+        if (error) {
+            console.error("[UserUpdate] Failed:", {
+                userId: user_id,
+                error: error.message,
+                code: error.code,
+            });
+            return error;
+        }
 
-        if (error) return error;
+        console.log("[UserUpdate] Success:", {
+            userId: user_id,
+            email,
+        });
+
+        return { success: true };
     } catch (error: any) {
-        throw new Error(error.message);
+        console.error("[UserUpdate] Exception:", {
+            userId: user_id,
+            error: error.message,
+        });
+        throw error;
     }
 };

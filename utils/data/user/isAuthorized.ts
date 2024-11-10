@@ -9,12 +9,12 @@ import { cookies } from "next/headers";
 export const isAuthorized = async (
     userId: string
 ): Promise<{ authorized: boolean; message: string }> => {
-    if (!config?.payments?.enabled) {
-        return {
-            authorized: true,
-            message: "Payments are disabled",
-        };
-    }
+    // if (!config?.payments?.enabled) {
+    //     return {
+    //         authorized: true,
+    //         message: "Payments are disabled",
+    //     };
+    // }
 
     const result = await clerkClient.users.getUser(userId);
 
@@ -28,8 +28,8 @@ export const isAuthorized = async (
     const cookieStore = cookies();
 
     const supabase = createServerClient(
-        process.env.SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_KEY!,
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
         {
             cookies: {
                 get(name: string) {
