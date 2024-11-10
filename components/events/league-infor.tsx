@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
     RULE_BOOK_DATA_CHINESE,
     RULE_BOOK_DATA_ENGLISH,
-} from "@/public/constants/events";
+} from "@/constants/events";
 
 import { useState } from "react";
 
@@ -15,53 +15,49 @@ import { Award, BookOpen, ChevronRight, Flag, Trophy } from "lucide-react";
 
 export default function LeagueInfor() {
     return (
-        <div className="pt-16">
-            {/*League Info Section */}
-            <section className="py-16 bg-gray-200/25">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-3xl font-bold mb-8 text-center">
-                        League Info
-                    </h2>
-                    <RuleBook />
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <Card>
-                            <CardContent className="flex flex-col items-center p-6">
-                                <Flag className="w-12 h-12 text-primary mb-4" />
-                                <h3 className="text-xl font-semibold mb-2">
-                                    Certified Referees
-                                </h3>
-                                <p className="text-center">
-                                    Two certified referees per game
-                                </p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardContent className="flex flex-col items-center p-6">
-                                <Trophy className="w-12 h-12 text-primary mb-4" />
-                                <h3 className="text-xl font-semibold mb-2">
-                                    Playoffs
-                                </h3>
-                                <p className="text-center">
-                                    Single-elimination playoffs for eligible
-                                    teams
-                                </p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardContent className="flex flex-col items-center p-6">
-                                <Award className="w-12 h-12 text-primary mb-4" />
-                                <h3 className="text-xl font-semibold mb-2">
-                                    Prizes
-                                </h3>
-                                <p className="text-center">
-                                    Team championship prizes
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
+        <section className="pt-20 pb-28 bg-white/10">
+            <div className="container mx-auto px-4">
+                <h2 className="text-3xl font-bold mb-8 text-center">
+                    League Info
+                </h2>
+                <RuleBook />
+                <div className="grid md:grid-cols-3 gap-8">
+                    <Card>
+                        <CardContent className="flex flex-col items-center p-6">
+                            <Flag className="w-12 h-12 text-primary mb-4" />
+                            <h3 className="text-xl font-semibold mb-2">
+                                Certified Referees
+                            </h3>
+                            <p className="text-center">
+                                Two certified referees per game
+                            </p>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardContent className="flex flex-col items-center p-6">
+                            <Trophy className="w-12 h-12 text-primary mb-4" />
+                            <h3 className="text-xl font-semibold mb-2">
+                                Playoffs
+                            </h3>
+                            <p className="text-center">
+                                Single-elimination playoffs for eligible teams
+                            </p>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardContent className="flex flex-col items-center p-6">
+                            <Award className="w-12 h-12 text-primary mb-4" />
+                            <h3 className="text-xl font-semibold mb-2">
+                                Prizes
+                            </h3>
+                            <p className="text-center">
+                                Team championship prizes
+                            </p>
+                        </CardContent>
+                    </Card>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     );
 }
 

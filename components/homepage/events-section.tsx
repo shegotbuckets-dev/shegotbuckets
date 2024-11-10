@@ -1,7 +1,8 @@
 import EventsCarousel from "@/components/common/events-carousel";
 import { Separator } from "@/components/ui/separator";
+import { fetchEvents } from "@/utils/actions/events";
 
-export default function EventsSection() {
+export default async function EventsSection() {
     return (
         <section className="w-4/5 mx-auto my-12 md:my-16 lg:my-20">
             <div className="container">

@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { SUPABASE_STORAGE } from "@/public/constants/events";
+import { SUPABASE_STORAGE } from "@/constants/events";
 
 import Image from "next/image";
 
@@ -27,7 +27,7 @@ const champions: Champion[] = [
 
 export default function HallOfRecord() {
     return (
-        <section className="py-12 bg-background" id="hallRecord-event">
+        <section className="py-20 bg-gray-200/25" id="hallRecord-event">
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold text-center mb-8">
                     Hall of Record

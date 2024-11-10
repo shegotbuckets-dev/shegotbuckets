@@ -29,7 +29,7 @@ const TeamItem = ({ team }: { team: Team }) => {
 
 export default function TeamMarquee() {
     return (
-        <div className="w-full h-20 overflow-hidden">
+        <div className="w-full h-20 overflow-hidden bg-black/80">
             <div className="w-full h-full inline-flex flex-nowrap gap-6 animate-marquee">
                 {/* First set of items */}
                 {Teams.map((team, index) => (

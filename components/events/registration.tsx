@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Registration() {
     return (
-        <section id="registration-event" className="py-16">
+        <section id="registration-event" className="py-20 bg-white/10">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl font-bold mb-8">
                     Register for the League

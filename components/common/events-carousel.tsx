@@ -18,13 +18,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/motion-dialog";
-import { BASKETBALL_EVENTS, BasketballEvent } from "@/public/constants/events";
+import { Database } from "@/constants/supabase";
+import { fetchEvents } from "@/utils/actions/events";
 
 import React from "react";
 
 import { PlusIcon } from "lucide-react";
 
-function EventDialog({ event }: { event: BasketballEvent }) {
+function EventDialog({
+    event,
+}: {
+    event: Database["public"]["Tables"]["events"]["Row"];
+}) {
     return (
         <Dialog
             transition={{
@@ -37,21 +42,25 @@ function EventDialog({ event }: { event: BasketballEvent }) {
                 style={{
                     borderRadius: "12px",
                 }}
-                className="flex max-w-[270px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900"
+                className="flex h-72 w-full max-w-[270px] mx-auto flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900"
             >
-                <DialogImage
-                    src={event.image}
-                    alt={event.title}
-                    className="h-48 w-full object-cover"
-                />
-                <div className="flex flex-grow flex-row items-end justify-between p-4">
-                    <div className="min-h-[80px]">
-                        <DialogTitle className="text-zinc-950 dark:text-zinc-50">
-                            {event.title}
-                        </DialogTitle>
-                        <DialogSubtitle className="text-zinc-700 dark:text-zinc-400">
-                            {event.subtitle}
-                        </DialogSubtitle>
+                <div className="h-40 w-full">
+                    <DialogImage
+                        src={event.image ?? ""}
+                        alt={event.title}
+                        className="h-full w-full object-cover"
+                    />
+                </div>
+                <div className="flex flex-1 flex-row items-start justify-between p-4 h-32">
+                    <div className="flex flex-col justify-between h-full overflow-hidden">
+                        <div>
+                            <DialogTitle className="text-zinc-950 dark:text-zinc-50 line-clamp-2 text-base">
+                                {event.title}
+                            </DialogTitle>
+                            <DialogSubtitle className="text-zinc-700 dark:text-zinc-400 line-clamp-2 text-sm mt-1">
+                                {event.subtitle}
+                            </DialogSubtitle>
+                        </div>
                     </div>
                     <button
                         type="button"
@@ -70,7 +79,7 @@ function EventDialog({ event }: { event: BasketballEvent }) {
                     className="pointer-events-auto relative flex h-auto w-full flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 sm:w-[500px]"
                 >
                     <DialogImage
-                        src={event.image}
+                        src={event.image ?? ""}
                         alt={event.title}
                         className="h-64 w-full object-cover"
                     />
@@ -108,7 +117,7 @@ function EventDialog({ event }: { event: BasketballEvent }) {
                                     <Button>Register Now</Button>
                                 </RegistrationButton>
                                 <DialogButton
-                                    href={`/eventpage/${event.id}`}
+                                    href={`/eventpage/${event.event_id}`}
                                     buttonText="Event Details"
                                     buttonVariant="outline"
                                     buttonClassName="w-full border-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
@@ -158,25 +167,28 @@ function CarouselNavigationComponent({
     }
 }
 
-export default function EventsCarousel({
+export default async function EventsCarousel({
     carouselNavPosition,
 }: {
     carouselNavPosition: "default" | "bottom" | "top";
 }) {
+    const events = await fetchEvents();
+    if (!events) {
+        return null;
+    }
+
     return (
         <div className="relative w-full px-4">
             <Carousel>
                 <CarouselContent className="-ml-4">
-                    {Object.values(BASKETBALL_EVENTS).map(
-                        (event: BasketballEvent) => (
-                            <CarouselItem
-                                key={event.id}
-                                className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-                            >
-                                <EventDialog event={event} />
-                            </CarouselItem>
-                        )
-                    )}
+                    {events.map((event) => (
+                        <CarouselItem
+                            key={event.event_id}
+                            className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                        >
+                            <EventDialog event={event} />
+                        </CarouselItem>
+                    ))}
                 </CarouselContent>
                 <CarouselNavigationComponent
                     carouselNavPosition={carouselNavPosition}

@@ -11,7 +11,7 @@ export type ConferenceInfor = {
 };
 
 export interface BasketballEvent {
-    id: string;
+    eventId: string;
     title: string;
     subtitle: string;
     image: string;
@@ -38,7 +38,7 @@ export interface RuleBookData {
     sections: RuleSection[];
 }
 
-const leagueData: ConferenceData = {
+export const leagueData: ConferenceData = {
     "Southern Conference": {
         description:
             "The Northern League is known for its competitive spirit and rich basketball tradition.",
@@ -67,7 +67,7 @@ const leagueData: ConferenceData = {
 
 export const BASKETBALL_EVENTS: EventsData = {
     event1: {
-        id: "event1",
+        eventId: "event1",
         title: "College Basketball League",
         subtitle: "Spring 2024 Season",
         image: "/images/court.png",
@@ -78,7 +78,7 @@ export const BASKETBALL_EVENTS: EventsData = {
         leagueData: leagueData,
     },
     event2: {
-        id: "event2",
+        eventId: "event2",
         title: "Summer Skills Camp",
         subtitle: "Elite Training Program",
         image: "/images/league.png",
@@ -90,7 +90,7 @@ export const BASKETBALL_EVENTS: EventsData = {
         price: "$450 per player",
     },
     event3: {
-        id: "event3",
+        eventId: "event3",
         title: "National Tournament",
         subtitle: "Championship Series",
         image: "/images/league.png",
@@ -102,12 +102,12 @@ export const BASKETBALL_EVENTS: EventsData = {
     },
 };
 
-export interface NavItem {
+export interface Anchor {
     id: string;
     label: string;
 }
 
-export const ANCHOR_NAV_ITEMS: readonly NavItem[] = [
+export const ANCHORS: readonly Anchor[] = [
     { id: "heroCard-event", label: "HeroCard" },
     { id: "aboutInfor-event", label: "AboutInfor" },
     { id: "hallRecord-event", label: "Record" },

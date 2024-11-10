@@ -56,7 +56,9 @@ export default async function Dashboard() {
             </Card>
             <Card className="shadow-lg w-full max-w-6xl">
                 <CardHeader>
-                    <CardTitle className="text-2xl">Upcoming Events</CardTitle>
+                    <CardTitle className="text-2xl">
+                        Explore All Events
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <EventsCarousel carouselNavPosition="top" />
