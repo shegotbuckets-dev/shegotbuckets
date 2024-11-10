@@ -1,6 +1,6 @@
 "use client";
 
-import { ANCHOR_NAV_ITEMS } from "@/public/constants/events";
+import { ANCHORS } from "@/constants/events";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -24,7 +24,7 @@ export default function AnchorNavBar() {
 
             // Find the active section
             let currentSection = "";
-            for (const item of ANCHOR_NAV_ITEMS) {
+            for (const item of ANCHORS) {
                 const element = sectionRefs.current[item.id];
                 if (element) {
                     const { top, bottom } = element.getBoundingClientRect();
@@ -37,8 +37,7 @@ export default function AnchorNavBar() {
 
             // Handle case when scrolled to bottom of page
             if (scrollPosition + windowHeight >= documentHeight - 50) {
-                currentSection =
-                    ANCHOR_NAV_ITEMS[ANCHOR_NAV_ITEMS.length - 1].id;
+                currentSection = ANCHORS[ANCHORS.length - 1].id;
             }
 
             setActiveSection(currentSection);
@@ -48,7 +47,7 @@ export default function AnchorNavBar() {
 
     useEffect(() => {
         // Initialize section refs
-        ANCHOR_NAV_ITEMS.forEach((item) => {
+        ANCHORS.forEach((item) => {
             sectionRefs.current[item.id] = document.getElementById(item.id);
         });
 
@@ -87,7 +86,7 @@ export default function AnchorNavBar() {
             transition={{ duration: 0.5 }}
         >
             <ul className="space-y-2">
-                {ANCHOR_NAV_ITEMS.map((item) => (
+                {ANCHORS.map((item) => (
                     <li key={item.id} title={item.label}>
                         <button
                             onClick={() => scrollToSection(item.id)}

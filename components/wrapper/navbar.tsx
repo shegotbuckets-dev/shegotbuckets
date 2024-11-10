@@ -19,7 +19,9 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
+import { Database } from "@/constants/supabase";
 import { cn } from "@/lib/utils";
+import { useEvents } from "@/utils/hook/useEvents";
 
 import * as React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -29,14 +31,6 @@ import { Dialog, DialogClose } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-const eventComponents: { id: string; title: string; subtitle?: string }[] = [
-    {
-        id: "event1",
-        title: "College Basketball League",
-        subtitle: "Spring 2024 Season",
-    },
-];
-
 const aboutComponents: { id: string; title: string; subtitle?: string }[] = [
     {
         id: "whoweare",
@@ -44,35 +38,58 @@ const aboutComponents: { id: string; title: string; subtitle?: string }[] = [
     },
 ];
 
-const navItems: {
+interface NavItemChild {
+    id: string;
+    title: string;
+    subtitle?: string;
+}
+
+interface NavItem {
     title: string;
     href: string;
-    components?: { id: string; title: string; subtitle?: string }[];
-}[] = [
-    {
-        title: "Home",
-        href: "/",
-    },
-    {
-        title: "About Us",
-        href: "aboutpage",
-        components: aboutComponents,
-    },
-    {
-        title: "Events",
-        href: "eventpage",
-        components: eventComponents,
-    },
-    {
-        title: "Get Involved",
-        href: "/get-involved",
-    },
-];
+    components?: NavItemChild[];
+}
+
+const getNavItems = (eventComponents: NavItemChild[]): NavItem[] => {
+    return [
+        {
+            title: "Home",
+            href: "/",
+        },
+        {
+            title: "About Us",
+            href: "aboutpage",
+            components: aboutComponents,
+        },
+        {
+            title: "Events",
+            href: "eventpage",
+            components: eventComponents,
+        },
+        {
+            title: "Get Involved",
+            href: "/get-involved",
+        },
+    ];
+};
+
+const getEventComponents = (
+    events: Database["public"]["Tables"]["events"]["Row"][]
+): NavItemChild[] => {
+    return events?.map((event) => ({
+        id: event.event_id,
+        title: event.title,
+        subtitle: event.subtitle ?? "",
+    }));
+};
 
 export default function NavBar() {
     const { theme, systemTheme } = useTheme();
     const { userId } = useAuth();
     const [mounted, setMounted] = React.useState(false);
+    const { data: events } = useEvents();
+    const eventComponents = getEventComponents(events);
+    const navItems = getNavItems(eventComponents);
 
     React.useEffect(() => {
         setMounted(true);
@@ -96,7 +113,7 @@ export default function NavBar() {
         >
             {/* Mobile Navigation */}
             <div className="flex justify-between w-full items-center min-[825px]:hidden">
-                <MobileMenu />
+                <MobileMenu navItems={navItems} />
                 <Logos.sgbLogo currentTheme={currentTheme ?? "light"} />
                 <div className="flex items-center gap-2">
                     {userId && <UserProfile />}
@@ -119,7 +136,7 @@ export default function NavBar() {
                             currentTheme={currentTheme ?? "light"}
                             size="large"
                         />
-                        <DesktopMenuItems />
+                        <DesktopMenuItems navItems={navItems} />
                     </NavigationMenuList>
                 </div>
             </NavigationMenu>
@@ -145,7 +162,7 @@ export default function NavBar() {
     );
 }
 
-const MobileMenu = () => (
+const MobileMenu = ({ navItems }: { navItems: NavItem[] }) => (
     <Dialog>
         <SheetTrigger className="transition">
             <Button
@@ -200,7 +217,7 @@ const MobileMenu = () => (
     </Dialog>
 );
 
-const DesktopMenuItems = () => (
+const DesktopMenuItems = ({ navItems }: { navItems: NavItem[] }) => (
     <div className="flex items-center gap-4">
         {navItems.map((item) =>
             item.components ? (

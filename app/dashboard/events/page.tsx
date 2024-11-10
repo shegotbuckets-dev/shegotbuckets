@@ -27,7 +27,7 @@ export default function EventsPage() {
                 <Card className="shadow-lg w-full max-w-6xl">
                     <CardHeader>
                         <CardTitle className="text-2xl">
-                            Upcoming Events
+                            Explore All Events
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
