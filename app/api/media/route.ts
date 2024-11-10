@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const CACHE_MAX_AGE = 86400; // 1 day
 const CACHE_S_MAXAGE = 31536000; // 1 year
+export const revalidate = 86400;
 
 // Utility function to determine content type based on file extension
 function getContentType(extension: string): string {

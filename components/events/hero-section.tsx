@@ -1,6 +1,7 @@
 import { HeartBeatButton } from "@/components/common/heartbeat-button";
 import RegistrationButton from "@/components/common/register-button";
 import { Database } from "@/constants/supabase";
+import { getMediaSrcFromVercelBlob } from "@/utils/helpers";
 
 import { Calendar, MapPin, Users } from "lucide-react";
 import Image from "next/image";
@@ -19,7 +20,7 @@ export default function HeroSectionEvent({
         >
             <div className="absolute inset-0">
                 <Image
-                    src={image ?? ""}
+                    src={getMediaSrcFromVercelBlob(image ?? "")}
                     alt="Event background"
                     fill
                     className="object-cover"
