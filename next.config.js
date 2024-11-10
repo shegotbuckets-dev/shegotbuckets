@@ -17,7 +17,7 @@ const nextConfig = {
             },
             {
                 protocol: "https",
-                hostname: "mp.weixin.qq.com",
+                hostname: "whs60noh8nnjcx2i.public.blob.vercel-storage.com",
                 port: "",
                 pathname: "/**",
             },

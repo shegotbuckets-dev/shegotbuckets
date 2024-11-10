@@ -3,6 +3,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { getVercelBlobUrl } from "@/utils/helpers";
 
 import { Instagram, Mail, Youtube } from "lucide-react";
 import Image from "next/image";
@@ -30,7 +31,9 @@ const SOCIAL_LINKS = [
         ),
         label: "WeChat 公众号",
         type: "popover" as const,
-        qrCode: "https://mp.weixin.qq.com/mp/qrcode?scene=10000005&size=102&__biz=Mzg4ODgxNzcwMg==&mid=2247484703&idx=1&sn=2a0e7cd9883282d50127bb088493580c&send_time=",
+        qrCode: getVercelBlobUrl(
+            "home/wechatQR-DyZU5xHTAlwvBfo4VrXQ99ggwNtyCy.png"
+        ),
     },
     {
         icon: (
@@ -106,7 +109,7 @@ const SocialLink = ({ link }: SocialLinkProps) => {
                                 是一个由热爱篮球的女生们创建的为女生创造的篮球社区。我们的目标是为热爱篮球的中国女生，提供一个更好的比赛，交流和成长的平台。
                             </p>
                             <p className="text-sm text-muted-foreground">
-                                44篇原创内容
+                                40+篇原创内容
                             </p>
                         </div>
                     </div>
@@ -155,11 +158,11 @@ export default function Footer() {
                         </p>
                         <div className="text-sm">
                             <Link
-                                href="mailto:shegotbuckets@hotmail.com"
+                                href="mailto:info@shegotbuckets.org"
                                 className="text-muted-foreground transition hover:text-foreground flex items-center gap-2"
                             >
                                 <Mail className="h-5 w-5" />
-                                <span>shegotbuckets@hotmail.com</span>
+                                <span>info@shegotbuckets.org</span>
                             </Link>
                         </div>
                     </div>

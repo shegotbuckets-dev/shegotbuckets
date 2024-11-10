@@ -1,30 +1,31 @@
 import { HeartBeatButton } from "@/components/common/heartbeat-button";
 import { Button } from "@/components/ui/button";
+import { getVercelBlobUrl } from "@/utils/helpers";
 
 import { Suspense } from "react";
 
 import { ArrowRight } from "lucide-react";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 
-const YouTubeVideo = dynamic(() => loadYouTubeVideo(), {
-    ssr: false,
-});
-
-const loadYouTubeVideo = async () => {
-    const VideoComponent = () => (
-        <iframe
-            src="https://www.youtube.com/embed/fzOtrEZ9Nsk?autoplay=1&controls=0&mute=1&loop=1&playlist=fzOtrEZ9Nsk&enablejsapi=1"
-            allow="autoplay; encrypted-media"
-            frameBorder="0"
-            className="absolute top-1/2 left-1/2 h-[56.25vw] min-h-full min-w-full w-[177.77777778vh] -translate-x-1/2 -translate-y-1/2"
-            style={{ border: "none" }}
-            title="Background video"
-        />
+function BackgroundVideo() {
+    return (
+        <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute top-1/2 left-1/2 h-[56.25vw] min-h-full min-w-full w-[177.77777778vh] -translate-x-1/2 -translate-y-1/2 object-cover"
+        >
+            <source
+                src={getVercelBlobUrl(
+                    "home/SGBTrailer-yexozbQXf3PHdB6cSLo3JwoWo0MCBC.mp4"
+                )}
+                type="video/mp4"
+            />
+        </video>
     );
-    return VideoComponent;
-};
+}
 
 function VideoPlaceholder() {
     return (
@@ -44,10 +45,10 @@ export default function HeroSection() {
             className="relative h-[90vh] w-full overflow-hidden flex items-center"
             aria-label="She Got Buckets Hero"
         >
-            {/* YouTube Video Background */}
+            {/* Video Background */}
             <div className="absolute inset-0 h-full">
                 <Suspense fallback={<VideoPlaceholder />}>
-                    <YouTubeVideo />
+                    <BackgroundVideo />
                 </Suspense>
             </div>
             {/* Overlay */}

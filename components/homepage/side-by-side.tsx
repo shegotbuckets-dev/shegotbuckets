@@ -1,3 +1,5 @@
+import { getVercelBlobUrl } from "@/utils/helpers";
+
 import Image from "next/image";
 
 export default function SideBySide() {
@@ -49,7 +51,9 @@ export default function SideBySide() {
                     {/* Image container - Add order-1 for mobile, order-2 for md+ */}
                     <div className="relative h-[400px] md:h-full order-1 md:order-2">
                         <Image
-                            src="/images/sgb-together.png"
+                            src={getVercelBlobUrl(
+                                "home/SGBSidebySide-WC7u3aNIUVCmTj1hDWtJYymTE8QsDz.png"
+                            )}
                             alt="Asian women playing basketball"
                             fill
                             className="object-cover rounded-lg" // Added rounded corners

@@ -6,6 +6,10 @@ import LeagueInfor from "@/components/events/league-infor";
 import Registration from "@/components/events/registration";
 import { BASKETBALL_EVENTS } from "@/public/constants/events";
 
+export const metadata = {
+    title: "Events",
+};
+
 export default async function EventPage({
     params,
 }: {

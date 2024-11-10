@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
     Carousel,
     CarouselContent,
@@ -17,11 +16,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/motion-dialog";
+import { BASKETBALL_EVENTS } from "@/public/constants/events";
 
 import React from "react";
 
 import { PlusIcon } from "lucide-react";
-import Link from "next/link";
 
 // Mock data for upcoming events
 interface Event {
@@ -31,56 +30,6 @@ interface Event {
     image: string;
     description: string;
 }
-const events: { [key: string]: Event } = {
-    event1: {
-        id: "event1",
-        title: "College Basketball League",
-        subtitle: "Spring 2024 Season",
-        image: "/images/sgb-homevideo-placeholder.png",
-        description: `Join our competitive college basketball league starting this spring. 
-        Teams will compete in a round-robin format followed by playoffs. 
-        Perfect for college students looking to play organized basketball.`,
-        date: "Starts March 15, 2024",
-        location: "Main Campus Arena",
-        price: "$250 per team",
-    },
-    event2: {
-        id: "event2",
-        title: "Summer Skills Camp",
-        subtitle: "Elite Training Program",
-        image: "/images/league.png",
-        description: `Intensive basketball skills development camp led by professional coaches. 
-        Focus on fundamentals, advanced techniques, and game strategy. 
-        Limited spots available for serious players looking to improve their game.`,
-        date: "July 10-24, 2024",
-        location: "SGB Training Facility",
-        price: "$450 per player",
-    },
-    event3: {
-        id: "event3",
-        title: "National Tournament",
-        subtitle: "Championship Series",
-        image: "/images/sgb-homevideo-placeholder.png",
-        description: `Annual national tournament bringing together top teams from across the country. 
-        Compete against the best talent and showcase your skills. 
-        Tournament includes division brackets for different skill levels.`,
-        date: "August 15-20, 2024",
-        location: "National Sports Complex",
-        price: "$600 per team",
-    },
-    event4: {
-        id: "event4",
-        title: "National Tournament",
-        subtitle: "Championship Series",
-        image: "/images/league.png",
-        description: `Annual national tournament bringing together top teams from across the country. 
-        Compete against the best talent and showcase your skills. 
-        Tournament includes division brackets for different skill levels.`,
-        date: "August 15-20, 2024",
-        location: "National Sports Complex",
-        price: "$600 per team",
-    },
-};
 
 // Add this interface near the top of the file, after the imports
 interface Event {
@@ -238,7 +187,7 @@ export default function EventsCarousel({
         <div className="relative w-full px-4">
             <Carousel>
                 <CarouselContent className="-ml-4">
-                    {Object.values(events).map((event: Event) => (
+                    {Object.values(BASKETBALL_EVENTS).map((event: Event) => (
                         <CarouselItem
                             key={event.id}
                             className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"

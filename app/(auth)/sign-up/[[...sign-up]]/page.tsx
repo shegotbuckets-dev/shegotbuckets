@@ -15,7 +15,7 @@ export default function SignUpPage() {
 
     return (
         <PageWrapper>
-            <div className="flex min-w-screen justify-center my-[5rem]">
+            <div className="flex min-w-screen justify-center my-28">
                 <SignUp />
             </div>
         </PageWrapper>
