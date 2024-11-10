@@ -1,4 +1,4 @@
-import { getVercelBlobUrl } from "@/utils/helpers";
+import { getMediaSrcFromVercelBlob } from "@/utils/helpers";
 
 import Image from "next/image";
 
@@ -51,7 +51,7 @@ export default function SideBySide() {
                     {/* Image container - Add order-1 for mobile, order-2 for md+ */}
                     <div className="relative h-[400px] md:h-full order-1 md:order-2">
                         <Image
-                            src={getVercelBlobUrl(
+                            src={getMediaSrcFromVercelBlob(
                                 "home/SGBSidebySide-WC7u3aNIUVCmTj1hDWtJYymTE8QsDz.png"
                             )}
                             alt="Asian women playing basketball"
