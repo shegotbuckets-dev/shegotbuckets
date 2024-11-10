@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button";
+import { HeartBeatButton } from "@/components/common/heartbeat-button";
+import RegistrationButton from "@/components/common/register-button";
+import TeamMarquee from "@/components/common/team-marquee";
 import { SUPABASE_STORAGE } from "@/public/constants/events";
 
-import { Calendar, ChevronRight, MapPin, Users } from "lucide-react";
+import { Calendar, MapPin, Users } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function HeroSectionEvent(props: any) {
     const { image, title, subtitle, date, location } = props.eventData;
@@ -25,7 +26,7 @@ export default function HeroSectionEvent(props: any) {
                         className="object-cover mix-blend-overlay opacity-20"
                     />
                 </div>
-                <div className="relative container mx-auto px-4 py-24 sm:py-32">
+                <div className="relative py-24 sm:py-32 px-4 sm:px-6 lg:px-24 w-full md:w-1/2">
                     <div className="max-w-3xl">
                         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-6 leading-tight">
                             {title}
@@ -47,15 +48,15 @@ export default function HeroSectionEvent(props: any) {
                                 <span>32 Teams</span>
                             </div>
                         </div>
-                        <Button size="lg" asChild className="group">
-                            <Link href="#register">
-                                Register Now
-                                <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                            </Link>
-                        </Button>
+                        <RegistrationButton>
+                            <HeartBeatButton>Register Now</HeartBeatButton>
+                        </RegistrationButton>
                     </div>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent"></div>
+            </section>
+            <section className="flex w-full justify-center items-center bg-black/80">
+                <TeamMarquee />
             </section>
         </>
     );

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { SUPABASE_STORAGE } from "@/public/constants/events";
 
 import Image from "next/image";

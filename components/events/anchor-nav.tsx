@@ -88,7 +88,7 @@ export default function AnchorNavBar() {
         >
             <ul className="space-y-2">
                 {ANCHOR_NAV_ITEMS.map((item) => (
-                    <li key={item.id}>
+                    <li key={item.id} title={item.label}>
                         <button
                             onClick={() => scrollToSection(item.id)}
                             className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${

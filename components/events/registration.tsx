@@ -1,6 +1,5 @@
+import RegistrationButton from "@/components/common/register-button";
 import { Button } from "@/components/ui/button";
-
-import Link from "next/link";
 
 export default function Registration() {
     return (
@@ -13,9 +12,10 @@ export default function Registration() {
                     Secure your spot in the College League 2024. Limited spaces
                     available!
                 </p>
-                <Link href="/dashboard">
+
+                <RegistrationButton>
                     <Button size="lg">Register Now</Button>
-                </Link>
+                </RegistrationButton>
             </div>
         </section>
     );
