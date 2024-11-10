@@ -3,7 +3,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { getVercelBlobUrl } from "@/utils/helpers";
+import { getMediaSrcFromVercelBlob } from "@/utils/helpers";
 
 import { Instagram, Mail, Youtube } from "lucide-react";
 import Image from "next/image";
@@ -31,7 +31,7 @@ const SOCIAL_LINKS = [
         ),
         label: "WeChat 公众号",
         type: "popover" as const,
-        qrCode: getVercelBlobUrl(
+        qrCode: getMediaSrcFromVercelBlob(
             "home/wechatQR-DyZU5xHTAlwvBfo4VrXQ99ggwNtyCy.png"
         ),
     },
