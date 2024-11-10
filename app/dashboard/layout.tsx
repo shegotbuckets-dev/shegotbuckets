@@ -12,9 +12,7 @@ export default async function DashboardLayout({
         <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
             <DashboardSideBar />
             <DashboardTopNav>
-                <main className="flex flex-col gap-4 p-4 lg:gap-6">
-                    {children}
-                </main>
+                <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
             </DashboardTopNav>
         </div>
     );
