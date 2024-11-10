@@ -76,15 +76,15 @@ function EventDialog({
                     style={{
                         borderRadius: "24px",
                     }}
-                    className="pointer-events-auto relative flex h-auto w-full flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 sm:w-[500px]"
+                    className="pointer-events-auto relative flex h-auto w-[95%] sm:w-[90%] max-w-[400px] sm:max-w-[500px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 mx-auto"
                 >
                     <DialogImage
                         src={event.image ?? ""}
                         alt={event.title}
-                        className="h-64 w-full object-cover"
+                        className="h-48 sm:h-64 w-full object-cover"
                     />
-                    <div className="p-8">
-                        <DialogTitle className="text-2xl text-zinc-950 dark:text-zinc-50">
+                    <div className="p-4 sm:p-8">
+                        <DialogTitle className="text-xl sm:text-2xl text-zinc-950 dark:text-zinc-50">
                             {event.title}
                         </DialogTitle>
                         <DialogSubtitle className="text-zinc-700 dark:text-zinc-400">
@@ -112,16 +112,18 @@ function EventDialog({
                                     <strong>Price:</strong> {event.price}
                                 </p>
                             </div>
-                            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+                            <div className="flex flex-row gap-4 mt-4">
                                 <RegistrationButton>
                                     <Button>Register Now</Button>
                                 </RegistrationButton>
-                                <DialogButton
-                                    href={`/eventpage/${event.event_id}`}
-                                    buttonText="Event Details"
-                                    buttonVariant="outline"
-                                    buttonClassName="w-full border-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                                />
+                                <div className="sm:w-[140px]">
+                                    <DialogButton
+                                        href={`/eventpage/${event.event_id}`}
+                                        buttonText="Event Details"
+                                        buttonVariant="outline"
+                                        buttonClassName="w-full border-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                                    />
+                                </div>
                             </div>
                         </DialogDescription>
                     </div>
@@ -138,6 +140,14 @@ function CarouselNavigationComponent({
     carouselNavPosition: "default" | "bottom" | "top";
 }) {
     switch (carouselNavPosition) {
+        case "default":
+            return (
+                <CarouselNavigation
+                    className="absolute -left-4 sm:-left-8 md:-left-12 top-1/2 flex w-[calc(100%+2rem)] sm:w-[calc(100%+4rem)] md:w-[calc(100%+6rem)] -translate-y-1/2 justify-between"
+                    classNameButton="bg-zinc-800 *:stroke-zinc-50 dark:bg-zinc-200 dark:*:stroke-zinc-800 z-10"
+                    alwaysShow
+                />
+            );
         case "bottom":
             return (
                 <CarouselNavigation
@@ -150,14 +160,6 @@ function CarouselNavigationComponent({
             return (
                 <CarouselNavigation
                     className="absolute -top-10 left-auto bottom-auto w-full justify-end gap-2"
-                    classNameButton="bg-zinc-800 *:stroke-zinc-50 dark:bg-zinc-200 dark:*:stroke-zinc-800"
-                    alwaysShow
-                />
-            );
-        case "default":
-            return (
-                <CarouselNavigation
-                    className="absolute -left-[12%] top-1/2 flex w-[120%] -translate-y-1/2 justify-between px-2"
                     classNameButton="bg-zinc-800 *:stroke-zinc-50 dark:bg-zinc-200 dark:*:stroke-zinc-800"
                     alwaysShow
                 />
@@ -178,8 +180,8 @@ export default async function EventsCarousel({
     }
 
     return (
-        <div className="relative w-full px-4">
-            <Carousel>
+        <div className="relative w-full px-4 sm:px-8 md:px-12">
+            <Carousel className="overflow-visible">
                 <CarouselContent className="-ml-4">
                     {events.map((event) => (
                         <CarouselItem
