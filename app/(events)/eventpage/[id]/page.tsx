@@ -29,10 +29,10 @@ export default async function EventPage({
             <HeroSectionEvent eventData={eventData} />
             {/* About Infor Section */}
             <AboutInforEvent eventData={eventData} />
-            {/* Hall of Record */}
-            <HallOfRecord />
             {/* League Information */}
             <LeagueInfor />
+            {/* Hall of Record */}
+            <HallOfRecord />
             {/* Registration Section */}
             <Registration />
             {/* Anchor Navbar */}
