@@ -3,18 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+    RULE_BOOK_DATA_CHINESE,
+    RULE_BOOK_DATA_ENGLISH,
+} from "@/public/constants/events";
 
 import { useState } from "react";
 
 import { motion } from "framer-motion";
 import { Award, BookOpen, ChevronRight, Flag, Trophy } from "lucide-react";
-import Image from "next/image";
 
-export default function LeagueInfor(props: any) {
+export default function LeagueInfor() {
     return (
         <div className="pt-16">
             {/*League Info Section */}
-            <section className="py-16 bg-muted">
+            <section className="py-16 bg-gray-200/25">
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold mb-8 text-center">
                         League Info
@@ -79,12 +82,7 @@ export const RuleBook = () => {
                         <Card className="cursor-pointer transition-all hover:shadow-xl border border-primary/20 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
                             <CardContent className="flex items-center justify-between p-6">
                                 <div className="flex items-center">
-                                    <motion.div
-                                        animate={{
-                                            rotate: isHovered ? 360 : 0,
-                                        }}
-                                        transition={{ duration: 0.5 }}
-                                    >
+                                    <motion.div>
                                         <BookOpen className="w-16 h-16 text-primary mr-6" />
                                     </motion.div>
                                     <div>
@@ -116,7 +114,7 @@ export const RuleBook = () => {
                         </Card>
                     </motion.div>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[900px]">
+                <DialogContent className="sm:max-w-[900px] max-h-[90%] overflow-auto">
                     <div className="relative">
                         <div className="absolute top-4 right-4 z-10">
                             <Button
@@ -136,27 +134,52 @@ export const RuleBook = () => {
                             transition={{ duration: 0.5 }}
                             className="mt-2"
                         >
-                            {language === "en" ? (
-                                <Image
-                                    src="/images/rule.png"
-                                    alt="Tournament Rules in English"
-                                    width={800}
-                                    height={1000}
-                                    className="w-full rounded-lg shadow-lg"
-                                />
-                            ) : (
-                                <Image
-                                    src="/images/ruleChinese.png"
-                                    alt="Tournament Rules in Chinese"
-                                    width={800}
-                                    height={1000}
-                                    className="w-full rounded-lg shadow-lg"
-                                />
-                            )}
+                            <RuleInfo language={language} />
                         </motion.div>
                     </div>
                 </DialogContent>
             </Dialog>
+        </div>
+    );
+};
+
+export const RuleInfo = (props: { language: "en" | "zh" }) => {
+    const ruleBooKdata =
+        props.language === "en"
+            ? RULE_BOOK_DATA_ENGLISH
+            : RULE_BOOK_DATA_CHINESE;
+
+    return (
+        <div>
+            <div className="max-w-4xl mx-auto p-6 space-y-8">
+                <h1 className="text-2xl font-bold">{ruleBooKdata.title}</h1>
+
+                <div className="prose prose-blue max-w-none space-y-6">
+                    <p>
+                        <span className="font-medium text-orange-500">
+                            {ruleBooKdata.introduction}
+                        </span>
+                    </p>
+
+                    <div className="border-2"></div>
+
+                    {ruleBooKdata.sections.map((section, index) => (
+                        <div key={index}>
+                            <h2 className="text-xl font-bold mt-8 mb-4 text-center">
+                                {section.title}
+                            </h2>
+                            <p className="mb-4">{section.description}</p>
+                            <ul className="list-disc pl-6 space-y-4">
+                                {section.content.map((paragraph, pIndex) => (
+                                    <li key={pIndex} className="mb-4">
+                                        {paragraph}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };

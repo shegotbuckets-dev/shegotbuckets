@@ -1,3 +1,5 @@
+import RegistrationButton from "@/components/common/register-button";
+import { Button } from "@/components/ui/button";
 import {
     Carousel,
     CarouselContent,
@@ -16,34 +18,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/motion-dialog";
-import { BASKETBALL_EVENTS } from "@/public/constants/events";
+import { BASKETBALL_EVENTS, BasketballEvent } from "@/public/constants/events";
 
 import React from "react";
 
 import { PlusIcon } from "lucide-react";
 
-// Mock data for upcoming events
-interface Event {
-    id: string;
-    title: string;
-    subtitle: string;
-    image: string;
-    description: string;
-}
-
-// Add this interface near the top of the file, after the imports
-interface Event {
-    id: string;
-    title: string;
-    subtitle: string;
-    image: string;
-    description: string;
-    date: string;
-    location: string;
-    price: string;
-}
-
-function EventDialog({ event }: { event: Event }) {
+function EventDialog({ event }: { event: BasketballEvent }) {
     return (
         <Dialog
             transition={{
@@ -123,10 +104,9 @@ function EventDialog({ event }: { event: Event }) {
                                 </p>
                             </div>
                             <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                                <DialogButton
-                                    href="/about"
-                                    buttonText="Register Now"
-                                />
+                                <RegistrationButton>
+                                    <Button>Register Now</Button>
+                                </RegistrationButton>
                                 <DialogButton
                                     href={`/eventpage/${event.id}`}
                                     buttonText="Event Details"
@@ -187,14 +167,16 @@ export default function EventsCarousel({
         <div className="relative w-full px-4">
             <Carousel>
                 <CarouselContent className="-ml-4">
-                    {Object.values(BASKETBALL_EVENTS).map((event: Event) => (
-                        <CarouselItem
-                            key={event.id}
-                            className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-                        >
-                            <EventDialog event={event} />
-                        </CarouselItem>
-                    ))}
+                    {Object.values(BASKETBALL_EVENTS).map(
+                        (event: BasketballEvent) => (
+                            <CarouselItem
+                                key={event.id}
+                                className="pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                            >
+                                <EventDialog event={event} />
+                            </CarouselItem>
+                        )
+                    )}
                 </CarouselContent>
                 <CarouselNavigationComponent
                     carouselNavPosition={carouselNavPosition}

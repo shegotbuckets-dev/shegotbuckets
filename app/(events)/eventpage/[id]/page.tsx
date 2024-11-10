@@ -27,11 +27,12 @@ export default async function EventPage({
         <div className="min-h-screen bg-background text-foreground pt-20">
             {/* Hero Section */}
             <HeroSectionEvent eventData={eventData} />
-            {/* Hall of Record */}
-            <HallOfRecord />
             {/* About Infor Section */}
             <AboutInforEvent eventData={eventData} />
-            <LeagueInfor eventData={eventData} />
+            {/* Hall of Record */}
+            <HallOfRecord />
+            {/* League Information */}
+            <LeagueInfor />
             {/* Registration Section */}
             <Registration />
             {/* Anchor Navbar */}

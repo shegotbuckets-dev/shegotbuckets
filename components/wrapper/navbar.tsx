@@ -29,28 +29,25 @@ import { Dialog, DialogClose } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-const components: { id: string; title: string; subtitle: string }[] = [
+const eventComponents: { id: string; title: string; subtitle?: string }[] = [
     {
         id: "event1",
         title: "College Basketball League",
         subtitle: "Spring 2024 Season",
     },
+];
+
+const aboutComponents: { id: string; title: string; subtitle?: string }[] = [
     {
-        id: "event2",
-        title: "Summer Skills Camp",
-        subtitle: "Spring 2024 Season",
-    },
-    {
-        id: "event2",
-        title: "National Tournament",
-        subtitle: "Championship Series",
+        id: "whoweare",
+        title: "Who We Are",
     },
 ];
 
 const navItems: {
     title: string;
     href: string;
-    components?: { id: string; title: string; subtitle: string }[];
+    components?: { id: string; title: string; subtitle?: string }[];
 }[] = [
     {
         title: "Home",
@@ -58,12 +55,13 @@ const navItems: {
     },
     {
         title: "About Us",
-        href: "/about",
+        href: "aboutpage",
+        components: aboutComponents,
     },
     {
         title: "Events",
-        href: "/",
-        components: components,
+        href: "eventpage",
+        components: eventComponents,
     },
     {
         title: "Get Involved",
@@ -176,7 +174,7 @@ const MobileMenu = () => (
                                     {item.components.map((component) => (
                                         <DialogClose key={component.id} asChild>
                                             <Link
-                                                href={`/eventpage/${component.id}`}
+                                                href={`/${item.href}/${component.id}`}
                                                 className="px-4 py-1 hover:underline"
                                             >
                                                 {component.title}
@@ -219,7 +217,7 @@ const DesktopMenuItems = () => (
                                 <ListItem
                                     key={component.title}
                                     title={component.title}
-                                    href={`/eventpage/${component.id}`}
+                                    href={`/${item.href}/${component.id}`}
                                 >
                                     {component.subtitle}
                                 </ListItem>

@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 
+import { Fragment } from "react";
+
 import Link from "next/link";
 
 interface HeartBeatButtonProps {
@@ -11,8 +13,8 @@ interface HeartBeatButtonProps {
 
 export function HeartBeatButton({
     className = "",
-    href = "/dashboard",
-    children = "Become an Athlete",
+    href = "",
+    children = "",
     variant = "default",
 }: HeartBeatButtonProps) {
     const sizeClasses =
@@ -28,24 +30,32 @@ export function HeartBeatButton({
         px-6
     `;
 
+    const ButtonElement = (
+        <Button
+            className={`
+        animate-buttonheartbeat 
+        rounded-md 
+        bg-orange-600 
+        hover:bg-orange-500 
+        font-semibold 
+        text-white 
+        w-full 
+        min-[825px]:w-auto
+        ${sizeClasses}
+        ${className}
+    `}
+        >
+            {children}
+        </Button>
+    );
+
     return (
-        <Link href={href}>
-            <Button
-                className={`
-                    animate-buttonheartbeat 
-                    rounded-md 
-                    bg-orange-600 
-                    hover:bg-orange-500 
-                    font-semibold 
-                    text-white 
-                    w-full 
-                    min-[825px]:w-auto
-                    ${sizeClasses}
-                    ${className}
-                `}
-            >
-                {children}
-            </Button>
-        </Link>
+        <Fragment>
+            {href ? (
+                <Link href={href}>{ButtonElement}</Link>
+            ) : (
+                <>{ButtonElement}</>
+            )}
+        </Fragment>
     );
 }
