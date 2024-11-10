@@ -11,20 +11,24 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    metadataBase: new URL("https://starter.rasmic.xyz"),
+    metadataBase: new URL("https://shegotbuckets.vercel.app"),
     title: {
         default: "She Got Buckets",
         template: `%s | She Got Buckets`,
     },
     description:
         "She Got Buckets is a non-profit organization that empowers women to achieve financial independence through education and support.",
+    icons: {
+        icon: [{ url: "/favicon.ico", sizes: "any", type: "image/ico" }],
+        shortcut: "/favicon.ico",
+    },
     openGraph: {
         description:
             "She Got Buckets is a non-profit organization that empowers women to achieve financial independence through education and support.",
         images: [
-            "https://utfs.io/f/8a428f85-ae83-4ca7-9237-6f8b65411293-eun6ii.png",
+            "https://whs60noh8nnjcx2i.public.blob.vercel-storage.com/home/SGBThumbnail-GbIIFnsAYBDttUhaKcleI5TDlWPyyO.jpg",
         ],
-        url: "https://starter.rasmic.xyz/",
+        url: "https://shegotbuckets.vercel.app/",
     },
     twitter: {
         card: "summary_large_image",
@@ -35,7 +39,7 @@ export const metadata: Metadata = {
         creator: "@ltldev",
         creatorId: "",
         images: [
-            "https://utfs.io/f/8a428f85-ae83-4ca7-9237-6f8b65411293-eun6ii.png",
+            "https://whs60noh8nnjcx2i.public.blob.vercel-storage.com/home/SGBThumbnail-GbIIFnsAYBDttUhaKcleI5TDlWPyyO.jpg",
         ],
     },
 };
@@ -48,18 +52,6 @@ export default function RootLayout({
     return (
         <AuthWrapper>
             <html lang="en" suppressHydrationWarning>
-                <head>
-                    <link
-                        rel="preload"
-                        href="https://utfs.io/f/31dba2ff-6c3b-4927-99cd-b928eaa54d5f-5w20ij.png"
-                        as="image"
-                    />
-                    <link
-                        rel="preload"
-                        href="https://utfs.io/f/69a12ab1-4d57-4913-90f9-38c6aca6c373-1txg2.png"
-                        as="image"
-                    />
-                </head>
                 <body className={GeistSans.className}>
                     <Provider>
                         <ThemeProvider
