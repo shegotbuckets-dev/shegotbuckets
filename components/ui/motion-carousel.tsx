@@ -120,14 +120,63 @@ type CarouselNavigationProps = {
     className?: string;
     classNameButton?: string;
     alwaysShow?: boolean;
+    maxSlides?: {
+        lg: number;
+        md: number;
+        sm: number;
+        default: number;
+    };
+    rightChevronEnabled?: {
+        lg: boolean;
+        md: boolean;
+        sm: boolean;
+        default: boolean;
+    };
 };
 
 function CarouselNavigation({
     className,
     classNameButton,
     alwaysShow,
+    maxSlides,
+    rightChevronEnabled,
 }: CarouselNavigationProps) {
     const { index, setIndex, itemsCount } = useCarousel();
+    const [currentMaxSlides, setCurrentMaxSlides] = useState(
+        maxSlides?.default ?? itemsCount - 1
+    );
+    const [isRightChevronEnabled, setIsRightChevronEnabled] = useState(
+        rightChevronEnabled?.default ?? true
+    );
+
+    // Update max slides and navigation state based on screen size
+    useEffect(() => {
+        if (!maxSlides || !rightChevronEnabled) return;
+
+        const updateBreakpoints = () => {
+            const width = window.innerWidth;
+            if (width >= 1024) {
+                setCurrentMaxSlides(maxSlides.lg);
+                setIsRightChevronEnabled(rightChevronEnabled.lg);
+            } else if (width >= 768) {
+                setCurrentMaxSlides(maxSlides.md);
+                setIsRightChevronEnabled(rightChevronEnabled.md);
+            } else if (width >= 640) {
+                setCurrentMaxSlides(maxSlides.sm);
+                setIsRightChevronEnabled(rightChevronEnabled.sm);
+            } else {
+                setCurrentMaxSlides(maxSlides.default);
+                setIsRightChevronEnabled(rightChevronEnabled.default);
+            }
+        };
+
+        updateBreakpoints();
+        window.addEventListener("resize", updateBreakpoints);
+        return () => window.removeEventListener("resize", updateBreakpoints);
+    }, [maxSlides, rightChevronEnabled]);
+
+    const isRightDisabled = !isRightChevronEnabled || index >= currentMaxSlides;
+    const isLeftDisabled = index === 0;
 
     return (
         <div
@@ -143,14 +192,11 @@ function CarouselNavigation({
                     alwaysShow
                         ? "opacity-100"
                         : "opacity-0 group-hover/hover:opacity-100",
-                    alwaysShow
-                        ? "disabled:opacity-40"
-                        : "disabled:group-hover/hover:opacity-40",
+                    isLeftDisabled && "cursor-not-allowed opacity-40",
                     classNameButton
                 )}
-                disabled={index === 0}
                 onClick={() => {
-                    if (index > 0) {
+                    if (!isLeftDisabled) {
                         setIndex(index - 1);
                     }
                 }}
@@ -167,14 +213,11 @@ function CarouselNavigation({
                     alwaysShow
                         ? "opacity-100"
                         : "opacity-0 group-hover/hover:opacity-100",
-                    alwaysShow
-                        ? "disabled:opacity-40"
-                        : "disabled:group-hover/hover:opacity-40",
+                    isRightDisabled && "cursor-not-allowed opacity-40",
                     classNameButton
                 )}
-                disabled={index + 1 === itemsCount}
                 onClick={() => {
-                    if (index < itemsCount - 1) {
+                    if (!isRightDisabled) {
                         setIndex(index + 1);
                     }
                 }}

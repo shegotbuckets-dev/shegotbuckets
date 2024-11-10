@@ -65,12 +65,12 @@ export default function HeroSection() {
                     Empowering Asian women through basketball by fostering
                     unity, inclusion, and opportunity on and off the court.
                 </p>
-                <div className="flex flex-col sm:flex-row items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm sm:max-w-none mx-auto">
                     <HeartBeatButton>Become an Athlete</HeartBeatButton>
-                    <Link href="/dashboard">
+                    <Link href="/dashboard" className="w-full">
                         <Button
                             variant="expandIcon"
-                            className="flex gap-1 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 text-base py-3 px-6 border border-input bg-background hover:bg-accent hover:text-accent-foreground w-full sm:w-auto"
+                            className="flex gap-1 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 text-base py-3 px-6 border border-input bg-background hover:bg-accent hover:text-accent-foreground w-full sm:w-auto h-[48px]"
                             Icon={() => (
                                 <ArrowRight
                                     className="w-4 h-4"
