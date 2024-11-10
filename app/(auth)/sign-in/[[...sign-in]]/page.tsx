@@ -15,7 +15,7 @@ export default function SignInPage() {
 
     return (
         <PageWrapper>
-            <div className="flex min-w-screen justify-center my-[5rem]">
+            <div className="flex min-w-screen justify-center my-28">
                 <SignIn />
             </div>
         </PageWrapper>
