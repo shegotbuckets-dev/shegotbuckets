@@ -1,73 +1,51 @@
-generator client {
-  provider = "prisma-client-js"
-}
+// schema.prisma
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  directUrl = env("DIRECT_URL") // Add this line
 }
 
-model user {
-  id                Int      @id @default(autoincrement())
-  created_time      DateTime @default(now())
-  email             String   @unique
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  user_id           String    @id // Primary key, set as string since it's from Clerk
+  created_at        DateTime  @default(now()) @db.Timestamptz
+  email             String    @unique
   first_name        String?
   last_name         String?
-  gender            String?
   profile_image_url String?
-  user_id           String   @unique
-  subscription      String?
+
+  events UserEvent[] // Relation to UserEvent table
+
+  @@map("users") // Maps to the users table in the database
 }
 
-model payments {
-  id               Int      @id @default(autoincrement())
-  created_time     DateTime @default(now())
-  stripe_id        String
-  email            String
-  amount           String
-  payment_time     String
-  payment_date     String
-  currency         String
-  user_id          String
-  customer_details String
-  payment_intent   String
+model Event {
+  event_id    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  subtitle    String?
+  image       String?
+  description String?
+  date        String?
+  location    String?
+  price       String?
+
+  users UserEvent[] // Relation to UserEvent table
+
+  @@map("events") // Maps to the events table in the database
 }
 
-model subscriptions {
-  id                        Int      @id @default(autoincrement())
-  created_time              DateTime @default(now())
-  subscription_id           String
-  stripe_user_id            String
-  status                    String
-  start_date                String
-  end_date                  String?
-  plan_id                   String
-  default_payment_method_id String?
-  email                     String
-  user_id                   String
-}
+model UserEvent {
+  user_id    String   // Foreign key referencing users.user_id
+  event_id   String   @db.Uuid // Foreign key referencing events.event_id
+  joined_at  DateTime @default(now()) @db.Timestamptz
 
-model subscriptions_plans {
-  id           Int      @id @default(autoincrement())
-  created_time DateTime @default(now())
-  plan_id      String
-  name         String
-  description  String
-  amount       String
-  currency     String
-  interval     String
-}
+  user  User  @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  event Event @relation(fields: [event_id], references: [event_id], onDelete: Cascade)
 
-model invoices {
-  id              Int      @id @default(autoincrement())
-  created_time    DateTime @default(now())
-  invoice_id      String
-  subscription_id String
-  amount_paid     String
-  amount_due      String?
-  currency        String
-  status          String
-  email           String
-  user_id         String?
+  @@id([user_id, event_id]) // Composite primary key for user_id and event_id
+  @@map("user_events") // Maps to the user_events table in the database
 }
