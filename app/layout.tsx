@@ -2,6 +2,7 @@ import Provider from "@/app/provider";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import AuthWrapper from "@/components/wrapper/auth-wrapper";
+import { getVercelBlobUrl } from "@/utils/helpers";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -26,7 +27,9 @@ export const metadata: Metadata = {
         description:
             "She Got Buckets is a non-profit organization that empowers women to achieve financial independence through education and support.",
         images: [
-            "https://whs60noh8nnjcx2i.public.blob.vercel-storage.com/home/SGBThumbnail-GbIIFnsAYBDttUhaKcleI5TDlWPyyO.jpg",
+            getVercelBlobUrl(
+                "home/SGBThumbnail-GbIIFnsAYBDttUhaKcleI5TDlWPyyO.jpg"
+            ),
         ],
         url: "https://shegotbuckets.vercel.app/",
     },
@@ -39,7 +42,9 @@ export const metadata: Metadata = {
         creator: "@ltldev",
         creatorId: "",
         images: [
-            "https://whs60noh8nnjcx2i.public.blob.vercel-storage.com/home/SGBThumbnail-GbIIFnsAYBDttUhaKcleI5TDlWPyyO.jpg",
+            getVercelBlobUrl(
+                "home/SGBThumbnail-GbIIFnsAYBDttUhaKcleI5TDlWPyyO.jpg"
+            ),
         ],
     },
 };
