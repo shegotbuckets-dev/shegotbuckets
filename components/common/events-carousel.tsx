@@ -19,7 +19,9 @@ import {
     DialogTrigger,
 } from "@/components/ui/motion-dialog";
 import { Database } from "@/constants/supabase";
-import { fetchEvents } from "@/utils/actions/events";
+import { getMediaUrl } from "@/lib/utils";
+import { fetchEvents } from "@/utils/actions/supabase";
+import { SupabaseStorageBucket } from "@/utils/types";
 
 import React from "react";
 
@@ -46,8 +48,11 @@ function EventDialog({
             >
                 <div className="h-40 w-full">
                     <DialogImage
-                        src={event.image ?? ""}
-                        alt={event.title}
+                        src={getMediaUrl(
+                            SupabaseStorageBucket.EVENTS,
+                            event.image ?? ""
+                        )}
+                        alt={event.title_short ?? event.title}
                         className="h-full w-full object-cover"
                     />
                 </div>
@@ -55,7 +60,7 @@ function EventDialog({
                     <div className="flex flex-col justify-between h-full overflow-hidden">
                         <div>
                             <DialogTitle className="text-zinc-950 dark:text-zinc-50 line-clamp-2 text-base">
-                                {event.title}
+                                {event.title_short ?? event.title}
                             </DialogTitle>
                             <DialogSubtitle className="text-zinc-700 dark:text-zinc-400 line-clamp-2 text-sm mt-1">
                                 {event.subtitle}
@@ -79,7 +84,10 @@ function EventDialog({
                     className="pointer-events-auto relative flex h-auto w-[95%] sm:w-[90%] max-w-[400px] sm:max-w-[500px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 mx-auto"
                 >
                     <DialogImage
-                        src={event.image ?? ""}
+                        src={getMediaUrl(
+                            SupabaseStorageBucket.EVENTS,
+                            event.image ?? ""
+                        )}
                         alt={event.title}
                         className="h-48 sm:h-64 w-full object-cover"
                     />
@@ -87,7 +95,7 @@ function EventDialog({
                         <DialogTitle className="text-xl sm:text-2xl text-zinc-950 dark:text-zinc-50">
                             {event.title}
                         </DialogTitle>
-                        <DialogSubtitle className="text-zinc-700 dark:text-zinc-400">
+                        <DialogSubtitle className="text-zinc-700 dark:text-zinc-400 mt-2">
                             {event.subtitle}
                         </DialogSubtitle>
                         <DialogDescription

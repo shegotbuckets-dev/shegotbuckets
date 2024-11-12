@@ -1,6 +1,7 @@
 import EventsCarousel from "@/components/common/events-carousel";
 import { Separator } from "@/components/ui/separator";
-import { fetchEvents } from "@/utils/actions/events";
+
+// import { fetchEvents } from "@/utils/actions/supabase";
 
 export default async function EventsSection() {
     return (

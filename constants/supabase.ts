@@ -15,30 +15,71 @@ export type Database = {
                     description: string | null;
                     event_id: string;
                     image: string | null;
+                    league_id: string | null;
                     location: string | null;
                     price: string | null;
                     subtitle: string | null;
                     title: string;
+                    title_short: string | null;
                 };
                 Insert: {
                     date?: string | null;
                     description?: string | null;
                     event_id?: string;
                     image?: string | null;
+                    league_id?: string | null;
                     location?: string | null;
                     price?: string | null;
                     subtitle?: string | null;
                     title: string;
+                    title_short?: string | null;
                 };
                 Update: {
                     date?: string | null;
                     description?: string | null;
                     event_id?: string;
                     image?: string | null;
+                    league_id?: string | null;
                     location?: string | null;
                     price?: string | null;
                     subtitle?: string | null;
                     title?: string;
+                    title_short?: string | null;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "events_league_id_fkey";
+                        columns: ["league_id"];
+                        isOneToOne: false;
+                        referencedRelation: "leagues";
+                        referencedColumns: ["league_id"];
+                    },
+                ];
+            };
+            leagues: {
+                Row: {
+                    date: string | null;
+                    description: string | null;
+                    image: string | null;
+                    league_id: string;
+                    location: string | null;
+                    name: string;
+                };
+                Insert: {
+                    date?: string | null;
+                    description?: string | null;
+                    image?: string | null;
+                    league_id?: string;
+                    location?: string | null;
+                    name: string;
+                };
+                Update: {
+                    date?: string | null;
+                    description?: string | null;
+                    image?: string | null;
+                    league_id?: string;
+                    location?: string | null;
+                    name?: string;
                 };
                 Relationships: [];
             };

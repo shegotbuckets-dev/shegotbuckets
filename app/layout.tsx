@@ -2,7 +2,6 @@ import Provider from "@/app/provider";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import AuthWrapper from "@/components/wrapper/auth-wrapper";
-import { getVercelBlobUrl } from "@/utils/helpers";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -12,7 +11,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    metadataBase: new URL("https://shegotbuckets.vercel.app"),
+    metadataBase: new URL("https://shegotbuckets.vercel.app/"),
     title: {
         default: "She Got Buckets",
         template: `%s | She Got Buckets`,
@@ -27,9 +26,7 @@ export const metadata: Metadata = {
         description:
             "She Got Buckets is a non-profit organization that empowers women to achieve financial independence through education and support.",
         images: [
-            getVercelBlobUrl(
-                "home/SGBThumbnail-GbIIFnsAYBDttUhaKcleI5TDlWPyyO.jpg"
-            ),
+            "https://xfnfajmpjdkajuaywztb.supabase.co/storage/v1/object/sign/home/SGBThumbnail.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJob21lL1NHQlRodW1ibmFpbC5qcGciLCJpYXQiOjE3MzEzOTMwOTQsImV4cCI6MTg4OTA3MzA5NH0.C-QxhFLI8eBvfpefeejHJr2wK3uE_MHZ2f6eWbOMrk4&t=2024-11-12T06%3A31%3A33.066Z",
         ],
         url: "https://shegotbuckets.vercel.app/",
     },
@@ -42,9 +39,7 @@ export const metadata: Metadata = {
         creator: "@ltldev",
         creatorId: "",
         images: [
-            getVercelBlobUrl(
-                "home/SGBThumbnail-GbIIFnsAYBDttUhaKcleI5TDlWPyyO.jpg"
-            ),
+            "https://xfnfajmpjdkajuaywztb.supabase.co/storage/v1/object/sign/home/SGBThumbnail.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJob21lL1NHQlRodW1ibmFpbC5qcGciLCJpYXQiOjE3MzEzOTMwOTQsImV4cCI6MTg4OTA3MzA5NH0.C-QxhFLI8eBvfpefeejHJr2wK3uE_MHZ2f6eWbOMrk4&t=2024-11-12T06%3A31%3A33.066Z",
         ],
     },
 };
