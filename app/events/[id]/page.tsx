@@ -5,7 +5,7 @@ import HallOfRecord from "@/components/events/hall-record";
 import HeroSectionEvent from "@/components/events/hero-section";
 import LeagueInfor from "@/components/events/league-infor";
 import Registration from "@/components/events/registration";
-import { fetchEventById } from "@/utils/actions/events";
+import { fetchLeagueById } from "@/utils/actions/supabase";
 
 export const metadata = {
     title: "Events",
@@ -16,7 +16,7 @@ export default async function EventPage({
 }: {
     params: { id: string };
 }) {
-    const event = await fetchEventById(params.id);
+    const event = await fetchLeagueById(params.id);
     // Option 1: Add a loading check
     if (!event) {
         return <div>Loading...</div>;

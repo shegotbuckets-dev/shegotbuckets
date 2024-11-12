@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sheet";
 import { Database } from "@/constants/supabase";
 import { cn } from "@/lib/utils";
-import { useEvents } from "@/utils/hook/useEvents";
+import { useLeagues } from "@/utils/hook/useLeagues";
 
 import * as React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -31,7 +31,7 @@ import { Dialog, DialogClose } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-const aboutComponents: { id: string; title: string; subtitle?: string }[] = [
+const aboutChildren: { id: string; title: string; subtitle?: string }[] = [
     {
         id: "whoweare",
         title: "Who We Are",
@@ -47,10 +47,10 @@ interface NavItemChild {
 interface NavItem {
     title: string;
     href: string;
-    components?: NavItemChild[];
+    children?: NavItemChild[];
 }
 
-const getNavItems = (eventComponents: NavItemChild[]): NavItem[] => {
+const getNavItems = (eventChildren: NavItemChild[]): NavItem[] => {
     return [
         {
             title: "Home",
@@ -59,12 +59,12 @@ const getNavItems = (eventComponents: NavItemChild[]): NavItem[] => {
         {
             title: "About Us",
             href: "aboutpage",
-            components: aboutComponents,
+            children: aboutChildren,
         },
         {
             title: "Events",
-            href: "eventpage",
-            components: eventComponents,
+            href: "/events",
+            children: eventChildren,
         },
         {
             title: "Get Involved",
@@ -73,13 +73,13 @@ const getNavItems = (eventComponents: NavItemChild[]): NavItem[] => {
     ];
 };
 
-const getEventComponents = (
-    events: Database["public"]["Tables"]["events"]["Row"][]
+const getLeagueComponents = (
+    leagues: Database["public"]["Tables"]["leagues"]["Row"][]
 ): NavItemChild[] => {
-    return events?.map((event) => ({
-        id: event.event_id,
-        title: event.title,
-        subtitle: event.subtitle ?? "",
+    return leagues?.map((league) => ({
+        id: league.league_id,
+        title: league.name,
+        subtitle: league.description ?? "",
     }));
 };
 
@@ -87,9 +87,9 @@ export default function NavBar() {
     const { theme, systemTheme } = useTheme();
     const { userId } = useAuth();
     const [mounted, setMounted] = React.useState(false);
-    const { data: events } = useEvents();
-    const eventComponents = getEventComponents(events);
-    const navItems = getNavItems(eventComponents);
+    const { data: leagues } = useLeagues();
+    const leagueComponents = getLeagueComponents(leagues);
+    const navItems = getNavItems(leagueComponents);
 
     React.useEffect(() => {
         setMounted(true);
@@ -182,19 +182,19 @@ const MobileMenu = ({ navItems }: { navItems: NavItem[] }) => (
             <nav className="flex flex-col space-y-1 mt-2">
                 {navItems.map((item) => (
                     <div key={item.title}>
-                        {item.components ? (
+                        {item.children ? (
                             <>
                                 <div className="px-4 py-1 font-semibold">
                                     {item.title}
                                 </div>
                                 <div className="pl-6 flex flex-col">
-                                    {item.components.map((component) => (
-                                        <DialogClose key={component.id} asChild>
+                                    {item.children.map((child) => (
+                                        <DialogClose key={child.id} asChild>
                                             <Link
-                                                href={`/${item.href}/${component.id}`}
+                                                href={`/${item.href}/${child.id}`}
                                                 className="px-4 py-1 hover:underline"
                                             >
-                                                {component.title}
+                                                {child.title}
                                             </Link>
                                         </DialogClose>
                                     ))}
@@ -220,7 +220,7 @@ const MobileMenu = ({ navItems }: { navItems: NavItem[] }) => (
 const DesktopMenuItems = ({ navItems }: { navItems: NavItem[] }) => (
     <div className="flex items-center gap-4">
         {navItems.map((item) =>
-            item.components ? (
+            item.children ? (
                 <NavigationMenuItem
                     className="max-[825px]:hidden"
                     key={item.title}
@@ -230,13 +230,13 @@ const DesktopMenuItems = ({ navItems }: { navItems: NavItem[] }) => (
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                         <ul className="flex flex-col w-[300px] gap-2 p-2 lg:w-[500px] rounded-md bg-background border mt-4">
-                            {item.components.map((component) => (
+                            {item.children.map((child) => (
                                 <ListItem
-                                    key={component.title}
-                                    title={component.title}
-                                    href={`/${item.href}/${component.id}`}
+                                    key={child.title}
+                                    title={child.title}
+                                    href={`${item.href}/${child.id}`}
                                 >
-                                    {component.subtitle}
+                                    {child.subtitle}
                                 </ListItem>
                             ))}
                         </ul>

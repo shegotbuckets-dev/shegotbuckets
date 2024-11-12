@@ -10,22 +10,6 @@ export type ConferenceInfor = {
     gameTimes: string;
 };
 
-export interface BasketballEvent {
-    eventId: string;
-    title: string;
-    subtitle: string;
-    image: string;
-    date: string;
-    description?: string;
-    leagueData?: ConferenceData;
-    location?: string;
-    price?: string;
-}
-
-export type EventsData = {
-    [key: string]: BasketballEvent;
-};
-
 export interface RuleSection {
     title: string;
     content: string[];
@@ -62,43 +46,6 @@ export const leagueData: ConferenceData = {
         price: "$300",
         duration: "10 weeks",
         gameTimes: "Saturdays and Sundays, 12 PM - 9 PM",
-    },
-};
-
-export const BASKETBALL_EVENTS: EventsData = {
-    event1: {
-        eventId: "event1",
-        title: "College Basketball League",
-        subtitle: "Spring 2024 Season",
-        image: "/images/court.png",
-        description: `Join our competitive college basketball league starting this spring. 
-      Teams will compete in a round-robin format followed by playoffs. 
-      Perfect for college students looking to play organized basketball.`,
-        date: "Starts March 15, 2024",
-        leagueData: leagueData,
-    },
-    event2: {
-        eventId: "event2",
-        title: "Summer Skills Camp",
-        subtitle: "Elite Training Program",
-        image: "/images/league.png",
-        description: `Intensive basketball skills development camp led by professional coaches. 
-      Focus on fundamentals, advanced techniques, and game strategy. 
-      Limited spots available for serious players looking to improve their game.`,
-        date: "July 10-24, 2024",
-        location: "SGB Training Facility",
-        price: "$450 per player",
-    },
-    event3: {
-        eventId: "event3",
-        title: "National Tournament",
-        subtitle: "Championship Series",
-        image: "/images/league.png",
-        description: `Annual national tournament bringing together top teams from across the country. 
-      Compete against the best talent and showcase your skills. 
-      Tournament includes division brackets for different skill levels.`,
-        date: "August 15-20, 2024",
-        price: "$450 per player",
     },
 };
 

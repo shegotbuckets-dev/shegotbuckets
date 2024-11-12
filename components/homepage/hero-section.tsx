@@ -1,6 +1,7 @@
 import { HeartBeatButton } from "@/components/common/heartbeat-button";
 import { Button } from "@/components/ui/button";
-import { getVercelBlobUrl } from "@/utils/helpers";
+import { getMediaUrl } from "@/lib/utils";
+import { SupabaseStorageBucket } from "@/utils/types";
 
 import { Suspense } from "react";
 
@@ -18,9 +19,7 @@ function BackgroundVideo() {
             className="absolute top-1/2 left-1/2 h-[56.25vw] min-h-full min-w-full w-[177.77777778vh] -translate-x-1/2 -translate-y-1/2 object-cover"
         >
             <source
-                src={getVercelBlobUrl(
-                    "home/SGBTrailer-yexozbQXf3PHdB6cSLo3JwoWo0MCBC.mp4"
-                )}
+                src={getMediaUrl(SupabaseStorageBucket.HOME, "sgb-trailer.mp4")}
                 type="video/mp4"
             />
         </video>

@@ -1,6 +1,8 @@
 import { HeartBeatButton } from "@/components/common/heartbeat-button";
 import RegistrationButton from "@/components/common/register-button";
 import { Database } from "@/constants/supabase";
+import { getMediaUrl } from "@/lib/utils";
+import { SupabaseStorageBucket } from "@/utils/types";
 
 import { Calendar, MapPin, Users } from "lucide-react";
 import Image from "next/image";
@@ -8,9 +10,9 @@ import Image from "next/image";
 export default function HeroSectionEvent({
     event,
 }: {
-    event: Database["public"]["Tables"]["events"]["Row"];
+    event: Database["public"]["Tables"]["leagues"]["Row"];
 }) {
-    const { image, title, subtitle, date, location } = event;
+    const { image, name, date, location } = event;
 
     return (
         <section
@@ -19,7 +21,10 @@ export default function HeroSectionEvent({
         >
             <div className="absolute inset-0">
                 <Image
-                    src={image ?? ""}
+                    src={getMediaUrl(
+                        SupabaseStorageBucket.LEAGUES,
+                        image ?? ""
+                    )}
                     alt="Event background"
                     fill
                     className="object-cover"
@@ -29,10 +34,10 @@ export default function HeroSectionEvent({
             <div className="absolute inset-0 bg-black/60" />
             <div className="relative text-white px-4 sm:px-6 lg:px-8 w-full md:w-1/2">
                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-16 mb-4 leading-tight line-clamp-2">
-                    {title}
+                    {name}
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-200 mb-4">
-                    {subtitle}
+                    2024 -2025 Season
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                     <div className="flex items-center text-gray-200 text-sm sm:text-base">

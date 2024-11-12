@@ -1,4 +1,4 @@
-import { fetchEvents } from "@/utils/actions/events";
+import { fetchEvents } from "@/utils/actions/supabase";
 
 import { NextResponse } from "next/server";
 

@@ -22,28 +22,28 @@ const involvementOptions: InvolvementOption[] = [
         icon: <Heart className="w-12 h-12" />,
         title: "Donate",
         description:
-            "All of your donations will go straight into the funding for our basketball events and programs.",
+            "All of your donations will go straight into the funding for our basketball tournaments and training programs. By donating, you’ll be directly supporting our growth and helping us make an even greater impact!",
         action: "Donate Here",
     },
     {
         icon: <Users className="w-12 h-12" />,
         title: "Be a Volunteer",
         description:
-            "We are a 100% volunteer-based nonprofit organization and our events are supported by our volunteers.",
+            "She Got Buckets is a 100% volunteer-based nonprofit organization supported by our 25 dedicated members along with a team of long-term, active volunteers.",
         action: "Join Us",
     },
     {
         icon: <HandshakeIcon className="w-12 h-12" />,
         title: "Corporate Partner",
         description:
-            "By sponsoring us, you provide foundational support for our growth and powerful journey.",
+            "We extend our deepest gratitude to all the corporations and organizations that have supported our past events and contributed to our growth. We always welcome new partners to join us in advancing our mission for the Asian female athlete community.",
         action: "Partner Up",
     },
     {
         icon: <BriefcaseBusiness className="w-12 h-12" />,
         title: "Employer Matching Program",
         description:
-            "We welcome and encourage anyone who is interested in supporting us through their employer matching program.",
+            "Double Your Impact- Many companies offer employee matching programs, allowing you to increase the power of your donation to support our mission. Check with your HR or corporate giving department to see if your company offers matching gifts and for any details on the process.",
         action: "Contact Us",
     },
 ];
@@ -60,17 +60,19 @@ export default function GetInvolvedSection() {
                     {involvementOptions.map((option, index) => (
                         <div
                             key={index}
-                            className="flex flex-col items-center text-center"
+                            className="flex flex-col items-center text-center h-full"
                         >
-                            <div className="text-gray-800 dark:text-white mb-6">
-                                {option.icon}
+                            <div className="flex flex-col items-center flex-1">
+                                <div className="text-gray-800 dark:text-white mb-6">
+                                    {option.icon}
+                                </div>
+                                <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+                                    {option.title}
+                                </h3>
+                                <p className="text-gray-800 dark:text-white mb-6 flex-1 line-clamp-4 max-w-[90%] mx-auto">
+                                    {option.description}
+                                </p>
                             </div>
-                            <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-                                {option.title}
-                            </h3>
-                            <p className="text-gray-800 dark:text-white mb-6">
-                                {option.description}
-                            </p>
                             <Link href="/get-involved">
                                 <Button
                                     variant="expandIcon"

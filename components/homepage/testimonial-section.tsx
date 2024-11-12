@@ -34,27 +34,33 @@ export default function TestimonialSection() {
 
     const testimonials = [
         {
-            quote: "SGB has been instrumental in my basketball journey. They provided opportunities I never thought possible.",
-            author: "Emily Chen",
-            age: 19,
+            quote: "Once we play on the court, we immediately become a family.",
+            author: "Lexi",
+            age: 24,
             avatar: "/placeholder.svg?height=40&width=40",
         },
         {
-            quote: "Being part of SGB changed my perspective on what Asian athletes can achieve in basketball. The community here is incredible.",
-            author: "Mei Wong",
-            age: 21,
-            avatar: "/placeholder.svg?height=40&width=40",
-        },
-        {
-            quote: "Through SGB, I found the confidence to pursue basketball seriously. They believe in us and push us to be our best.",
-            author: "Sarah Kim",
-            age: 18,
-            avatar: "/placeholder.svg?height=40&width=40",
-        },
-        {
-            quote: "The support from SGB has been amazing. They've helped me grow not just as a player, but as a person too.",
-            author: "Lisa Park",
+            quote: "We’ve shared not only the thrill of the games but also the joy of this journey, and it’s been such a fun and rewarding experience.",
+            author: "Team Xiaolongbao",
             age: 20,
+            avatar: "/placeholder.svg?height=40&width=40",
+        },
+        {
+            quote: "Through She Got Buckets, I got the chance to reach out and connect with more girls who love basketball.",
+            author: "Miro",
+            age: 25,
+            avatar: "/placeholder.svg?height=40&width=40",
+        },
+        {
+            quote: "There is no such thing as an overrated team or player. There are only ordinary people with perseverance and passion who are underrated and overlooked.",
+            author: "Chione",
+            age: 25,
+            avatar: "/placeholder.svg?height=40&width=40",
+        },
+        {
+            quote: "When the whistle blows and the ball hits the ground, that's the moment I return to the basketball court as my true self.",
+            author: "Ellen",
+            age: 25,
             avatar: "/placeholder.svg?height=40&width=40",
         },
     ];
@@ -106,14 +112,14 @@ export default function TestimonialSection() {
                                                 </blockquote>
                                                 <div className="flex items-center">
                                                     <Avatar className="h-10 w-10 mr-4">
-                                                        <AvatarImage
+                                                        {/* <AvatarImage
                                                             src={
                                                                 testimonial.avatar
                                                             }
                                                             alt={
                                                                 testimonial.author
                                                             }
-                                                        />
+                                                        /> */}
                                                         <AvatarFallback>
                                                             {testimonial.author
                                                                 .split(" ")

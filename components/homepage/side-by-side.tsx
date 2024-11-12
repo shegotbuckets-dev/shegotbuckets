@@ -1,5 +1,3 @@
-import { getVercelBlobUrl } from "@/utils/helpers";
-
 import Image from "next/image";
 
 export default function SideBySide() {
@@ -15,10 +13,11 @@ export default function SideBySide() {
                             </h2>
                             <p className="text-gray-700 dark:text-gray-300 mb-6">
                                 She Got Buckets is a 501 (c) 3 non-profit
-                                organization focused on creating an inclusive
-                                basketball community for Asian women, offering
-                                leagues and tournaments in a supportive,
-                                empowering environment.
+                                organization. We aim to create an open platform
+                                for all Asian Women to enhance their
+                                recreational skills and confidence through
+                                basketball tournaments, competitive leagues, and
+                                training events.
                             </p>
                         </div>
                         <div>
@@ -26,9 +25,10 @@ export default function SideBySide() {
                                 Our Mission
                             </h2>
                             <p className="text-gray-700 dark:text-gray-300 mb-6">
-                                We&apos;re here to empower Asian women to break
-                                barriers, make global connections, and thrive
-                                through the game of basketball.
+                                We&apos;re here to expand our community
+                                influence, empowering every Asian woman to break
+                                barriers and make powerful connections, and
+                                thrive through the game of basketball.
                             </p>
                         </div>
                         <div>
@@ -39,21 +39,20 @@ export default function SideBySide() {
                                 Our vision is to create a global basketball
                                 community for Asian women, open to{" "}
                                 <strong className="font-semibold">
-                                    all ages, income levels, and skill levels
+                                    all ages, income levels, and recreational
+                                    levels.{" "}
                                 </strong>
-                                . We strive to break barriers, build strength,
-                                and provide resources and support that empower
-                                every player to pursue their passion and inspire
-                                future generations.
+                                We strive to break barriers, build strength, and
+                                provide resources to enable Asian females
+                                worldwide in accessing recreational resources
+                                and inspire future generations.
                             </p>
                         </div>
                     </div>
                     {/* Image container - Add order-1 for mobile, order-2 for md+ */}
                     <div className="relative h-[400px] md:h-full order-1 md:order-2">
                         <Image
-                            src={getVercelBlobUrl(
-                                "home/SGBSidebySide-WC7u3aNIUVCmTj1hDWtJYymTE8QsDz.png"
-                            )}
+                            src={"/images/sgb-together.png"}
                             alt="Asian women playing basketball"
                             fill
                             className="object-cover rounded-lg" // Added rounded corners

@@ -56,3 +56,9 @@ const userUpdateSchema = z.object({
         .describe("user profile image URL"),
     user_id: z.string().describe("user ID"),
 });
+
+export enum SupabaseStorageBucket {
+    EVENTS = "events",
+    LEAGUES = "leagues",
+    HOME = "home",
+}
