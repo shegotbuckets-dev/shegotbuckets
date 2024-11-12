@@ -65,7 +65,9 @@ export default function HeroSection() {
                     unity, inclusion, and opportunity on and off the court.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm sm:max-w-none mx-auto">
-                    <HeartBeatButton>Become an Athlete</HeartBeatButton>
+                    <Link href="/dashboard">
+                        <HeartBeatButton>Become an Athlete</HeartBeatButton>
+                    </Link>
                     <Link href="/dashboard" className="w-full">
                         <Button
                             variant="expandIcon"

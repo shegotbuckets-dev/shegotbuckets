@@ -47,7 +47,7 @@ export async function fetchLeagueById(
         throw new Error(`Failed to fetch events: ${error.message}`);
     }
 
-    return league ?? [];
+    return league;
 }
 
 export async function fetchEventById(
@@ -68,7 +68,7 @@ export async function fetchEventById(
         throw new Error(`Failed to fetch events: ${error.message}`);
     }
 
-    return event ?? [];
+    return event;
 }
 
 export async function fetchEventsByLeagueId(

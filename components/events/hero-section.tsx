@@ -12,7 +12,7 @@ export default function HeroSectionEvent({
 }: {
     league: Database["public"]["Tables"]["leagues"]["Row"];
 }) {
-    const { image, name, date, location } = league;
+    const { league_id, image, name, date, location } = league;
 
     return (
         <section
@@ -23,7 +23,8 @@ export default function HeroSectionEvent({
                 <Image
                     src={getMediaUrl(
                         SupabaseStorageBucket.LEAGUES,
-                        image ?? ""
+                        image ?? "",
+                        league_id
                     )}
                     alt="Event background"
                     fill

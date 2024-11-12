@@ -1,4 +1,5 @@
 import TeamMarquee from "@/components/common/team-marquee";
+import WorkInProgress from "@/components/common/wip";
 import AboutInforEvent from "@/components/events/about-infor";
 import AnchorNavBar from "@/components/events/anchor-nav";
 import HallOfRecord from "@/components/events/hall-record";
@@ -18,8 +19,8 @@ export default async function EventPage({
 }) {
     const league = await fetchLeagueById(params.id);
     // Option 1: Add a loading check
-    if (!league) {
-        return <div>Loading...</div>;
+    if (!league || !league.image) {
+        return <WorkInProgress features={[]} />;
     }
 
     return (

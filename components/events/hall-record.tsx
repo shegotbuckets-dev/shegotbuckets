@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { SUPABASE_STORAGE } from "@/constants/events";
+import { getMediaUrl } from "@/lib/utils";
+import { SupabaseStorageBucket } from "@/utils/types";
 
 import Image from "next/image";
 
@@ -15,13 +16,21 @@ const champions: Champion[] = [
         id: 1,
         name: "Team Alpha",
         year: 2023,
-        imageUrl: SUPABASE_STORAGE.EVENTS_BUCKET_URL_TEST + "hallOfRecord.jpg",
+        imageUrl: getMediaUrl(
+            SupabaseStorageBucket.LEAGUES,
+            "hor-2024.png",
+            "fdcd383d-931a-43f8-8b2d-11f25eb5b4fd"
+        ),
     },
     {
         id: 2,
         name: "Hoops Elite",
         year: 2023,
-        imageUrl: SUPABASE_STORAGE.EVENTS_BUCKET_URL_TEST + "hallOfRecord.jpg",
+        imageUrl: getMediaUrl(
+            SupabaseStorageBucket.LEAGUES,
+            "hor-2023.png",
+            "fdcd383d-931a-43f8-8b2d-11f25eb5b4fd"
+        ),
     },
 ];
 

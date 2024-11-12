@@ -11,37 +11,43 @@ export type Database = {
         Tables: {
             events: {
                 Row: {
+                    active: boolean;
                     date: string | null;
                     description: string | null;
                     event_id: string;
-                    image: string | null;
+                    image: string;
                     league_id: string | null;
                     location: string | null;
                     price: string | null;
+                    reg_ddl: string;
                     subtitle: string | null;
                     title: string;
                     title_short: string | null;
                 };
                 Insert: {
+                    active: boolean;
                     date?: string | null;
                     description?: string | null;
                     event_id?: string;
-                    image?: string | null;
+                    image: string;
                     league_id?: string | null;
                     location?: string | null;
                     price?: string | null;
+                    reg_ddl: string;
                     subtitle?: string | null;
                     title: string;
                     title_short?: string | null;
                 };
                 Update: {
+                    active?: boolean;
                     date?: string | null;
                     description?: string | null;
                     event_id?: string;
-                    image?: string | null;
+                    image?: string;
                     league_id?: string | null;
                     location?: string | null;
                     price?: string | null;
+                    reg_ddl?: string;
                     subtitle?: string | null;
                     title?: string;
                     title_short?: string | null;
