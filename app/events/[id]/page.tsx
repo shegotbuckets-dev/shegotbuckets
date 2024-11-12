@@ -16,16 +16,16 @@ export default async function EventPage({
 }: {
     params: { id: string };
 }) {
-    const event = await fetchLeagueById(params.id);
+    const league = await fetchLeagueById(params.id);
     // Option 1: Add a loading check
-    if (!event) {
+    if (!league) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className="min-h-screen bg-background text-foreground pt-20">
             {/* Hero Section */}
-            <HeroSectionEvent event={event} />
+            <HeroSectionEvent league={league} />
             {/* Team Marquee */}
             <TeamMarquee />
             {/* About Infor Section */}

@@ -8,11 +8,11 @@ import { Calendar, MapPin, Users } from "lucide-react";
 import Image from "next/image";
 
 export default function HeroSectionEvent({
-    event,
+    league,
 }: {
-    event: Database["public"]["Tables"]["leagues"]["Row"];
+    league: Database["public"]["Tables"]["leagues"]["Row"];
 }) {
-    const { image, name, date, location } = event;
+    const { image, name, date, location } = league;
 
     return (
         <section
