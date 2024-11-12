@@ -62,11 +62,6 @@ export const ANCHORS: readonly Anchor[] = [
     { id: "registration-event", label: "Registration" },
 ] as const;
 
-export const SUPABASE_STORAGE = {
-    EVENTS_BUCKET_URL_TEST:
-        "https://gdzjjimhuijepuaqyybd.supabase.co/storage/v1/object/public/events/",
-} as const;
-
 export type ConferenceOption =
     | "Southern Conference"
     | "Northern Conference"

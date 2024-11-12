@@ -1,4 +1,4 @@
-import EventsCarousel from "@/components/common/events-carousel";
+import EventsCarousel from "@/components/events-carousel/events-carousel";
 import { Button } from "@/components/ui/button";
 import {
     Card,

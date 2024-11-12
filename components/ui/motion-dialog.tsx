@@ -82,6 +82,7 @@ type DialogTriggerProps = {
     className?: string;
     style?: React.CSSProperties;
     triggerRef?: React.RefObject<HTMLDivElement>;
+    tabIndex?: number;
 };
 
 function DialogTrigger({
@@ -89,6 +90,7 @@ function DialogTrigger({
     className,
     style,
     triggerRef,
+    tabIndex,
 }: DialogTriggerProps) {
     const { setIsOpen, isOpen, uniqueId } = useDialog();
 
@@ -114,6 +116,7 @@ function DialogTrigger({
             onClick={handleClick}
             onKeyDown={handleKeyDown}
             style={style}
+            tabIndex={tabIndex}
             role="button"
             aria-haspopup="dialog"
             aria-expanded={isOpen}
