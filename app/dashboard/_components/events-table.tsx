@@ -10,6 +10,8 @@ import {
 import { Database } from "@/constants/supabase";
 
 import { RegisterButton } from "./register-button";
+import SignWaiverButton from "./sign-waiver-button";
+import { UploadRosterButton } from "./upload-roster-button";
 
 export default function EventsTable({
     events,
@@ -31,7 +33,7 @@ export default function EventsTable({
                                 <TableHead>Location</TableHead>
                                 <TableHead>Register</TableHead>
                                 <TableHead>Roster</TableHead>
-                                {/* <TableHead>Waiver</TableHead> */}
+                                <TableHead>Waiver</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -59,19 +61,22 @@ export default function EventsTable({
                                     </TableCell>
                                     <TableCell>
                                         {event.active ? (
-                                            <RegisterButton
-                                                event={event}
-                                                teams={teams ?? []}
-                                            />
+                                            <UploadRosterButton event={event} />
                                         ) : (
                                             <Badge variant="secondary">
                                                 N/A
                                             </Badge>
                                         )}
                                     </TableCell>
-                                    {/* <TableCell>
-                                        <Badge variant="outline">Pending</Badge>
-                                    </TableCell> */}
+                                    <TableCell>
+                                        {event.active ? (
+                                            <SignWaiverButton />
+                                        ) : (
+                                            <Badge variant="secondary">
+                                                N/A
+                                            </Badge>
+                                        )}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
