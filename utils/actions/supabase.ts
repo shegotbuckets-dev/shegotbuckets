@@ -29,6 +29,34 @@ export async function fetchEvents(): Promise<
     return events ?? [];
 }
 
+export async function fetchTeams(): Promise<
+    Database["public"]["Tables"]["teams"]["Row"][]
+> {
+    const supabase = await createServerClient();
+    const { data: teams, error } = await supabase.from("teams").select("*");
+
+    if (error) {
+        throw new Error(`Failed to fetch teams: ${error.message}`);
+    }
+
+    return teams ?? [];
+}
+
+export async function fetchRegistrations(): Promise<
+    Database["public"]["Tables"]["registrations"]["Row"][]
+> {
+    const supabase = await createServerClient();
+    const { data: registrations, error } = await supabase
+        .from("registrations")
+        .select("*");
+
+    if (error) {
+        throw new Error(`Failed to fetch teams: ${error.message}`);
+    }
+
+    return registrations ?? [];
+}
+
 export async function fetchLeagueById(
     leagueId: string
 ): Promise<Database["public"]["Tables"]["leagues"]["Row"]> {
@@ -50,44 +78,67 @@ export async function fetchLeagueById(
     return league;
 }
 
-export async function fetchEventById(
-    eventId: string
-): Promise<Database["public"]["Tables"]["events"]["Row"]> {
-    if (!eventId) {
-        throw new Error("Event ID is required");
-    }
+type TableNames = keyof Database["public"]["Tables"];
+type TableRow<T extends TableNames> = Database["public"]["Tables"][T]["Insert"];
 
+export async function insertMultipleRowsToTable<T extends TableNames>(
+    table: T,
+    rows: TableRow<T>[]
+): Promise<TableRow<T>[]> {
     const supabase = await createServerClient();
-    const { data: event, error } = await supabase
-        .from("events")
-        .select("*")
-        .eq("event_id", eventId)
-        .single();
 
-    if (error) {
-        throw new Error(`Failed to fetch events: ${error.message}`);
-    }
-
-    return event;
-}
-
-export async function fetchEventsByLeagueId(
-    leagueId: string
-): Promise<Database["public"]["Tables"]["events"]["Row"][]> {
-    const supabase = await createServerClient();
-    const { data: events, error } = await supabase
-        .from("events")
-        .select("*")
-        .eq("league_id", leagueId); // Filter by the given league_id
+    const { data: insertedRows, error } = await supabase
+        .from(table)
+        .insert(rows)
+        .select("*");
 
     if (error) {
         throw new Error(
-            `Failed to fetch events for league ID ${leagueId}: ${error.message}`
+            `Failed to insert rows into ${table}: ${error.message}`
         );
     }
 
-    return events ?? [];
+    return insertedRows || [];
 }
+
+// export async function fetchEventById(
+//     eventId: string
+// ): Promise<Database["public"]["Tables"]["events"]["Row"]> {
+//     if (!eventId) {
+//         throw new Error("Event ID is required");
+//     }
+
+//     const supabase = await createServerClient();
+//     const { data: event, error } = await supabase
+//         .from("events")
+//         .select("*")
+//         .eq("event_id", eventId)
+//         .single();
+
+//     if (error) {
+//         throw new Error(`Failed to fetch events: ${error.message}`);
+//     }
+
+//     return event;
+// }
+
+// export async function fetchEventsByLeagueId(
+//     leagueId: string
+// ): Promise<Database["public"]["Tables"]["events"]["Row"][]> {
+//     const supabase = await createServerClient();
+//     const { data: events, error } = await supabase
+//         .from("events")
+//         .select("*")
+//         .eq("league_id", leagueId); // Filter by the given league_id
+
+//     if (error) {
+//         throw new Error(
+//             `Failed to fetch events for league ID ${leagueId}: ${error.message}`
+//         );
+//     }
+
+//     return events ?? [];
+// }
 
 // type LeagueRow = Database["public"]["Tables"]["leagues"]["Row"];
 // interface LeagueWithEvents extends LeagueRow {
