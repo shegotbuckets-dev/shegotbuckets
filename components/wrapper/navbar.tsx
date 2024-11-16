@@ -31,13 +31,6 @@ import { Dialog, DialogClose } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-const aboutChildren: { id: string; title: string; subtitle?: string }[] = [
-    {
-        id: "whoweare",
-        title: "Who We Are",
-    },
-];
-
 interface NavItemChild {
     id: string;
     title: string;
@@ -58,8 +51,7 @@ const getNavItems = (eventChildren: NavItemChild[]): NavItem[] => {
         },
         {
             title: "About Us",
-            href: "aboutpage",
-            children: aboutChildren,
+            href: "/about",
         },
         {
             title: "Events",

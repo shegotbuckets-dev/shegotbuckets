@@ -42,3 +42,5 @@ supabase/.env
 
 # .vscode
 .vscode/*
+.vercel
+.env*.local
