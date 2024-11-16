@@ -1,19 +1,21 @@
+import { DashboardSidebar } from "@/app/dashboard/_components/dashboard-sidebar";
+import DashboardTopNav from "@/app/dashboard/_components/dashboard-top-nav";
+import { SidebarProvider } from "@/components/ui/sidebar";
+
 import { ReactNode } from "react";
 
-import DashboardSideBar from "./_components/dashboard-side-bar";
-import DashboardTopNav from "./_components/dashboard-top-nav";
-
-export default async function DashboardLayout({
-    children,
-}: {
-    children: ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
-            <DashboardSideBar />
-            <DashboardTopNav>
-                <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
-            </DashboardTopNav>
-        </div>
+        <SidebarProvider>
+            <div className="w-full flex flex-col min-h-screen">
+                <DashboardTopNav />
+                <div className="flex-1 flex overflow-hidden">
+                    <DashboardSidebar />
+                    <main className="flex-1 w-full overflow-auto">
+                        {children}
+                    </main>
+                </div>
+            </div>
+        </SidebarProvider>
     );
 }
