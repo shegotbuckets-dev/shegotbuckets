@@ -65,10 +65,12 @@ export default function HeroSection() {
                     unity, inclusion, and opportunity on and off the court.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm sm:max-w-none mx-auto">
-                    <Link href="/dashboard">
-                        <HeartBeatButton>Become an Athlete</HeartBeatButton>
+                    <Link href="/dashboard" className="w-full sm:w-auto">
+                        <HeartBeatButton className="w-full sm:w-auto py-3 px-6">
+                            Become an Athlete
+                        </HeartBeatButton>
                     </Link>
-                    <Link href="/dashboard" className="w-full">
+                    <Link href="/dashboard" className="w-full sm:w-auto">
                         <Button
                             variant="expandIcon"
                             className="flex gap-1 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 text-base py-3 px-6 border border-input bg-background hover:bg-accent hover:text-accent-foreground w-full sm:w-auto h-[48px]"
