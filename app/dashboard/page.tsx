@@ -1,193 +1,121 @@
-import EventsCarousel from "@/components/events-carousel/events-carousel";
-import SignWaiver from "@/components/sign-waiver/sign-waiver";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { CheckCircle, XCircle } from "lucide-react";
-import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+interface Event {
+    id: string;
+    name: string;
+    date: string;
+    location: string;
+}
 
-// Updated mock data
-const events = [
+// This would typically come from a database or API
+const events: Event[] = [
     {
-        id: "INV001",
-        status: "success",
-        eventName: "College Basketball League",
-        date: "2024-03-01",
-        waiverSigned: false,
+        id: "1",
+        name: "Summer Basketball Camp",
+        date: "2024-07-15",
+        location: "City Sports Center",
     },
     {
-        id: "INV002",
-        status: "pending",
-        eventName: "National Tournaments",
-        date: "2024-03-02",
-        waiverSigned: false,
+        id: "2",
+        name: "Women's 3x3 Tournament",
+        date: "2024-08-20",
+        location: "Downtown Courts",
     },
     {
-        id: "INV003",
-        status: "success",
-        eventName: "Summer Camp",
-        date: "2024-03-03",
-        waiverSigned: true,
+        id: "3",
+        name: "Youth Skills Workshop",
+        date: "2024-06-10",
+        location: "Community Gym",
     },
     {
-        id: "INV004",
-        status: "failed",
-        eventName: "Thanksgiving Camp",
-        date: "2024-03-04",
-        waiverSigned: true,
+        id: "4",
+        name: "Charity Game",
+        date: "2023-12-01",
+        location: "Main Arena",
+    },
+    {
+        id: "5",
+        name: "Coach Clinic",
+        date: "2023-11-15",
+        location: "Training Center",
     },
 ];
 
-export default async function Dashboard() {
+export default function DashboardPage() {
+    const currentDate = new Date();
+    const registeredEvents = events.slice(0, 2); // Simulating registered events
+    const upcomingEvents = events.filter(
+        (event) => new Date(event.date) > currentDate
+    );
+    const previousEvents = events.filter(
+        (event) => new Date(event.date) <= currentDate
+    );
+
     return (
-        <div className="flex flex-col gap-4 md:gap-6 w-full">
-            {/* Welcome Card */}
-            <Card className="w-full">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 mb-2">
-                    <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">
-                        Welcome to She Got Buckets!
-                    </CardTitle>
-                </CardHeader>
-            </Card>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-8">
+                She Got Buckets Dashboard
+            </h1>
 
-            {/* Previous Events Card */}
-            <Card className="w-full">
-                <CardHeader className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0">
-                    <div className="grid gap-2">
-                        <CardTitle className="text-lg sm:text-xl">
-                            Previous Events
-                        </CardTitle>
-                        <CardDescription className="text-sm sm:text-base">
-                            Previous events that you have participated in
-                        </CardDescription>
-                    </div>
-                    <Button
-                        asChild
-                        size="sm"
-                        className="w-fit sm:ml-auto gap-1"
-                    >
-                        <Link href="/dashboard/events">
-                            View All
-                            <ArrowUpRight className="h-4 w-4" />
-                        </Link>
-                    </Button>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Event ID</TableHead>
-                                <TableHead>Event Name</TableHead>
-                                <TableHead>Date</TableHead>
-                                <TableHead>Status</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {events.map((event) => (
-                                <TableRow key={event.id}>
-                                    <TableCell className="font-medium">
-                                        {event.id}
-                                    </TableCell>
-                                    <TableCell className="max-w-[200px]">
-                                        {event.eventName}
-                                    </TableCell>
-                                    <TableCell>
-                                        {new Date(
-                                            event.date
-                                        ).toLocaleDateString()}
-                                    </TableCell>
-                                    <TableCell>
-                                        {event.waiverSigned ? (
-                                            <span className="flex items-center text-green-600">
-                                                <CheckCircle className="w-4 h-4 mr-2" />
-                                                Signed
-                                            </span>
-                                        ) : (
-                                            <span className="flex items-center text-red-600">
-                                                <XCircle className="w-4 h-4 mr-2" />
-                                                Not Signed
-                                            </span>
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        {event.waiverSigned ? (
-                                            <span className="text-sm text-gray-500">
-                                                Waiver already signed
-                                            </span>
-                                        ) : (
-                                            <Dialog>
-                                                <DialogTrigger asChild>
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                    >
-                                                        Sign Waiver
-                                                    </Button>
-                                                </DialogTrigger>
-                                                <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
-                                                    <DialogHeader>
-                                                        <DialogTitle></DialogTitle>
-                                                    </DialogHeader>
-                                                    <SignWaiver />
-                                                </DialogContent>
-                                            </Dialog>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    <div className="max-h-[320px] overflow-y-auto">
-                        <main className="flex flex-col gap-2 h-[300px] w-full">
-                            <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm p-4 sm:p-6">
-                                <div className="flex flex-col items-center text-center max-w-md">
-                                    <h1 className="text-lg sm:text-xl font-bold tracking-tight mb-2">
-                                        You have no activity with us so far
-                                    </h1>
-                                    <p className="text-sm sm:text-base text-muted-foreground">
-                                        Events will show when you participate in
-                                        events with She Got Buckets
-                                    </p>
-                                </div>
-                            </div>
-                        </main>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Explore Events Card */}
-            <Card className="w-full">
-                <CardHeader>
-                    <CardTitle className="text-xl sm:text-2xl">
-                        Explore All Events
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <EventsCarousel carouselNavPosition="top" />
-                </CardContent>
-            </Card>
+            <div className="grid gap-8">
+                <EventSection
+                    title="Registered Events"
+                    events={registeredEvents}
+                />
+                <EventSection title="Upcoming Events" events={upcomingEvents} />
+                <EventSection title="Previous Events" events={previousEvents} />
+            </div>
         </div>
+    );
+}
+
+function EventSection({ title, events }: { title: string; events: Event[] }) {
+    return (
+        <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                <h2 className="text-2xl font-semibold">{title}</h2>
+            </div>
+            <div className="p-4">
+                {events.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {events.map((event) => (
+                            <EventCard key={event.id} event={event} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex justify-center items-center py-8">
+                        <div className="flex flex-col items-center text-center max-w-md">
+                            <h3 className="text-lg sm:text-xl font-bold tracking-tight mb-2">
+                                You have no activity with us so far
+                            </h3>
+                            <p className="text-sm sm:text-base text-muted-foreground">
+                                Events will show when you participate in events
+                                with She Got Buckets
+                            </p>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </section>
+    );
+}
+
+function EventCard({ event }: { event: Event }) {
+    return (
+        <Card className="h-full flex flex-col">
+            <CardHeader className="pb-2">
+                <CardTitle className="text-lg sm:text-xl">
+                    {event.name}
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow pt-2">
+                <p className="text-sm text-muted-foreground mb-1">
+                    Date: {event.date}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                    Location: {event.location}
+                </p>
+            </CardContent>
+        </Card>
     );
 }

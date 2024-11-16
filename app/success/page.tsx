@@ -16,10 +16,6 @@ export default async function SuccessPage({
         searchParams?.session_id as string
     );
 
-    const jsonString = JSON.stringify(session, null, 2);
-    // eslint-disable-next-line no-console
-    console.log(jsonString);
-
     return (
         <main className="flex min-w-screen flex-col items-center justify-between">
             <NavBar />

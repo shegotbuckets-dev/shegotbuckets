@@ -7,56 +7,78 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarSeparator,
 } from "@/components/ui/sidebar";
 
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import * as React from "react";
+
+import { basketball } from "@lucide/lab";
+import { CircleDollarSign, HomeIcon, Icon, Settings } from "lucide-react";
+import type { IconNode } from "lucide-react";
+
+// Define a type for our menu items
+type MenuItem = {
+    title: string;
+    url: string;
+    icon: any;
+    isLab?: boolean;
+    separator?: boolean;
+};
 
 // Menu items.
-const items = [
+const items: MenuItem[] = [
     {
-        title: "Home",
-        url: "#",
-        icon: Home,
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: HomeIcon,
     },
     {
-        title: "Inbox",
-        url: "#",
-        icon: Inbox,
+        title: "Events",
+        url: "/dashboard/events",
+        icon: basketball,
+        isLab: true,
     },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
+    // {
+    //     title: "Payments",
+    //     url: "/dashboard/payments",
+    //     icon: CircleDollarSign,
+    // },
     {
         title: "Settings",
-        url: "#",
+        url: "/dashboard/settings",
         icon: Settings,
+        separator: true,
     },
 ];
 
 export function DashboardSidebar() {
     return (
-        <Sidebar>
+        <Sidebar variant="sidebar" className="top-[3.5rem] lg:top-16">
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
+                            {items.map((item, index) => (
+                                <React.Fragment key={item.title}>
+                                    {item.separator && <SidebarSeparator />}
+                                    <SidebarMenuItem>
+                                        <SidebarMenuButton asChild>
+                                            <a href={item.url}>
+                                                {item.isLab ? (
+                                                    <Icon
+                                                        iconNode={
+                                                            item.icon as IconNode
+                                                        }
+                                                        className="h-3 w-3"
+                                                    />
+                                                ) : (
+                                                    <item.icon className="h-3 w-3" />
+                                                )}
+                                                <span>{item.title}</span>
+                                            </a>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                </React.Fragment>
                             ))}
                         </SidebarMenu>
                     </SidebarGroupContent>

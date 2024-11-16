@@ -18,21 +18,11 @@ export const userCreate = async ({
             ]);
 
         if (error) {
-            console.error("[UserCreate] Failed:", {
-                userId: user_id,
-                error: error.message,
-                code: error.code,
-            });
             return error;
         }
 
-        console.log("[UserCreate] Success:", { userId: user_id, email });
         return { success: true };
     } catch (error: any) {
-        console.error("[UserCreate] Exception:", {
-            userId: user_id,
-            error: error.message,
-        });
         throw error;
     }
 };
