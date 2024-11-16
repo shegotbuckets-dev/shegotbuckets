@@ -124,16 +124,18 @@ export function UploadRosterButton({
                             {event.title_short ?? event.title}
                         </span>
                     </DialogTitle>
-                    <DialogDescription>
-                        <p className="text-sm text-muted-foreground">
-                            Drag and drop a CSV file here, or Click to select
-                            your roster file.
-                        </p>
-                        <div className="text-sm">
-                            <strong>
-                                CSV must have these columns: first_name,
-                                last_name, gmail
-                            </strong>
+                    <DialogDescription asChild>
+                        <div className="space-y-2">
+                            <div className="text-sm text-muted-foreground">
+                                Drag and drop a CSV file here, or Click to
+                                select your roster file.
+                            </div>
+                            <div className="text-sm">
+                                <strong>
+                                    CSV must have these columns: first_name,
+                                    last_name, gmail
+                                </strong>
+                            </div>
                         </div>
                     </DialogDescription>
                 </DialogHeader>
@@ -144,15 +146,11 @@ export function UploadRosterButton({
                     }`}
                 >
                     <input {...getInputProps()} />
-                    {uploadedFile ? (
-                        <p className="text-sm text-muted-foreground">
-                            File uploaded: {uploadedFile.name}
-                        </p>
-                    ) : (
-                        <p className="text-sm text-muted-foreground">
-                            Put your roster in CSV format here.
-                        </p>
-                    )}
+                    <div className="text-sm text-muted-foreground">
+                        {uploadedFile
+                            ? `File uploaded: ${uploadedFile.name}`
+                            : "Put your roster in CSV format here."}
+                    </div>
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
                     <Button
