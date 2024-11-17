@@ -3,30 +3,49 @@
 import { Database } from "@/constants/supabase";
 import { createServerClient } from "@/lib/supabase-server";
 
-export async function fetchLeagues(): Promise<
-    Database["public"]["Tables"]["leagues"]["Row"][]
-> {
-    const supabase = await createServerClient();
-    const { data: leagues, error } = await supabase.from("leagues").select("*");
+type TableNames = keyof Database["public"]["Tables"];
+type TableRow<T extends TableNames> = Database["public"]["Tables"][T]["Row"];
 
-    if (error) {
-        throw new Error(`Failed to fetch leagues: ${error.message}`);
+export async function fetchFromTable<T extends TableNames>(
+    table: T,
+    options?: {
+        select?: string;
+        eq?: { column: string; value: string };
+    }
+): Promise<TableRow<T>[]> {
+    const supabase = await createServerClient();
+    let query = supabase.from(table).select(options?.select || "*");
+
+    if (options?.eq) {
+        query = query.eq(options.eq.column, options.eq.value);
     }
 
-    return leagues ?? [];
+    const { data, error } = await query;
+
+    if (error) {
+        throw new Error(`Failed to fetch from ${table}: ${error.message}`);
+    }
+
+    return (data as unknown as TableRow<T>[]) ?? [];
 }
 
-export async function fetchEvents(): Promise<
-    Database["public"]["Tables"]["events"]["Row"][]
-> {
-    const supabase = await createServerClient();
-    const { data: events, error } = await supabase.from("events").select("*");
+// Simplified wrapper functions with type safety
+export async function fetchLeagues() {
+    return fetchFromTable("leagues") as Promise<TableRow<"leagues">[]>;
+}
 
-    if (error) {
-        throw new Error(`Failed to fetch events: ${error.message}`);
-    }
+export async function fetchEvents() {
+    return fetchFromTable("events") as Promise<TableRow<"events">[]>;
+}
 
-    return events ?? [];
+export async function fetchTeams() {
+    return fetchFromTable("teams") as Promise<TableRow<"teams">[]>;
+}
+
+export async function fetchRegistrations() {
+    return fetchFromTable("registrations") as Promise<
+        TableRow<"registrations">[]
+    >;
 }
 
 export async function fetchLeagueById(
@@ -50,80 +69,23 @@ export async function fetchLeagueById(
     return league;
 }
 
-export async function fetchEventById(
-    eventId: string
-): Promise<Database["public"]["Tables"]["events"]["Row"]> {
-    if (!eventId) {
-        throw new Error("Event ID is required");
-    }
-
+// Keep the existing insertMultipleRowsToTable function
+export async function insertMultipleRowsToTable<T extends TableNames>(
+    table: T,
+    rows: Database["public"]["Tables"][T]["Insert"][]
+): Promise<TableRow<T>[]> {
     const supabase = await createServerClient();
-    const { data: event, error } = await supabase
-        .from("events")
-        .select("*")
-        .eq("event_id", eventId)
-        .single();
 
-    if (error) {
-        throw new Error(`Failed to fetch events: ${error.message}`);
-    }
-
-    return event;
-}
-
-export async function fetchEventsByLeagueId(
-    leagueId: string
-): Promise<Database["public"]["Tables"]["events"]["Row"][]> {
-    const supabase = await createServerClient();
-    const { data: events, error } = await supabase
-        .from("events")
-        .select("*")
-        .eq("league_id", leagueId); // Filter by the given league_id
+    const { data: insertedRows, error } = await supabase
+        .from(table)
+        .insert(rows)
+        .select("*");
 
     if (error) {
         throw new Error(
-            `Failed to fetch events for league ID ${leagueId}: ${error.message}`
+            `Failed to insert rows into ${table}: ${error.message}`
         );
     }
 
-    return events ?? [];
+    return insertedRows || [];
 }
-
-// type LeagueRow = Database["public"]["Tables"]["leagues"]["Row"];
-// interface LeagueWithEvents extends LeagueRow {
-//     events: Database["public"]["Tables"]["events"]["Row"][];
-// }
-
-// export async function fetchLeaguesWithEvents(): Promise<LeagueWithEvents[]> {
-//     const supabase = await createServerClient();
-
-//     // Fetch leagues with associated events
-//     const { data: leagues, error } = await supabase.from("leagues").select(`
-//             league_id,
-//             name,
-//             description,
-//             date,
-//             location,
-//             image_url,
-//             events (
-//                 event_id,
-//                 league_id,
-//                 title,
-//                 title_short,
-//                 subtitle,
-//                 image,
-//                 description,
-//                 date,
-//                 location,
-//                 price
-//             )
-//         `); // Assumes "events" is the foreign key relationship
-
-//     if (error) {
-//         throw new Error(
-//             `Failed to fetch leagues with events: ${error.message}`
-//         );
-//     }
-
-//     return leagues ?? [];
-// }

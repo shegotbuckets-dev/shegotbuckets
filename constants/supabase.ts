@@ -89,32 +89,125 @@ export type Database = {
                 };
                 Relationships: [];
             };
-            user_events: {
+            registration_players: {
                 Row: {
-                    event_id: string;
-                    joined_at: string | null;
-                    user_id: string;
+                    first_name: string;
+                    last_name: string;
+                    registration_id: string;
+                    user_email: string;
+                    waiver_signed: boolean;
                 };
                 Insert: {
-                    event_id: string;
-                    joined_at?: string | null;
-                    user_id: string;
+                    first_name: string;
+                    last_name: string;
+                    registration_id: string;
+                    user_email: string;
+                    waiver_signed: boolean;
                 };
                 Update: {
-                    event_id?: string;
-                    joined_at?: string | null;
-                    user_id?: string;
+                    first_name?: string;
+                    last_name?: string;
+                    registration_id?: string;
+                    user_email?: string;
+                    waiver_signed?: boolean;
                 };
                 Relationships: [
                     {
-                        foreignKeyName: "user_events_event_id_fkey";
+                        foreignKeyName: "team_players_team_id_fkey";
+                        columns: ["registration_id"];
+                        isOneToOne: false;
+                        referencedRelation: "teams";
+                        referencedColumns: ["team_id"];
+                    },
+                    {
+                        foreignKeyName: "team_players_user_email_fkey";
+                        columns: ["user_email"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
+                        referencedColumns: ["email"];
+                    },
+                ];
+            };
+            registrations: {
+                Row: {
+                    created_at: string | null;
+                    event_id: string;
+                    registration_id: string;
+                    team_id: string;
+                };
+                Insert: {
+                    created_at?: string | null;
+                    event_id: string;
+                    registration_id?: string;
+                    team_id: string;
+                };
+                Update: {
+                    created_at?: string | null;
+                    event_id?: string;
+                    registration_id?: string;
+                    team_id?: string;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "registrations_event_id_fkey";
                         columns: ["event_id"];
                         isOneToOne: false;
                         referencedRelation: "events";
                         referencedColumns: ["event_id"];
                     },
                     {
-                        foreignKeyName: "user_events_user_id_fkey";
+                        foreignKeyName: "registrations_team_id_fkey";
+                        columns: ["team_id"];
+                        isOneToOne: false;
+                        referencedRelation: "teams";
+                        referencedColumns: ["team_id"];
+                    },
+                ];
+            };
+            teams: {
+                Row: {
+                    created_at: string | null;
+                    name: string;
+                    team_id: string;
+                };
+                Insert: {
+                    created_at?: string | null;
+                    name: string;
+                    team_id?: string;
+                };
+                Update: {
+                    created_at?: string | null;
+                    name?: string;
+                    team_id?: string;
+                };
+                Relationships: [];
+            };
+            user_teams: {
+                Row: {
+                    joined_at: string | null;
+                    team_id: string;
+                    user_id: string;
+                };
+                Insert: {
+                    joined_at?: string | null;
+                    team_id: string;
+                    user_id: string;
+                };
+                Update: {
+                    joined_at?: string | null;
+                    team_id?: string;
+                    user_id?: string;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "user_teams_team_id_fkey";
+                        columns: ["team_id"];
+                        isOneToOne: false;
+                        referencedRelation: "teams";
+                        referencedColumns: ["team_id"];
+                    },
+                    {
+                        foreignKeyName: "user_teams_user_id_fkey";
                         columns: ["user_id"];
                         isOneToOne: false;
                         referencedRelation: "users";

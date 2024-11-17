@@ -12,8 +12,13 @@ import {
 
 import * as React from "react";
 
-import { basketball } from "@lucide/lab";
-import { CircleDollarSign, HomeIcon, Icon, Settings } from "lucide-react";
+// import { basketball } from "@lucide/lab";
+import {
+    // CircleDollarSign,
+    HomeIcon,
+    Icon,
+    Settings, // Users,
+} from "lucide-react";
 import type { IconNode } from "lucide-react";
 
 // Define a type for our menu items
@@ -32,16 +37,21 @@ const items: MenuItem[] = [
         url: "/dashboard",
         icon: HomeIcon,
     },
-    {
-        title: "Events",
-        url: "/dashboard/events",
-        icon: basketball,
-        isLab: true,
-    },
+    // {
+    //     title: "Events",
+    //     url: "/dashboard/events",
+    //     icon: basketball,
+    //     isLab: true,
+    // },
     // {
     //     title: "Payments",
     //     url: "/dashboard/payments",
     //     icon: CircleDollarSign,
+    // },
+    // {
+    //     title: "Team Roster",
+    //     url: "/dashboard/roster",
+    //     icon: Users,
     // },
     {
         title: "Settings",
