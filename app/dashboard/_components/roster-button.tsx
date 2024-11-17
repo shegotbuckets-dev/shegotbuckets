@@ -25,9 +25,7 @@ export function RosterButton({ event }: RosterButtonProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" size="sm">
-                    View Roster
-                </Button>
+                <span>View Roster</span>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>

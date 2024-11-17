@@ -143,34 +143,50 @@ function prepareTableHeader(events: EventTableData[]) {
     return hasTeams ? HEADERS.previousWithTeam : HEADERS.previous;
 }
 
+const BADGE_CLASSNAME =
+    "w-24 h-6 truncate text-center justify-center cursor-default";
+const BADGE_CLASSNAME_CLICKABLE =
+    "w-24 h-6 truncate text-center justify-center cursor-pointer";
+
 function RegisterOrParticipatedCell({
     event,
     teams,
+    onRegisterSuccess,
 }: {
     event: EventTableData;
     teams: Database["public"]["Tables"]["teams"]["Row"][];
+    onRegisterSuccess: () => void;
 }) {
     if (!event.active) {
         return (
-            <Badge variant={event.registered ? "active" : "secondary"}>
+            <Badge
+                variant={event.registered ? "green" : "secondary"}
+                className={BADGE_CLASSNAME}
+            >
                 {event.registered ? "Yes" : "No"}
             </Badge>
         );
     }
 
     return event.registered ? (
-        <Badge variant="active">Registered</Badge>
+        <Badge variant="green" className={BADGE_CLASSNAME}>
+            Registered
+        </Badge>
     ) : (
-        <RegisterButton
-            event={event}
-            teams={teams}
-            eventRegistrations={event.eventRegistrations}
-        />
+        <Badge variant="outline" className={BADGE_CLASSNAME_CLICKABLE}>
+            <RegisterButton
+                event={event}
+                teams={teams}
+                eventRegistrations={event.eventRegistrations}
+                onRegisterSuccess={onRegisterSuccess}
+            />
+        </Badge>
     );
 }
 
 export default function EventsTable({
     eventData,
+    onRegisterSuccess,
 }: {
     eventData: {
         events: Database["public"]["Tables"]["events"]["Row"][];
@@ -178,6 +194,7 @@ export default function EventsTable({
         registrations: Database["public"]["Tables"]["registrations"]["Row"][];
         registrationPlayers: Database["public"]["Tables"]["registration_players"]["Row"][];
     };
+    onRegisterSuccess: () => void;
 }) {
     const { user } = useUser();
     const email = user?.emailAddresses[0].emailAddress;
@@ -203,6 +220,7 @@ export default function EventsTable({
             tableData={tableData}
             tableHeaders={[...tableHeaders]}
             teams={eventData.teams}
+            onRegisterSuccess={onRegisterSuccess}
         />
     );
 }
@@ -210,28 +228,55 @@ export default function EventsTable({
 function RosterCell({ event }: { event: EventTableData }) {
     if (!event.active) {
         return (
-            <Badge variant={event.registered ? "active" : "secondary"}>
+            <Badge
+                variant={event.registered ? "green" : "secondary"}
+                className={BADGE_CLASSNAME}
+            >
                 {event.registered ? "Yes" : "N/A"}
             </Badge>
         );
     }
 
     if (event.rosterUploaded) {
-        return <RosterButton event={event} />;
+        return (
+            <Badge variant="green" className={BADGE_CLASSNAME_CLICKABLE}>
+                <RosterButton event={event} />
+            </Badge>
+        );
     }
 
-    return <Badge variant="secondary">N/A</Badge>;
+    return (
+        <Badge variant="secondary" className={BADGE_CLASSNAME}>
+            N/A
+        </Badge>
+    );
 }
 
 function WaiverCell({ event }: { event: EventTableData }) {
     if (!event.registered) {
-        return <Badge variant="secondary">N/A</Badge>;
+        return (
+            <Badge variant="secondary" className={BADGE_CLASSNAME}>
+                N/A
+            </Badge>
+        );
     }
 
     return event.waiverSigned ? (
-        <Badge variant="secondary">Waiver Signed</Badge>
+        <Badge variant="green" className={BADGE_CLASSNAME}>
+            Waiver Signed
+        </Badge>
     ) : (
-        <SignWaiverButton />
+        <Badge variant="pending" className={BADGE_CLASSNAME_CLICKABLE}>
+            <SignWaiverButton />
+        </Badge>
+    );
+}
+
+function TeamCell({ event }: { event: EventTableData }) {
+    return (
+        <Badge variant="secondary" className={BADGE_CLASSNAME}>
+            {event.team !== "N/A" ? event.team : "N/A"}
+        </Badge>
     );
 }
 
@@ -239,11 +284,15 @@ function EventsTableContent({
     tableData,
     tableHeaders,
     teams,
+    onRegisterSuccess,
 }: {
     tableData: EventTableData[];
     tableHeaders: readonly string[];
     teams: Database["public"]["Tables"]["teams"]["Row"][];
+    onRegisterSuccess: () => void;
 }) {
+    const hasTeamColumn = tableData.some((event) => event.team !== "N/A");
+
     return (
         <div className="overflow-x-auto">
             <Table>
@@ -263,13 +312,16 @@ function EventsTableContent({
                             <TableCell>{event.subtitle}</TableCell>
                             <TableCell>{event.date}</TableCell>
                             <TableCell>{event.location}</TableCell>
-                            {event.team !== "N/A" && (
-                                <TableCell>{event.team}</TableCell>
+                            {hasTeamColumn && (
+                                <TableCell>
+                                    <TeamCell event={event} />
+                                </TableCell>
                             )}
                             <TableCell>
                                 <RegisterOrParticipatedCell
                                     event={event}
                                     teams={teams}
+                                    onRegisterSuccess={onRegisterSuccess}
                                 />
                             </TableCell>
                             <TableCell>

@@ -1,5 +1,7 @@
 "use client";
 
+// import { insertMultipleRowsToTable } from "@/utils/actions/supabase";
+import { RegisterEventBody } from "@/app/api/register-event/route";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -17,30 +19,22 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import { Database } from "@/constants/supabase";
-import { insertMultipleRowsToTable } from "@/utils/actions/supabase";
 
 import { useState } from "react";
-import { useDropzone } from "react-dropzone";
 
 import Papa from "papaparse";
 import { v4 as uuidv4 } from "uuid";
 
 import { EventTableData } from "./events-table";
+import { RosterUpload } from "./roster-upload";
 
 interface RegisterButtonProps {
     event: EventTableData;
     teams: Database["public"]["Tables"]["teams"]["Row"][];
     eventRegistrations: Database["public"]["Tables"]["registrations"]["Row"][];
+    onRegisterSuccess: () => void;
 }
 
 interface EventDetailsProps {
@@ -49,7 +43,7 @@ interface EventDetailsProps {
     price: string;
 }
 
-interface RosterData {
+export interface RosterData {
     first_name: string;
     last_name: string;
     gmail: string;
@@ -74,13 +68,12 @@ export function RegisterButton({
     event,
     teams,
     eventRegistrations,
+    onRegisterSuccess,
 }: RegisterButtonProps) {
     const { toast } = useToast();
     const [selectedTeam, setSelectedTeam] = useState<string>("");
     const [isRegistering, setIsRegistering] = useState(false);
     const [open, setOpen] = useState(false);
-
-    // Add new states for roster upload
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [parsedData, setParsedData] = useState<RosterData[]>([]);
 
@@ -104,106 +97,66 @@ export function RegisterButton({
         });
     };
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        onDrop,
-        accept: {
-            "text/csv": [".csv"],
-        },
-        multiple: false,
-        disabled: isRegistering,
-    });
-
-    const renderPreviewTable = () => {
-        if (!parsedData.length) return null;
-
-        const columns = Object.keys(parsedData[0]);
-
-        return (
-            <div className="overflow-auto max-h-[400px] mt-4">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableHead key={column} className="text-center">
-                                    {column}
-                                </TableHead>
-                            ))}
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {parsedData.map((row, index) => (
-                            <TableRow key={index}>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column}
-                                        className="text-center"
-                                    >
-                                        {row[column]}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
-        );
-    };
-
     const handleConfirmRegistration = async () => {
-        if (!selectedTeam || !uploadedFile) {
-            toast({
-                variant: "destructive",
-                title: "Error",
-                description: "Please select a team and upload a roster file",
-            });
-            return;
-        }
-
-        setIsRegistering(true);
-        const team = teams.find((t) => t.name === selectedTeam);
-        if (!team?.team_id) return;
-
-        const isTeamRegistered = eventRegistrations.some(
-            (registration) => registration.team_id === team.team_id
-        );
-
-        if (isTeamRegistered) {
-            toast({
-                variant: "warning",
-                title: "Team Already Registered",
-                description: `${selectedTeam} is already registered for this event.`,
-            });
-            setIsRegistering(false);
-            return;
-        }
-
         try {
-            const registrationData = {
-                registration_id: uuidv4(),
+            setIsRegistering(true);
+            if (!selectedTeam || !uploadedFile) {
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description:
+                        "Please select a team and upload a roster file",
+                });
+                return;
+            }
+
+            const team = teams.find((t) => t.name === selectedTeam);
+            if (!team?.team_id) return;
+
+            const isTeamRegistered = eventRegistrations.some(
+                (registration) => registration.team_id === team.team_id
+            );
+
+            if (isTeamRegistered) {
+                toast({
+                    variant: "warning",
+                    title: "Team Already Registered",
+                    description: `${selectedTeam} is already registered for this event.`,
+                });
+                setIsRegistering(false);
+                return;
+            }
+
+            const data: RegisterEventBody = {
                 event_id: event.id,
                 team_id: team.team_id,
-                created_at: new Date().toISOString(),
+                players: parsedData.map((player) => ({
+                    user_email: player.gmail,
+                    first_name: player.first_name,
+                    last_name: player.last_name,
+                })),
             };
 
-            await insertMultipleRowsToTable("registrations", [
-                registrationData,
-            ]);
+            const response = await fetch("/api/register-event", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
 
-            // Here you can add the roster upload logic
-            // const regPlayers = parsedData.map((row) => ({
-            //     registration_id: registrationData.registration_id,
-            //     first_name: row.first_name,
-            //     last_name: row.last_name,
-            //     user_email: row.gmail,
-            // }));
-            // await insertMultipleRowsToTable("registration_players", regPlayers);
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || "Failed to register player");
+            }
 
-            setOpen(false);
             toast({
                 title: "Registration Successful",
                 description:
                     "Team registered and roster uploaded successfully.",
             });
+
+            resetForm();
+            setOpen(false);
+            onRegisterSuccess();
         } catch (error) {
             toast({
                 variant: "destructive",
@@ -235,7 +188,7 @@ export function RegisterButton({
             }}
         >
             <DialogTrigger asChild>
-                <Button variant="action">Register</Button>
+                <span>Register</span>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px] md:max-w-[700px] h-[80vh] flex flex-col">
                 <DialogHeader>
@@ -287,30 +240,12 @@ export function RegisterButton({
                         </Select>
                     </div>
 
-                    <div className="space-y-4 flex-1 min-h-0 pb-4">
-                        <div className="text-sm">
-                            <strong>
-                                CSV must have these columns: first_name,
-                                last_name, gmail
-                            </strong>
-                        </div>
-                        <div
-                            {...getRootProps()}
-                            className={`border-2 border-dashed rounded-md p-8 text-center cursor-pointer h-[calc(100%-2rem)] overflow-auto ${
-                                isDragActive
-                                    ? "border-primary"
-                                    : "border-gray-300"
-                            } ${isRegistering ? "opacity-50 cursor-not-allowed" : ""}`}
-                        >
-                            <input {...getInputProps()} />
-                            <div className="text-lg text-muted-foreground mb-4 sticky top-0 bg-background py-2">
-                                {uploadedFile
-                                    ? `File uploaded: ${uploadedFile.name}`
-                                    : "Put your roster in CSV format here."}
-                            </div>
-                            {renderPreviewTable()}
-                        </div>
-                    </div>
+                    <RosterUpload
+                        uploadedFile={uploadedFile}
+                        parsedData={parsedData}
+                        isRegistering={isRegistering}
+                        onDrop={onDrop}
+                    />
 
                     <div className="flex justify-end space-x-2">
                         <Button

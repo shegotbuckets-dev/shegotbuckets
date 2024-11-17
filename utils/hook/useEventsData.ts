@@ -1,9 +1,10 @@
 import { Database } from "@/constants/supabase";
 import { fetchFromTable } from "@/utils/actions/supabase";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useEventsData() {
+    const [loading, setLoading] = useState(true);
     const [eventData, setEventData] = useState<{
         events: Database["public"]["Tables"]["events"]["Row"][];
         teams: Database["public"]["Tables"]["teams"]["Row"][];
@@ -15,34 +16,37 @@ export function useEventsData() {
         registrations: [],
         registrationPlayers: [],
     });
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [events, teams, registrations, players] =
-                    await Promise.all([
-                        fetchFromTable("events"),
-                        fetchFromTable("teams"),
-                        fetchFromTable("registrations"),
-                        fetchFromTable("registration_players"),
-                    ]);
+    const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            const [events, teams, registrations, players] = await Promise.all([
+                fetchFromTable("events"),
+                fetchFromTable("teams"),
+                fetchFromTable("registrations"),
+                fetchFromTable("registration_players"),
+            ]);
 
-                setEventData({
-                    events,
-                    teams,
-                    registrations,
-                    registrationPlayers: players,
-                });
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
+            setEventData({
+                events,
+                teams,
+                registrations,
+                registrationPlayers: players,
+            });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            setLoading(false);
+        }
     }, []);
 
-    return { loading, eventData };
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    return {
+        loading,
+        eventData,
+        refresh: fetchData,
+    };
 }
