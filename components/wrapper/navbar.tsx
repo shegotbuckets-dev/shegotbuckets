@@ -106,7 +106,9 @@ export default function NavBar() {
             {/* Mobile Navigation */}
             <div className="flex justify-between w-full items-center min-[825px]:hidden">
                 <MobileMenu navItems={navItems} />
-                <Logos.sgbLogo currentTheme={currentTheme ?? "light"} />
+                <Link href="/">
+                    <Logos.sgbLogo currentTheme={currentTheme ?? "light"} />
+                </Link>
                 <div className="flex items-center gap-2">
                     {userId && <UserProfile />}
                     {!userId && (
@@ -124,10 +126,12 @@ export default function NavBar() {
             <NavigationMenu className="py-1 flex-grow max-[825px]:hidden">
                 <div className="flex justify-between items-center w-full">
                     <NavigationMenuList className="flex items-center gap-6">
-                        <Logos.sgbLogo
-                            currentTheme={currentTheme ?? "light"}
-                            size="large"
-                        />
+                        <Link href="/">
+                            <Logos.sgbLogo
+                                currentTheme={currentTheme ?? "light"}
+                                size="large"
+                            />
+                        </Link>
                         <DesktopMenuItems navItems={navItems} />
                     </NavigationMenuList>
                 </div>

@@ -14,7 +14,7 @@ import { useEventsData } from "@/utils/hook/useEventsData";
 import EventsTable from "./events-table";
 
 export default function EventSection() {
-    const { loading, eventData } = useEventsData();
+    const { loading, eventData, refresh } = useEventsData();
 
     return (
         <div className="space-y-6">
@@ -31,6 +31,7 @@ export default function EventSection() {
                                 (event) => event.active
                             ),
                         }}
+                        onRegisterSuccess={refresh}
                     />
                 </div>
             </section>
@@ -48,6 +49,7 @@ export default function EventSection() {
                                 (event) => !event.active
                             ),
                         }}
+                        onRegisterSuccess={refresh}
                     />
                 </div>
             </section>
@@ -58,9 +60,11 @@ export default function EventSection() {
 function EventsTableContainer({
     loading,
     eventData,
+    onRegisterSuccess,
 }: {
     loading: boolean;
     eventData: ReturnType<typeof useEventsData>["eventData"];
+    onRegisterSuccess: () => void;
 }) {
     if (loading) {
         return <TableSkeleton />;
@@ -81,7 +85,12 @@ function EventsTableContainer({
         );
     }
 
-    return <EventsTable eventData={eventData} />;
+    return (
+        <EventsTable
+            eventData={eventData}
+            onRegisterSuccess={onRegisterSuccess}
+        />
+    );
 }
 
 function TableSkeleton() {
