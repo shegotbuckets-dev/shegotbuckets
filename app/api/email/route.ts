@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
     try {
         const { data } = await resend.emails.send({
-            from: "David <onboarding@resend.dev>",
+            from: "sgb-no-reply <noreply@shegotbuckets.org>",
             to: [`${body.email}`],
             subject: "Welcome to SGB!!!",
             react: WaiverSignedEmail({ name: `${body.name}` }),
