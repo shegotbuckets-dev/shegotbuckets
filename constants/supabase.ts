@@ -95,18 +95,21 @@ export type Database = {
                     last_name: string;
                     registration_id: string;
                     user_email: string;
+                    waiver_signed: boolean;
                 };
                 Insert: {
                     first_name: string;
                     last_name: string;
                     registration_id: string;
                     user_email: string;
+                    waiver_signed: boolean;
                 };
                 Update: {
                     first_name?: string;
                     last_name?: string;
                     registration_id?: string;
                     user_email?: string;
+                    waiver_signed?: boolean;
                 };
                 Relationships: [
                     {
@@ -178,6 +181,39 @@ export type Database = {
                     team_id?: string;
                 };
                 Relationships: [];
+            };
+            user_teams: {
+                Row: {
+                    joined_at: string | null;
+                    team_id: string;
+                    user_id: string;
+                };
+                Insert: {
+                    joined_at?: string | null;
+                    team_id: string;
+                    user_id: string;
+                };
+                Update: {
+                    joined_at?: string | null;
+                    team_id?: string;
+                    user_id?: string;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "user_teams_team_id_fkey";
+                        columns: ["team_id"];
+                        isOneToOne: false;
+                        referencedRelation: "teams";
+                        referencedColumns: ["team_id"];
+                    },
+                    {
+                        foreignKeyName: "user_teams_user_id_fkey";
+                        columns: ["user_id"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
+                        referencedColumns: ["user_id"];
+                    },
+                ];
             };
             users: {
                 Row: {
