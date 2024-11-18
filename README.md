@@ -29,11 +29,11 @@ The commit message type must be one of the following:
 
 ## Prerequisites
 
--   Node.js and yarn/bun installed
+-   Node.js and npminstalled
 -   Accounts and API keys for:
     -   Supabase
+    -   Clerk
     -   Stripe (if using payments)
-    -   Clerk (if using authentication)
 
 ## Setup
 
@@ -58,7 +58,6 @@ The commit message type must be one of the following:
 
 -   Webhooks: Set up webhooks for Clerk (if using auth) at `/api/auth/webhook` and for Stripe (if using payments) at `/api/payments/webhook`.
 -   Customize the landing page, dashboard, and other components as needed.
--   Modify the Prisma schema in `prisma/schema.prisma` if you need to change the database structure.
 
 ## Important Security Notes
 
