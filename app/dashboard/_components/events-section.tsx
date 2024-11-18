@@ -9,15 +9,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useEventsData } from "@/utils/hook/useEventsData";
+import { DashboardData, useDashboardData } from "@/utils/hook/useDashboardData";
 
 import EventsTable from "./events-table";
 
 export default function EventSection() {
-    const { loading, eventData, refresh } = useEventsData();
+    const { loading, dashboardData, refresh } = useDashboardData();
 
     return (
         <div className="space-y-6">
+            {/* Available Events */}
             <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                     <h2 className="text-2xl font-semibold">Available Events</h2>
@@ -25,17 +26,18 @@ export default function EventSection() {
                 <div className="p-4">
                     <EventsTableContainer
                         loading={loading}
-                        eventData={{
-                            ...eventData,
-                            events: eventData.events.filter(
+                        dashboardData={{
+                            ...dashboardData,
+                            events: dashboardData.events.filter(
                                 (event) => event.active
                             ),
                         }}
-                        onRegisterSuccess={refresh}
+                        onButtonSuccess={refresh}
                     />
                 </div>
             </section>
 
+            {/* Previous Events */}
             <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
                     <h2 className="text-2xl font-semibold">Previous Events</h2>
@@ -43,13 +45,13 @@ export default function EventSection() {
                 <div className="p-4">
                     <EventsTableContainer
                         loading={loading}
-                        eventData={{
-                            ...eventData,
-                            events: eventData.events.filter(
+                        dashboardData={{
+                            ...dashboardData,
+                            events: dashboardData.events.filter(
                                 (event) => !event.active
                             ),
                         }}
-                        onRegisterSuccess={refresh}
+                        onButtonSuccess={refresh}
                     />
                 </div>
             </section>
@@ -59,18 +61,18 @@ export default function EventSection() {
 
 function EventsTableContainer({
     loading,
-    eventData,
-    onRegisterSuccess,
+    dashboardData,
+    onButtonSuccess,
 }: {
     loading: boolean;
-    eventData: ReturnType<typeof useEventsData>["eventData"];
-    onRegisterSuccess: () => void;
+    dashboardData: DashboardData;
+    onButtonSuccess: () => void;
 }) {
     if (loading) {
         return <TableSkeleton />;
     }
 
-    if (eventData.events.length === 0) {
+    if (dashboardData.events.length === 0) {
         return (
             <div className="flex justify-center items-center py-8">
                 <div className="flex flex-col items-center text-center max-w-md">
@@ -87,8 +89,8 @@ function EventsTableContainer({
 
     return (
         <EventsTable
-            eventData={eventData}
-            onRegisterSuccess={onRegisterSuccess}
+            dashboardData={dashboardData}
+            onButtonSuccess={onButtonSuccess}
         />
     );
 }

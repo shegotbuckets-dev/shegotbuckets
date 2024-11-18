@@ -1,33 +1,19 @@
 "use client";
 
+import { EventTableData } from "@/app/dashboard/_components/events-table";
 import { SignatureCanvas } from "@/components/sign-waiver/signature-canvas";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { emailAPI } from "@/utils/hook/useEmail";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useUser } from "@clerk/nextjs";
-import { InfoIcon } from "lucide-react";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { InfoIcon, Loader2 } from "lucide-react";
 
 interface EmailData {
     name: string;
@@ -38,68 +24,105 @@ interface EmailResponse {
     data: { id: string };
 }
 
-export default function SignWaiver() {
+interface SignWaiverProps {
+    onButtonSuccess: () => void;
+    event: EventTableData;
+}
+
+export default function SignWaiver({
+    onButtonSuccess,
+    event,
+}: SignWaiverProps) {
+    // States
     const [isBottomReached, setIsBottomReached] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [signature, setSignature] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [openSignatureDialog, setOpenSignatureDialog] = useState(false);
+
+    // Refs
     const scrollRef = useRef<HTMLDivElement>(null);
-    const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-    const [showErrorDialog, setShowErrorDialog] = useState(false);
-    const router = useRouter();
 
-    let user = null;
-    user = useUser();
+    // Hooks
+    const { toast } = useToast();
+    const { user } = useUser();
+    const userEmail = user?.emailAddresses[0].emailAddress;
 
-    const handleScroll = () => {
+    // Handlers
+    const handleScroll = useCallback(() => {
         if (scrollRef.current) {
             const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
             if (scrollHeight - scrollTop <= clientHeight + 1) {
                 setIsBottomReached(true);
             }
         }
-    };
+    }, []);
 
-    const onClose = () => {
-        setIsDialogOpen(false);
-    };
+    const handleUserWaiverStatusUpdate = useCallback(
+        async (status: boolean) => {
+            try {
+                const response = await fetch("/api/update-waiver-status", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        registration_id: event.registration_id,
+                        user_email: userEmail,
+                        status,
+                    }),
+                });
 
-    const onSave = (signature: any) => {
-        setSignature(signature);
-    };
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(
+                        `Failed to update waiver record: ${result.error}`
+                    );
+                }
+            } catch (error) {
+                throw new Error(
+                    "Failed to update waiver status: unknown error"
+                );
+            }
+        },
+        [userEmail]
+    );
 
-    const handleSignWaiver = async () => {
+    const handleSignWaiver = useCallback(async () => {
         setIsLoading(true);
-
         try {
+            await handleUserWaiverStatusUpdate(true);
             const response = await emailAPI<EmailData, EmailResponse>({
                 method: "POST",
                 endpoint: "/api/email",
                 data: {
-                    name: user.user?.firstName || " ",
-                    email: user.user?.emailAddresses[0].emailAddress || " ",
+                    name: user?.firstName || " ",
+                    email: userEmail || " ",
                 },
             });
 
             if (response.data.id) {
-                setShowSuccessDialog(true);
+                toast({
+                    variant: "success",
+                    title: "Waiver Signed",
+                    description:
+                        "Waiver signed successfully. Check your email for confirmation.",
+                });
+                onButtonSuccess();
             } else {
-                throw new Error("Something wrong");
+                throw new Error("Email sending failed");
             }
         } catch (error) {
-            setShowErrorDialog(true);
+            toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Something went wrong, please try again",
+            });
+            await handleUserWaiverStatusUpdate(false);
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [handleUserWaiverStatusUpdate, user, userEmail, toast, onButtonSuccess]);
 
-    const handleCloseAndRedirect = () => {
-        setShowSuccessDialog(false);
-        setIsDialogOpen(false);
-        router.push("/dashboard");
-    };
-
+    // Effects
     useEffect(() => {
         const scrollElement = scrollRef.current;
         if (scrollElement) {
@@ -107,7 +130,7 @@ export default function SignWaiver() {
             return () =>
                 scrollElement.removeEventListener("scroll", handleScroll);
         }
-    }, []);
+    }, [handleScroll]);
 
     const isButtonEnabled = isBottomReached && isChecked && signature;
 
@@ -120,14 +143,14 @@ export default function SignWaiver() {
             <Alert>
                 <InfoIcon className="h-4 w-4" />
                 <AlertDescription>
-                    Please read the entire document,check the agreement box,and
-                    sign your name to complete the waiver
+                    Please read the entire document, check the agreement box,
+                    and sign your name to complete the waiver
                 </AlertDescription>
             </Alert>
 
             <div
-                className="h-[300px] border rounded-md p-4 overflow-auto"
                 ref={scrollRef}
+                className="h-[300px] border rounded-md p-4 overflow-auto"
             >
                 <div className="space-y-4">
                     <p>
@@ -180,6 +203,12 @@ export default function SignWaiver() {
                 </div>
             </div>
 
+            {!isBottomReached && (
+                <div className="text-xs text-muted-foreground text-center italic">
+                    Scroll down to read all the terms
+                </div>
+            )}
+
             <div className="flex items-center space-x-2">
                 <Checkbox
                     id="terms"
@@ -195,28 +224,33 @@ export default function SignWaiver() {
                     I have read and agree to the terms and conditions
                 </label>
             </div>
-            <Button
-                className={cn(
-                    "w-full transition-colors bg-red-500 hover:bg-red-600"
-                )}
-                onClick={() => {
-                    setIsDialogOpen(true);
-                }}
+
+            <Dialog
+                open={openSignatureDialog}
+                onOpenChange={setOpenSignatureDialog}
             >
-                click here to sign your name !!!
-            </Button>
-            {signature && (
-                <div className="mt-4">
-                    <h3 className="text-lg font-semibold mb-2">
-                        Your Signature:
-                    </h3>
-                    <img
-                        src={signature}
-                        alt="Your signature"
-                        className="border rounded"
+                <DialogTrigger asChild>
+                    {signature ? (
+                        <img
+                            src={signature}
+                            alt="Your signature"
+                            className="border-2 border-gray-200 rounded-lg h-32 w-full object-contain cursor-pointer"
+                        />
+                    ) : (
+                        <div className="mt-2 border-2 border-dashed border-gray-200 rounded-lg h-32 flex items-center justify-center cursor-pointer">
+                            <span className="text-muted-foreground text-sm italic">
+                                Click here to sign your name
+                            </span>
+                        </div>
+                    )}
+                </DialogTrigger>
+                <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
+                    <SignatureCanvas
+                        onSave={setSignature}
+                        onCancel={() => setOpenSignatureDialog(false)}
                     />
-                </div>
-            )}
+                </DialogContent>
+            </Dialog>
 
             <Button
                 className={cn(
@@ -237,49 +271,6 @@ export default function SignWaiver() {
                     "Sign Waiver"
                 )}
             </Button>
-
-            <Dialog open={isDialogOpen} onOpenChange={() => {}}>
-                <DialogContent className="sm:max-w-[50rem]">
-                    <SignatureCanvas onSave={onSave} onClose={onClose} />
-                </DialogContent>
-            </Dialog>
-
-            <Dialog open={showSuccessDialog} onOpenChange={() => {}}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Waiver Signed Successfully</DialogTitle>
-                        <DialogDescription>
-                            Thank you for signing the waiver. Your signature has
-                            been recorded.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="mt-4">
-                        <img
-                            src={signature || ""}
-                            alt="Your signature"
-                            className="border rounded w-full"
-                        />
-                    </div>
-                    <Button onClick={handleCloseAndRedirect} className="mt-4">
-                        Close
-                    </Button>
-                </DialogContent>
-            </Dialog>
-
-            <AlertDialog
-                open={showErrorDialog}
-                onOpenChange={setShowErrorDialog}
-            >
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Error</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Looks like something went completely wrong!!!
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogAction>OK</AlertDialogAction>
-                </AlertDialogContent>
-            </AlertDialog>
         </div>
     );
 }

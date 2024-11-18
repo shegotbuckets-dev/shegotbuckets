@@ -1,6 +1,5 @@
 "use client";
 
-// import { insertMultipleRowsToTable } from "@/utils/actions/supabase";
 import { RegisterEventBody } from "@/app/api/register-event/route";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +20,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { Database } from "@/constants/supabase";
+import { DashboardData } from "@/utils/hook/useDashboardData";
 
 import { useState } from "react";
 
@@ -33,8 +33,8 @@ import { RosterUpload } from "./roster-upload";
 interface RegisterButtonProps {
     event: EventTableData;
     teams: Database["public"]["Tables"]["teams"]["Row"][];
-    eventRegistrations: Database["public"]["Tables"]["registrations"]["Row"][];
-    onRegisterSuccess: () => void;
+    registrations: Database["public"]["Tables"]["registrations"]["Row"][];
+    onButtonSuccess: () => void;
 }
 
 interface EventDetailsProps {
@@ -67,8 +67,8 @@ const EventDetails = ({ date, location, price }: EventDetailsProps) => (
 export function RegisterButton({
     event,
     teams,
-    eventRegistrations,
-    onRegisterSuccess,
+    registrations,
+    onButtonSuccess,
 }: RegisterButtonProps) {
     const { toast } = useToast();
     const [selectedTeam, setSelectedTeam] = useState<string>("");
@@ -110,13 +110,18 @@ export function RegisterButton({
                 return;
             }
 
+            // get the selected team information from dashboard data
             const team = teams.find((t) => t.name === selectedTeam);
             if (!team?.team_id) return;
 
-            const isTeamRegistered = eventRegistrations.some(
-                (registration) => registration.team_id === team.team_id
+            // check if the team is already registered for the event
+            const isTeamRegistered = registrations.some(
+                (registration) =>
+                    registration.team_id === team.team_id &&
+                    registration.registration_id == event.registration_id
             );
 
+            // if the team is already registered, show a toast and block current registration
             if (isTeamRegistered) {
                 toast({
                     variant: "warning",
@@ -127,8 +132,9 @@ export function RegisterButton({
                 return;
             }
 
+            // register the team for the event
             const data: RegisterEventBody = {
-                event_id: event.id,
+                event_id: event.event_id,
                 team_id: team.team_id,
                 players: parsedData.map((player) => ({
                     user_email: player.gmail,
@@ -149,6 +155,7 @@ export function RegisterButton({
             }
 
             toast({
+                variant: "success",
                 title: "Registration Successful",
                 description:
                     "Team registered and roster uploaded successfully.",
@@ -156,7 +163,7 @@ export function RegisterButton({
 
             resetForm();
             setOpen(false);
-            onRegisterSuccess();
+            onButtonSuccess();
         } catch (error) {
             toast({
                 variant: "destructive",
