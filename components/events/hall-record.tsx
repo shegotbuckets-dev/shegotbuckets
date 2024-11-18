@@ -15,7 +15,7 @@ const champions: Champion[] = [
     {
         id: 1,
         name: "Team Alpha",
-        year: 2023,
+        year: 2024,
         imageUrl: getMediaUrl(
             SupabaseStorageBucket.LEAGUES,
             "hor-2024.png",

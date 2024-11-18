@@ -88,6 +88,7 @@ export default function SignWaiver({
 
     const handleSignWaiver = useCallback(async () => {
         setIsLoading(true);
+
         try {
             await handleUserWaiverStatusUpdate(true);
             const response = await emailAPI<EmailData, EmailResponse>({
@@ -96,6 +97,7 @@ export default function SignWaiver({
                 data: {
                     name: user?.firstName || " ",
                     email: userEmail || " ",
+                    signatureData: signature!,
                 },
             });
 
@@ -120,7 +122,14 @@ export default function SignWaiver({
         } finally {
             setIsLoading(false);
         }
-    }, [handleUserWaiverStatusUpdate, user, userEmail, toast, onButtonSuccess]);
+    }, [
+        handleUserWaiverStatusUpdate,
+        user,
+        userEmail,
+        toast,
+        onButtonSuccess,
+        signature,
+    ]);
 
     // Effects
     useEffect(() => {
@@ -246,7 +255,7 @@ export default function SignWaiver({
                 </DialogTrigger>
                 <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
                     <SignatureCanvas
-                        onSave={setSignature}
+                        onSave={(signature) => setSignature(signature)}
                         onCancel={() => setOpenSignatureDialog(false)}
                     />
                 </DialogContent>

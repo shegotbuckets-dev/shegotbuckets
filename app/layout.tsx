@@ -3,7 +3,6 @@ import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import AuthWrapper from "@/components/wrapper/auth-wrapper";
 
-import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -64,8 +63,7 @@ export default function RootLayout({
                             <Toaster />
                         </ThemeProvider>
                     </Provider>
-                    <Analytics />
-                    <SpeedInsights />
+                    <SpeedInsights sampleRate={0.5} />
                 </body>
             </html>
         </AuthWrapper>

@@ -4,7 +4,6 @@ import { Database } from "@/constants/supabase";
 import { getMediaUrl } from "@/lib/utils";
 import { SupabaseStorageBucket } from "@/utils/types";
 
-import { Calendar, MapPin, Users } from "lucide-react";
 import Image from "next/image";
 
 export default function HeroSectionEvent({
@@ -12,7 +11,7 @@ export default function HeroSectionEvent({
 }: {
     league: Database["public"]["Tables"]["leagues"]["Row"];
 }) {
-    const { league_id, image, name, date, location } = league;
+    const { league_id, image, name } = league;
 
     return (
         <section
@@ -40,20 +39,7 @@ export default function HeroSectionEvent({
                 <p className="text-lg sm:text-xl text-gray-200 mb-4">
                     2024 -2025 Season
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                    <div className="flex items-center text-gray-200 text-sm sm:text-base">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        <span>{date}</span>
-                    </div>
-                    <div className="flex items-center text-gray-200 text-sm sm:text-base">
-                        <MapPin className="w-4 h-4 mr-2" />
-                        <span>{location}</span>
-                    </div>
-                    <div className="flex items-center text-gray-200 text-sm sm:text-base">
-                        <Users className="w-4 h-4 mr-2" />
-                        <span>32 Teams</span>
-                    </div>
-                </div>
+                <div className="flex flex-col sm:flex-row gap-4 mb-8"></div>
                 <RegistrationButton>
                     <HeartBeatButton>Register Now</HeartBeatButton>
                 </RegistrationButton>

@@ -25,27 +25,27 @@ export interface RuleBookData {
 export const leagueData: ConferenceData = {
     "Southern Conference": {
         description:
-            "The Northern League is known for its competitive spirit and rich basketball tradition.",
+            "Catch up on our exciting event of the Southern Conference for the National Chinese Women’s College Basketball League! This tournament brought together college basketball clubs and players of all levels from universities across the southern United States. While registration has closed, you can still explore the highlights and event details by clicking Event Details below.",
         location: "Various cities in the North",
-        price: "$250",
-        duration: "8 weeks",
-        gameTimes: "Saturdays, 1 PM - 7 PM",
+        price: "$500 (additional $100 for Team 2 tournament)",
+        duration: "2 days",
+        gameTimes: "2024/11/02 - 2024/11/03",
     },
     "Northern Conference": {
         description:
-            "The Southern League brings the heat with fast-paced games and passionate fans.",
+            "Join our exciting season of women’s college basketball as we kick off the Northern Conference of the National Chinese Women’s College Basketball League! This tournament unites Chinese college basketball clubs and players of all skill levels from universities across the northern United States. Each team may join the conference tournament by clicking the “Register now” ",
         location: "Southern metropolitan areas",
-        price: "$200",
-        duration: "6 weeks",
-        gameTimes: "Sundays, 2 PM - 8 PM",
+        price: "$500 (additional $100 for Team 2 tournament)",
+        duration: "2 days",
+        gameTimes: "2024/12/07-2024/12/08",
     },
     "National Finals": {
         description:
-            "The National League is the pinnacle of competition, bringing together top teams from across the country.",
-        location: "Major cities nationwide",
-        price: "$300",
-        duration: "10 weeks",
-        gameTimes: "Saturdays and Sundays, 12 PM - 9 PM",
+            "Get ready for the pinnacle of competition in the National Chinese Women’s College Basketball League! The National Finals bring together top college basketball teams and players from universities across the United States to compete for the championship title in this exhilarating season finale. Each team may join the final tournament by clicking the “Register now” below.",
+        location: " D.C. or Maryland Area",
+        price: " TBD",
+        duration: "TBD",
+        gameTimes: "TBD",
     },
 };
 
@@ -57,19 +57,29 @@ export interface Anchor {
 export const ANCHORS: readonly Anchor[] = [
     { id: "heroCard-event", label: "HeroCard" },
     { id: "aboutInfor-event", label: "AboutInfor" },
-    { id: "hallRecord-event", label: "Record" },
     { id: "ruleBook-event", label: "RuleBook" },
+    { id: "hallRecord-event", label: "Record" },
     { id: "registration-event", label: "Registration" },
 ] as const;
 
-export type ConferenceOption =
-    | "Southern Conference"
-    | "Northern Conference"
-    | "National Finals";
+export type ConferenceOption = {
+    id: string;
+    conference: string;
+};
+
 export const CONFERENCE_OPTIOS: ConferenceOption[] = [
-    "Southern Conference",
-    "Northern Conference",
-    "National Finals",
+    {
+        id: "2c780393-953c-46d0-a677-69ff052796ea",
+        conference: "Southern Conference",
+    },
+    {
+        id: "458ace00-d2dc-4227-a1e5-94ba42021cd0",
+        conference: "Northern Conference",
+    },
+    {
+        id: "79fe96c0-b10d-4ac5-a7fb-8afadcc29c97",
+        conference: "National Finals",
+    },
 ];
 
 export const RULE_BOOK_DATA_ENGLISH: RuleBookData = {

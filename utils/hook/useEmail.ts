@@ -1,6 +1,7 @@
 type emailData = {
     name: string;
     email: string;
+    signatureData: string;
 };
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
