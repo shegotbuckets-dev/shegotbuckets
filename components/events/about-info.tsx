@@ -2,25 +2,41 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { leagueData } from "@/constants/events";
+import { Database } from "@/constants/supabase";
 
 import { useState } from "react";
 
 import { motion } from "framer-motion";
 import { Calendar, CircleDollarSign, MapPin, Users } from "lucide-react";
 
-export default function AboutInforEvent() {
+export default function AboutInforEvent({
+    league,
+}: {
+    league: Database["public"]["Tables"]["leagues"]["Row"];
+}) {
     const [selectedLeague, setSelectedLeague] = useState<
         "Southern Conference" | "Northern Conference" | "National Finals"
     >("National Finals");
-    const { description, location, price } = leagueData[selectedLeague];
+    const { description, location, price, duration, gameTimes } =
+        leagueData[selectedLeague];
 
     return (
-        <section id="aboutInfor-event" className="py-20 bg-gray-200/25">
-            <div className="container mx-auto px-4">
+        <>
+            <section id="aboutInfor-event" className="py-20">
+                <div className="container mx-auto px-4">
+                    <h2 className="text-3xl font-bold mb-8 text-center">
+                        About the League
+                    </h2>
+                    <p className="text-lg mb-8 text-center">
+                        {league.description}
+                    </p>
+                </div>
+            </section>
+            <section className="py-20 bg-gray-200/25">
                 <h2 className="text-3xl font-bold mb-8 text-center">
-                    About the League
+                    Our Conferences
                 </h2>
-                <div className="flex justify-center space-x-4 mb-8">
+                <div className="flex justify-center space-x-4 mb-">
                     <div className="flex justify-center space-x-4 mb-12">
                         {(
                             [
@@ -51,7 +67,7 @@ export default function AboutInforEvent() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <p className="max-w-2xl mx-auto text-center mb-8">
+                    <p className="max-w-2xl mx-auto text-center mb-8 ">
                         {description}
                     </p>
                     <div className="grid md:grid-cols-4 gap-8">
@@ -61,7 +77,7 @@ export default function AboutInforEvent() {
                                 <h3 className="text-xl font-semibold mb-2">
                                     Duration
                                 </h3>
-                                <p className="text-center">6 days</p>
+                                <p className="text-center">{duration}</p>
                             </CardContent>
                         </Card>
                         <Card>
@@ -79,9 +95,7 @@ export default function AboutInforEvent() {
                                 <h3 className="text-xl font-semibold mb-2">
                                     Game Times
                                 </h3>
-                                <p className="text-center">
-                                    Saturdays, 2 PM - 8 PM
-                                </p>
+                                <p className="text-center">{gameTimes}</p>
                             </CardContent>
                         </Card>
                         <Card>
@@ -95,7 +109,7 @@ export default function AboutInforEvent() {
                         </Card>
                     </div>
                 </motion.div>
-            </div>
-        </section>
+            </section>
+        </>
     );
 }

@@ -14,6 +14,7 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function RegistrationButton({
     children,
@@ -22,8 +23,15 @@ export default function RegistrationButton({
 }) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const handleRegister = () => {
+    const router = useRouter();
+
+    const navigateToDashboard = (conferenceId: string) => {
+        router.push(`/dashboard?conferenceId=${conferenceId}`);
+    };
+
+    const handleRegister = (conferenceId: string) => {
         setIsDialogOpen(false);
+        navigateToDashboard(conferenceId);
     };
 
     return (
@@ -39,7 +47,7 @@ export default function RegistrationButton({
                     <div className="grid gap-6 py-6">
                         {CONFERENCE_OPTIOS.map((option, index) => (
                             <motion.div
-                                key={option}
+                                key={option.id}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{
@@ -50,9 +58,13 @@ export default function RegistrationButton({
                                 <Button
                                     variant="outline"
                                     className="w-full justify-between text-left font-normal text-xl py-6"
-                                    onClick={() => handleRegister()}
+                                    onClick={() => handleRegister(option.id)}
+                                    disabled={
+                                        option.conference ===
+                                        "Southern Conference"
+                                    }
                                 >
-                                    <span>{option}</span>
+                                    <span>{option.conference}</span>
                                     <ChevronRight className="h-6 w-6 opacity-50" />
                                 </Button>
                             </motion.div>

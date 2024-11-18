@@ -17,9 +17,10 @@ import {
 import { Database } from "@/constants/supabase";
 import { DashboardData } from "@/utils/hook/useDashboardData";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useUser } from "@clerk/nextjs";
+import { useSearchParams } from "next/navigation";
 
 export interface EventTableData {
     event_id: string;
@@ -160,6 +161,8 @@ export default function EventsTable({
     const { user } = useUser();
     const email = user?.emailAddresses[0].emailAddress;
 
+    const [isFlashing, setIsFlashing] = useState(false);
+
     const { tableData, tableHeaders } = useMemo(() => {
         const data = dashboardData.events.map((event) =>
             prepareTableData(
@@ -178,6 +181,22 @@ export default function EventsTable({
 
     const hasTeamColumn = tableData.some((event) => event.team !== "N/A");
 
+    const searchParams = useSearchParams();
+
+    const conferenceId = searchParams.get("conferenceId");
+
+    useEffect(() => {
+        if (conferenceId) {
+            setIsFlashing(true);
+
+            const timer = setTimeout(() => {
+                setIsFlashing(false);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [conferenceId]);
+
     return (
         <div className="overflow-x-auto">
             <Table>
@@ -190,7 +209,16 @@ export default function EventsTable({
                 </TableHeader>
                 <TableBody>
                     {tableData.map((event) => (
-                        <TableRow key={event.event_id}>
+                        <TableRow
+                            key={event.event_id}
+                            className={
+                                isFlashing &&
+                                searchParams &&
+                                event.event_id === conferenceId
+                                    ? "animate-pulse bg-yellow-100 dark:bg-yellow-800 transition-colors duration-770 ease-in-out"
+                                    : ""
+                            }
+                        >
                             <TableCell className="font-medium">
                                 {event.name}
                             </TableCell>

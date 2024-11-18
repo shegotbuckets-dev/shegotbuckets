@@ -1,10 +1,10 @@
 import TeamMarquee from "@/components/common/team-marquee";
 import WorkInProgress from "@/components/common/wip";
-import AboutInforEvent from "@/components/events/about-infor";
+import AboutInforEvent from "@/components/events/about-info";
 import AnchorNavBar from "@/components/events/anchor-nav";
 import HallOfRecord from "@/components/events/hall-record";
 import HeroSectionEvent from "@/components/events/hero-section";
-import LeagueInfor from "@/components/events/league-infor";
+import LeagueInfor from "@/components/events/league-info";
 import Registration from "@/components/events/registration";
 import { fetchLeagueById } from "@/utils/actions/supabase";
 
@@ -30,7 +30,7 @@ export default async function EventPage({
             {/* Team Marquee */}
             <TeamMarquee />
             {/* About Infor Section */}
-            <AboutInforEvent />
+            <AboutInforEvent league={league} />
             {/* League Information */}
             <LeagueInfor />
             {/* Hall of Record */}

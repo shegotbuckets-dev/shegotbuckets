@@ -127,7 +127,7 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
     const saveSignature = useCallback(() => {
         const canvas = canvasRef.current;
         if (canvas) {
-            const signature = canvas.toDataURL();
+            const signature = canvas.toDataURL("image/png");
             onSave(signature);
             onCancel?.();
         }
