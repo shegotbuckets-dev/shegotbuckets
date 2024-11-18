@@ -30,11 +30,14 @@ export function RosterButton({ event }: RosterButtonProps) {
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle className="text-xl">
-                        Roster for {event.name}
+                        Roster for{" "}
+                        <span className="bg-blue-100 p-1 px-2 rounded">
+                            {event.name}
+                        </span>
                     </DialogTitle>
                 </DialogHeader>
                 <div className="overflow-y-auto max-h-[400px]">
-                    {event.registrationPlayers.length === 0 ? (
+                    {event.roster.length === 0 ? (
                         <div className="text-center py-8 text-muted-foreground">
                             No players have been added to the roster yet.
                         </div>
@@ -48,21 +51,19 @@ export function RosterButton({ event }: RosterButtonProps) {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {event.registrationPlayers.map(
-                                    (player, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell>
-                                                {player.first_name}
-                                            </TableCell>
-                                            <TableCell>
-                                                {player.last_name}
-                                            </TableCell>
-                                            <TableCell>
-                                                {player.user_email}
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                )}
+                                {event.roster.map((player, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell>
+                                            {player.first_name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {player.last_name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {player.user_email}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     )}

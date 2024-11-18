@@ -7,34 +7,69 @@ import { Check, Undo2 } from "lucide-react";
 
 interface SignatureCanvasProps {
     onSave: (signature: string) => void;
-    onClose: () => void;
+    onCancel?: () => void;
 }
 
 export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
     onSave,
-    onClose,
+    onCancel,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const contextRef = useRef<CanvasRenderingContext2D | null>(null);
     const [isDrawing, setIsDrawing] = useState(false);
     const [hasSignature, setHasSignature] = useState(false);
     const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
+    // Initialize canvas context
     useEffect(() => {
-        const updateCanvasSize = () => {
-            const canvas = canvasRef.current;
-            if (canvas) {
-                const parent = canvas.parentElement;
-                if (parent) {
-                    const { width } = parent.getBoundingClientRect();
-                    setCanvasSize({ width, height: width * 0.5 });
-                }
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext("2d");
+            if (ctx) {
+                ctx.lineWidth = 2;
+                ctx.lineCap = "round";
+                ctx.strokeStyle = "#000";
+                contextRef.current = ctx;
             }
-        };
+        }
+    }, []);
 
+    // Handle canvas resize
+    const updateCanvasSize = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const parent = canvas.parentElement;
+            if (parent) {
+                const { width } = parent.getBoundingClientRect();
+                setCanvasSize({ width, height: width * 0.5 });
+            }
+        }
+    }, []);
+
+    useEffect(() => {
         updateCanvasSize();
         window.addEventListener("resize", updateCanvasSize);
         return () => window.removeEventListener("resize", updateCanvasSize);
-    }, []);
+    }, [updateCanvasSize]);
+
+    // Drawing handlers
+    const getCoordinates = (
+        e:
+            | React.MouseEvent<HTMLCanvasElement>
+            | React.TouchEvent<HTMLCanvasElement>
+    ): { x: number; y: number } | null => {
+        const canvas = canvasRef.current;
+        if (!canvas) return null;
+
+        const rect = canvas.getBoundingClientRect();
+        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+        const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top,
+        };
+    };
 
     const startDrawing = useCallback(
         (
@@ -42,21 +77,17 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
                 | React.MouseEvent<HTMLCanvasElement>
                 | React.TouchEvent<HTMLCanvasElement>
         ) => {
+            if ("touches" in e) e.preventDefault();
+            const coords = getCoordinates(e);
+            if (!coords || !contextRef.current) return;
+
             setIsDrawing(true);
             setHasSignature(true);
-            draw(e);
+            contextRef.current.beginPath();
+            contextRef.current.moveTo(coords.x, coords.y);
         },
         []
     );
-
-    const stopDrawing = useCallback(() => {
-        setIsDrawing(false);
-        const canvas = canvasRef.current;
-        if (canvas) {
-            const ctx = canvas.getContext("2d");
-            if (ctx) ctx.beginPath();
-        }
-    }, []);
 
     const draw = useCallback(
         (
@@ -64,47 +95,32 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
                 | React.MouseEvent<HTMLCanvasElement>
                 | React.TouchEvent<HTMLCanvasElement>
         ) => {
-            if (!isDrawing) return;
-            const canvas = canvasRef.current;
-            if (canvas) {
-                const ctx = canvas.getContext("2d");
-                if (ctx) {
-                    ctx.lineWidth = 2;
-                    ctx.lineCap = "round";
-                    ctx.strokeStyle = "#000";
+            if (!isDrawing || !contextRef.current) return;
+            if ("touches" in e) e.preventDefault();
 
-                    let clientX, clientY;
-                    if ("touches" in e) {
-                        e.preventDefault(); // Prevent scrolling on touch devices
-                        clientX = e.touches[0].clientX;
-                        clientY = e.touches[0].clientY;
-                    } else {
-                        clientX = e.clientX;
-                        clientY = e.clientY;
-                    }
+            const coords = getCoordinates(e);
+            if (!coords) return;
 
-                    const rect = canvas.getBoundingClientRect();
-                    const x = clientX - rect.left;
-                    const y = clientY - rect.top;
-
-                    ctx.lineTo(x, y);
-                    ctx.stroke();
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                }
-            }
+            contextRef.current.lineTo(coords.x, coords.y);
+            contextRef.current.stroke();
+            contextRef.current.beginPath();
+            contextRef.current.moveTo(coords.x, coords.y);
         },
         [isDrawing]
     );
 
+    const stopDrawing = useCallback(() => {
+        setIsDrawing(false);
+        if (contextRef.current) {
+            contextRef.current.beginPath();
+        }
+    }, []);
+
     const clearSignature = useCallback(() => {
         const canvas = canvasRef.current;
-        if (canvas) {
-            const ctx = canvas.getContext("2d");
-            if (ctx) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                setHasSignature(false);
-            }
+        if (canvas && contextRef.current) {
+            contextRef.current.clearRect(0, 0, canvas.width, canvas.height);
+            setHasSignature(false);
         }
     }, []);
 
@@ -113,18 +129,18 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
         if (canvas) {
             const signature = canvas.toDataURL();
             onSave(signature);
-            onClose();
+            onCancel?.();
         }
-    }, [onSave]);
+    }, [onSave, onCancel]);
 
     return (
         <motion.div
-            className="flex flex-col items-center sm:max-w-[50rem] mx-auto p-4 bg-white rounded-lg shadow-lg"
+            className="flex flex-col items-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
         >
-            <h2 className="text-xl font-boldmb-4">Sign Here</h2>
+            <h2 className="text-xl font-bold mb-4">Sign Your Name</h2>
             <div className="relative">
                 <canvas
                     ref={canvasRef}
@@ -148,12 +164,13 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
             <p className="text-sm text-muted-foreground mt-2 mb-4">
                 Use your finger or a stylus to sign above
             </p>
-            <div className="flex justify-between w-full space-x-2">
+            <div className="flex justify-between w-[70vw] sm:w-[40rem] space-x-2">
                 <Button
                     variant="outline"
                     size="sm"
                     onClick={clearSignature}
                     disabled={!hasSignature}
+                    className="border-2 hover:border-yellow-500 hover:bg-yellow-50 hover:text-yellow-600 disabled:border-gray-200"
                 >
                     <Undo2 className="w-4 h-4 mr-2" />
                     Clear
@@ -162,19 +179,20 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
                     size="sm"
                     onClick={saveSignature}
                     disabled={!hasSignature}
+                    className="hover:bg-primary-800 hover:opacity-80"
                 >
                     <Check className="w-4 h-4 mr-2" />
                     Save Signature
                 </Button>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onCancel}
+                    className="border-2 hover:border-red-500 hover:bg-red-50 hover:text-red-600 disabled:border-gray-200"
+                >
+                    Cancel
+                </Button>
             </div>
-            <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                className="mt-2"
-            >
-                Cancel
-            </Button>
         </motion.div>
     );
 };
