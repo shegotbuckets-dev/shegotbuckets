@@ -118,7 +118,7 @@ export function RegisterButton({
             const isTeamRegistered = registrations.some(
                 (registration) =>
                     registration.team_id === team.team_id &&
-                    registration.registration_id == event.registration_id
+                    registration.event_id === event.event_id
             );
 
             // if the team is already registered, show a toast and block current registration
