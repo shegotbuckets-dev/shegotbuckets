@@ -1,9 +1,9 @@
+import { SidebarNav } from "@/app/dashboard/types";
 import {
     Sidebar,
     SidebarContent,
     SidebarGroup,
     SidebarGroupContent,
-    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
@@ -21,17 +21,8 @@ import {
 } from "lucide-react";
 import type { IconNode } from "lucide-react";
 
-// Define a type for our menu items
-type MenuItem = {
-    title: string;
-    url: string;
-    icon: any;
-    isLab?: boolean;
-    separator?: boolean;
-};
-
 // Menu items.
-const items: MenuItem[] = [
+const items: SidebarNav[] = [
     {
         title: "Dashboard",
         url: "/dashboard",
@@ -61,7 +52,7 @@ const items: MenuItem[] = [
     },
 ];
 
-export function DashboardSidebar() {
+export const DashboardSidebar = () => {
     return (
         <Sidebar variant="sidebar" className="top-[3.5rem] lg:top-16">
             <SidebarContent>
@@ -96,4 +87,4 @@ export function DashboardSidebar() {
             </SidebarContent>
         </Sidebar>
     );
-}
+};

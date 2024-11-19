@@ -1,3 +1,24 @@
+# Development Rules
+
+## Exporting
+
+-   Use `export default` for page components
+-   Use `export const` for everything else (components, hooks, utilities)
+
+## Importing
+
+Use `@` imports for:
+
+-   Deep imports across different directories
+-   Shared components/utilities
+-   When the path would require multiple `../`
+
+Use `./` imports for:
+
+-   Files in the same directory
+-   Closely related components
+-   Direct parent/child relationships
+
 # Getting Started
 
 ## Commit to this Project

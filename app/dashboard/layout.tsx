@@ -1,9 +1,10 @@
-import { DashboardSidebar } from "@/app/dashboard/_components/dashboard-sidebar";
-import DashboardTopNav from "@/app/dashboard/_components/dashboard-top-nav";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/toaster";
 
 import { ReactNode } from "react";
+
+import { DashboardSidebar } from "./_components/dashboard-sidebar";
+import { DashboardTopNav } from "./_components/dashboard-topnav";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (

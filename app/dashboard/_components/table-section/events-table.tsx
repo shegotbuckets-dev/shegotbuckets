@@ -1,11 +1,11 @@
 "use client";
 
 import {
-    RegisterOrParticipatedCell,
-    RosterCell,
-    TeamCell,
-    WaiverCell,
-} from "@/app/dashboard/_components/status-cells";
+    EventTableData,
+    EventsTableProps,
+    HEADERS,
+    UserEventData,
+} from "@/app/dashboard/types";
 import {
     Table,
     TableBody,
@@ -15,28 +15,16 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Database } from "@/constants/supabase";
-import { DashboardData } from "@/utils/hook/useDashboardData";
 
 import { useEffect, useMemo, useState } from "react";
 
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 
-export interface EventTableData {
-    event_id: string;
-    registration_id: string | undefined;
-    name: string;
-    subtitle: string;
-    date: string;
-    location: string;
-    price: string;
-    team: string;
-    registered: boolean;
-    rosterUploaded: boolean;
-    waiverSigned: boolean;
-    active: boolean;
-    roster: Database["public"]["Tables"]["registration_players"]["Row"][];
-}
+import { RegisterOrParticipatedCell } from "./register-column/register-cell";
+import { RosterCell } from "./roster-column/roster-cell";
+import { TeamCell } from "./simple-cells";
+import { WaiverCell } from "./waiver-column/waiver-cell";
 
 function prepareTableData(
     event: Database["public"]["Tables"]["events"]["Row"],
@@ -49,12 +37,7 @@ function prepareTableData(
         (registration) => registration.event_id === event.event_id
     );
 
-    const userEventData = eventRegistrations.reduce<{
-        registration_id: string | undefined;
-        registered: boolean;
-        teamId: string | undefined;
-        waiverSigned: boolean;
-    }>(
+    const userEventData = eventRegistrations.reduce<UserEventData>(
         (acc, registration) => {
             const userPlayerData = registrationPlayers.find(
                 (player) =>
@@ -109,38 +92,6 @@ function prepareTableData(
     };
 }
 
-const HEADERS = {
-    active: [
-        "Event",
-        "Season",
-        "Date",
-        "Location",
-        "Register",
-        "Roster",
-        "Waiver",
-    ],
-    activeWithTeam: [
-        "Event",
-        "Season",
-        "Date",
-        "Location",
-        "Team",
-        "Register",
-        "Roster",
-        "Waiver",
-    ],
-    previous: ["Event", "Season", "Date", "Location", "Participated", "Roster"],
-    previousWithTeam: [
-        "Event",
-        "Season",
-        "Date",
-        "Location",
-        "Team",
-        "Participated",
-        "Roster",
-    ],
-} as const;
-
 function prepareTableHeader(events: EventTableData[]) {
     const hasTeams = events.some((event) => event.team !== "N/A");
     const isActive = events[0]?.active ?? false;
@@ -151,13 +102,10 @@ function prepareTableHeader(events: EventTableData[]) {
     return hasTeams ? HEADERS.previousWithTeam : HEADERS.previous;
 }
 
-export default function EventsTable({
+export const EventsTable = ({
     dashboardData,
     onButtonSuccess,
-}: {
-    dashboardData: DashboardData;
-    onButtonSuccess: () => void;
-}) {
+}: EventsTableProps) => {
     const { user } = useUser();
     const email = user?.emailAddresses[0].emailAddress;
 
@@ -254,4 +202,4 @@ export default function EventsTable({
             </Table>
         </div>
     );
-}
+};
