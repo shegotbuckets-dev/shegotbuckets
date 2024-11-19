@@ -20,15 +20,13 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { Database } from "@/constants/supabase";
-import { DashboardData } from "@/utils/hook/useDashboardData";
 
 import { useState } from "react";
 
 import Papa from "papaparse";
-import { v4 as uuidv4 } from "uuid";
 
 import { EventTableData } from "./events-table";
-import { RosterUpload } from "./roster-upload";
+import { RosterUploadArea } from "./roster-upload-area";
 
 interface RegisterButtonProps {
     event: EventTableData;
@@ -126,7 +124,8 @@ export function RegisterButton({
                 toast({
                     variant: "warning",
                     title: "Team Already Registered",
-                    description: `${selectedTeam} is already registered for this event.`,
+                    description: `${selectedTeam} is already registered for this event. 
+                    Contact SGB IT support if you want to update your roster.`,
                 });
                 setIsRegistering(false);
                 return;
@@ -137,7 +136,7 @@ export function RegisterButton({
                 event_id: event.event_id,
                 team_id: team.team_id,
                 players: parsedData.map((player) => ({
-                    user_email: player.gmail,
+                    user_email: player.email,
                     first_name: player.first_name,
                     last_name: player.last_name,
                 })),
@@ -197,7 +196,7 @@ export function RegisterButton({
             <DialogTrigger asChild>
                 <span>Register</span>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px] md:max-w-[700px] h-[80vh] flex flex-col">
+            <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
                 <DialogHeader>
                     <DialogTitle className="text-xl">
                         Register for{" "}
@@ -247,7 +246,7 @@ export function RegisterButton({
                         </Select>
                     </div>
 
-                    <RosterUpload
+                    <RosterUploadArea
                         uploadedFile={uploadedFile}
                         parsedData={parsedData}
                         isRegistering={isRegistering}
