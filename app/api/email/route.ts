@@ -1,4 +1,4 @@
-import WaiverSignedEmail from "@/components/sign-waiver/waiver-email";
+import { WaiverSignedEmail } from "@/app/dashboard/_components/table-section/waiver-column/waiver-email";
 
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";

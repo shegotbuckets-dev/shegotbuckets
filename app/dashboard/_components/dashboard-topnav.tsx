@@ -9,7 +9,7 @@ import config from "@/config";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-export default function DashboardTopNav() {
+export const DashboardTopNav = () => {
     const { theme } = useTheme();
 
     return (
@@ -38,4 +38,4 @@ export default function DashboardTopNav() {
             </header>
         </div>
     );
-}
+};

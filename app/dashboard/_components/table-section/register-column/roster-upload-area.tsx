@@ -1,7 +1,7 @@
-import { useDropzone } from "react-dropzone";
+import { TableInDialog } from "@/app/dashboard/_components/table-section/table-in-dialog";
+import { RosterData } from "@/app/dashboard/types";
 
-import { PreviewTable } from "./preview-table";
-import { RosterData } from "./register-button";
+import { useDropzone } from "react-dropzone";
 
 interface RosterUploadAreaProps {
     uploadedFile: File | null;
@@ -58,7 +58,13 @@ export const RosterUploadArea = ({
                     )}
                 </div>
                 <div className="overflow-auto">
-                    <PreviewTable data={parsedData} />
+                    {parsedData.length > 0 && (
+                        <TableInDialog
+                            headers={Object.keys(parsedData[0])}
+                            data={parsedData}
+                            renderRow={(row) => Object.values(row)}
+                        />
+                    )}
                 </div>
             </div>
         </div>

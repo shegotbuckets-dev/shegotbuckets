@@ -12,11 +12,11 @@ interface ApiOptions {
     data?: emailData;
 }
 
-export async function emailAPI<T, R>({
+export const emailAPI = async <T, R>({
     method,
     endpoint,
     data,
-}: ApiOptions): Promise<R> {
+}: ApiOptions): Promise<R> => {
     const response = await fetch(endpoint, {
         method,
         headers: {
@@ -30,4 +30,4 @@ export async function emailAPI<T, R>({
     }
 
     return response.json();
-}
+};

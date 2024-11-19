@@ -1,38 +1,24 @@
 "use client";
 
-import { EventTableData } from "@/app/dashboard/_components/events-table";
-import { SignatureCanvas } from "@/components/sign-waiver/signature-canvas";
+import { emailAPI } from "@/app/dashboard/_hooks/useEmail";
+import { WaiverCellProps } from "@/app/dashboard/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import { emailAPI } from "@/utils/hook/useEmail";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useUser } from "@clerk/nextjs";
 import { InfoIcon, Loader2 } from "lucide-react";
 
-interface EmailData {
-    name: string;
-    email: string;
-}
+import { SignatureDialog } from "./signature-dialog";
 
-interface EmailResponse {
-    data: { id: string };
-}
-
-interface SignWaiverProps {
-    onButtonSuccess: () => void;
-    event: EventTableData;
-}
-
-export default function SignWaiver({
+export const WaiverDialogContent = ({
     onButtonSuccess,
     event,
-}: SignWaiverProps) {
+}: WaiverCellProps) => {
     // States
     const [isBottomReached, setIsBottomReached] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
@@ -83,7 +69,7 @@ export default function SignWaiver({
                 );
             }
         },
-        [userEmail]
+        [event.registration_id, userEmail]
     );
 
     const handleSignWaiver = useCallback(async () => {
@@ -91,7 +77,10 @@ export default function SignWaiver({
 
         try {
             await handleUserWaiverStatusUpdate(true);
-            const response = await emailAPI<EmailData, EmailResponse>({
+            const response = await emailAPI<
+                { name: string; email: string },
+                { data: { id: string } }
+            >({
                 method: "POST",
                 endpoint: "/api/email",
                 data: {
@@ -161,55 +150,7 @@ export default function SignWaiver({
                 ref={scrollRef}
                 className="h-[300px] border rounded-md p-4 overflow-auto"
             >
-                <div className="space-y-4">
-                    <p>
-                        I,the undersigned participant,acknowledge that I have
-                        voluntarily chosen to participate in the basketball
-                        activities organized by She Got Buckets (hereinafter
-                        referred to as SGB). I am fully aware of the risks and
-                        hazards connected with the activity,including physical
-                        injury or even death,and hereby elect to voluntarily
-                        participate in said activity, knowing that the activity
-                        may be hazardous to my property and me.
-                    </p>
-                    <p>
-                        I understand that SGB does not require me to participate
-                        in this activity. I voluntarily assume full
-                        responsibility for any risks of loss, property damage,
-                        or personal injury that may be sustained by me, or any
-                        loss or damage to property owned by me,as a result of
-                        being engaged in such an activity.
-                    </p>
-                    <p>
-                        I hereby RELEASE,WAIVE,DISCHARGE,AND COVENANT NOT TO SUE
-                        She Got Buckets,its officers,servants,agents,and
-                        employees (hereinafter referred to as RELEASEES) from
-                        any and all liability,claims,demands,actions and causes
-                        of action whatsoever arising out of or related to any
-                        loss,damage,or injury,including death,that may be
-                        sustained by me,or to any property belonging to me,while
-                        participating in physical activity,or while on or upon
-                        the premises where the activity is being conducted.
-                    </p>
-                    <p>
-                        It is my expressed intent that this release and hold
-                        harmless agreement shall bind the members of my family
-                        and spouse,if I am alive,and my heirs,assigns and
-                        personal representative,if I am deceased,and shall be
-                        deemed as a RELEASE,WAIVER,DISCHARGE,and CONVENTION NOT
-                        TO SUE the above-named RELEASEES.
-                    </p>
-                    <p>
-                        In signing this release,I acknowledge and represent that
-                        I HAVE READ THE FOREGOING Waiver of Liability and Hold
-                        Harmless Agreement,UNDERSTAND IT AND SIGN IT VOLUNTARILY
-                        as my own free act and deed; no oral
-                        representations,statements or inducements,apart from the
-                        foregoing written agreements have been made; and I
-                        EXECUTE THIS RELEASE FOR FULL,ADEQUATE AND COMPLETE
-                        CONSIDERATION FULLY INTENDING TO BE BOUND BY SAME.
-                    </p>
-                </div>
+                <WaiverContent />
             </div>
 
             {!isBottomReached && (
@@ -234,32 +175,12 @@ export default function SignWaiver({
                 </label>
             </div>
 
-            <Dialog
-                open={openSignatureDialog}
+            <SignatureDialog
+                signature={signature}
+                onSignatureSave={setSignature}
+                isOpen={openSignatureDialog}
                 onOpenChange={setOpenSignatureDialog}
-            >
-                <DialogTrigger asChild>
-                    {signature ? (
-                        <img
-                            src={signature}
-                            alt="Your signature"
-                            className="border-2 border-gray-200 rounded-lg h-32 w-full object-contain cursor-pointer"
-                        />
-                    ) : (
-                        <div className="mt-2 border-2 border-dashed border-gray-200 rounded-lg h-32 flex items-center justify-center cursor-pointer">
-                            <span className="text-muted-foreground text-sm italic">
-                                Click here to sign your name
-                            </span>
-                        </div>
-                    )}
-                </DialogTrigger>
-                <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
-                    <SignatureCanvas
-                        onSave={(signature) => setSignature(signature)}
-                        onCancel={() => setOpenSignatureDialog(false)}
-                    />
-                </DialogContent>
-            </Dialog>
+            />
 
             <Button
                 className={cn(
@@ -280,6 +201,55 @@ export default function SignWaiver({
                     "Sign Waiver"
                 )}
             </Button>
+        </div>
+    );
+};
+
+function WaiverContent() {
+    return (
+        <div className="space-y-4">
+            <p>
+                I,the undersigned participant,acknowledge that I have
+                voluntarily chosen to participate in the basketball activities
+                organized by She Got Buckets (hereinafter referred to as SGB). I
+                am fully aware of the risks and hazards connected with the
+                activity,including physical injury or even death,and hereby
+                elect to voluntarily participate in said activity, knowing that
+                the activity may be hazardous to my property and me.
+            </p>
+            <p>
+                I understand that SGB does not require me to participate in this
+                activity. I voluntarily assume full responsibility for any risks
+                of loss, property damage, or personal injury that may be
+                sustained by me, or any loss or damage to property owned by
+                me,as a result of being engaged in such an activity.
+            </p>
+            <p>
+                I hereby RELEASE,WAIVE,DISCHARGE,AND COVENANT NOT TO SUE She Got
+                Buckets,its officers,servants,agents,and employees (hereinafter
+                referred to as RELEASEES) from any and all
+                liability,claims,demands,actions and causes of action whatsoever
+                arising out of or related to any loss,damage,or injury,including
+                death,that may be sustained by me,or to any property belonging
+                to me,while participating in physical activity,or while on or
+                upon the premises where the activity is being conducted.
+            </p>
+            <p>
+                It is my expressed intent that this release and hold harmless
+                agreement shall bind the members of my family and spouse,if I am
+                alive,and my heirs,assigns and personal representative,if I am
+                deceased,and shall be deemed as a RELEASE,WAIVER,DISCHARGE,and
+                CONVENTION NOT TO SUE the above-named RELEASEES.
+            </p>
+            <p>
+                In signing this release,I acknowledge and represent that I HAVE
+                READ THE FOREGOING Waiver of Liability and Hold Harmless
+                Agreement,UNDERSTAND IT AND SIGN IT VOLUNTARILY as my own free
+                act and deed; no oral representations,statements or
+                inducements,apart from the foregoing written agreements have
+                been made; and I EXECUTE THIS RELEASE FOR FULL,ADEQUATE AND
+                COMPLETE CONSIDERATION FULLY INTENDING TO BE BOUND BY SAME.
+            </p>
         </div>
     );
 }

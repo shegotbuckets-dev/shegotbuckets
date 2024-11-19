@@ -1,0 +1,141 @@
+import { Database } from "@/constants/supabase";
+
+export interface SidebarNav {
+    title: string;
+    url: string;
+    icon: any;
+    isLab?: boolean;
+    separator?: boolean;
+}
+
+export interface DashboardData {
+    events: Database["public"]["Tables"]["events"]["Row"][];
+    teams: Database["public"]["Tables"]["teams"]["Row"][];
+    registrations: Database["public"]["Tables"]["registrations"]["Row"][];
+    registrationPlayers: Database["public"]["Tables"]["registration_players"]["Row"][];
+}
+
+export interface EventTableData {
+    event_id: string;
+    registration_id: string | undefined;
+    name: string;
+    subtitle: string;
+    date: string;
+    location: string;
+    price: string;
+    team: string;
+    registered: boolean;
+    rosterUploaded: boolean;
+    waiverSigned: boolean;
+    active: boolean;
+    roster: Database["public"]["Tables"]["registration_players"]["Row"][];
+}
+
+export interface UserEventData {
+    registration_id: string | undefined;
+    registered: boolean;
+    teamId: string | undefined;
+    waiverSigned: boolean;
+}
+
+export type TableHeaders = {
+    active: readonly string[];
+    activeWithTeam: readonly string[];
+    previous: readonly string[];
+    previousWithTeam: readonly string[];
+};
+
+export const HEADERS: TableHeaders = {
+    active: [
+        "Event",
+        "Season",
+        "Date",
+        "Location",
+        "Register",
+        "Roster",
+        "Waiver",
+    ],
+    activeWithTeam: [
+        "Event",
+        "Season",
+        "Date",
+        "Location",
+        "Team",
+        "Register",
+        "Roster",
+        "Waiver",
+    ],
+    previous: ["Event", "Season", "Date", "Location", "Participated", "Roster"],
+    previousWithTeam: [
+        "Event",
+        "Season",
+        "Date",
+        "Location",
+        "Team",
+        "Participated",
+        "Roster",
+    ],
+};
+
+export interface EventsTableProps {
+    dashboardData: DashboardData;
+    onButtonSuccess: () => void;
+}
+
+export const STATUS_BADGE_CLASSNAME =
+    "w-24 h-6 truncate text-center justify-center cursor-default";
+export const STATUS_BADGE_CLASSNAME_CLICKABLE =
+    "w-24 h-6 truncate text-center justify-center cursor-pointer";
+export const TEAM_BADGE_CLASSNAME =
+    "w-32 h-6 truncate text-center justify-center cursor-default";
+
+export interface BaseCellProps {
+    event: EventTableData;
+}
+
+export interface WaiverCellProps extends BaseCellProps {
+    onButtonSuccess: () => void;
+}
+
+export interface RegisterOrParticipatedCellProps extends BaseCellProps {
+    dashboardData: DashboardData;
+    onButtonSuccess: () => void;
+}
+
+export const BADGE_TEXT = {
+    YES: "Yes",
+    NO: "No",
+    NA: "N/A",
+    REGISTERED: "Registered",
+    WAIVER_SIGNED: "Waiver Signed",
+};
+
+export interface RegisterButtonProps {
+    event: EventTableData;
+    teams: Database["public"]["Tables"]["teams"]["Row"][];
+    registrations: Database["public"]["Tables"]["registrations"]["Row"][];
+    onButtonSuccess: () => void;
+}
+
+export interface EventDetailsProps {
+    date: string;
+    location: string;
+    price: string;
+}
+
+export interface RosterData {
+    first_name: string;
+    last_name: string;
+    gmail: string;
+    [key: string]: string;
+}
+
+export interface RosterButtonProps {
+    event: EventTableData;
+}
+
+export interface RosterTableProps {
+    roster: Database["public"]["Tables"]["registration_players"]["Row"][];
+}
+
+export const ROSTER_HEADERS = ["First Name", "Last Name", "Email"];

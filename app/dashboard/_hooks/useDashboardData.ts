@@ -1,16 +1,9 @@
-import { Database } from "@/constants/supabase";
+import { DashboardData } from "@/app/dashboard/types";
 import { fetchFromTable } from "@/utils/actions/supabase";
 
 import { useCallback, useEffect, useState } from "react";
 
-export type DashboardData = {
-    events: Database["public"]["Tables"]["events"]["Row"][];
-    teams: Database["public"]["Tables"]["teams"]["Row"][];
-    registrations: Database["public"]["Tables"]["registrations"]["Row"][];
-    registrationPlayers: Database["public"]["Tables"]["registration_players"]["Row"][];
-};
-
-export function useDashboardData() {
+export const useDashboardData = () => {
     const [loading, setLoading] = useState(true);
     const [dashboardData, setDashboardData] = useState<DashboardData>({
         events: [],
@@ -51,4 +44,4 @@ export function useDashboardData() {
         dashboardData,
         refresh: fetchData,
     };
-}
+};

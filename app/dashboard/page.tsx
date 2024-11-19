@@ -1,4 +1,4 @@
-import EventSection from "@/app/dashboard/_components/events-section";
+import { DashboardContent } from "./_components/dashboard-content";
 
 export default function DashboardPage() {
     return (
@@ -8,7 +8,7 @@ export default function DashboardPage() {
             </h1>
 
             <div className="grid gap-8">
-                <EventSection />
+                <DashboardContent />
             </div>
         </div>
     );
