@@ -54,6 +54,23 @@ export const useRegisterForm = ({
                 return;
             }
 
+            const emails = parsedData.map((player) =>
+                player.email.toLowerCase()
+            );
+            const duplicateEmails = emails.filter(
+                (email, index) => emails.indexOf(email) !== index
+            );
+
+            if (duplicateEmails.length > 0) {
+                toast({
+                    variant: "destructive",
+                    title: "Duplicate Emails Found",
+                    description: `Please remove duplicate entries for: ${duplicateEmails.join(", ")}`,
+                });
+                setIsRegistering(false);
+                return;
+            }
+
             const team = teams.find((t) => t.name === selectedTeam);
             if (!team?.team_id) return;
 
