@@ -13,7 +13,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 <DashboardTopNav />
                 <div className="flex-1 flex overflow-hidden">
                     <DashboardSidebar />
-                    <main className="flex-1 w-full overflow-auto">
+                    <main className="flex-1 w-full overflow-auto mt-16">
                         {children}
                     </main>
                 </div>
