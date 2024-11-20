@@ -14,7 +14,7 @@ export const DashboardTopNav = () => {
 
     return (
         <div className="flex flex-col w-full">
-            <header className="sticky top-0 z-50 flex h-14 lg:h-16 items-center border-b px-3 lg:px-6 bg-white dark:bg-gray-800 shadow">
+            <header className="fixed top-0 z-50 flex w-full h-14 lg:h-16 items-center border-b px-3 lg:px-6 bg-white dark:bg-gray-800 shadow">
                 {/* Left section - Sidebar Trigger */}
                 <div className="flex items-center">
                     <SidebarTrigger />

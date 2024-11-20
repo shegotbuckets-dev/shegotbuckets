@@ -153,7 +153,17 @@ export const RuleInfo = (props: { language: "en" | "zh" }) => {
                 <div className="prose prose-blue max-w-none space-y-6">
                     <p>
                         <span className="font-medium text-orange-500">
+                            {ruleBooKdata.lastUpdateDate}
+                        </span>
+                    </p>
+                    <p>
+                        <span className="font-medium text-orange-500 whitespace-pre-line">
                             {ruleBooKdata.introduction}
+                        </span>
+                    </p>
+                    <p>
+                        <span className="font-medium text-orange-500 whitespace-pre-line">
+                            {ruleBooKdata.eligibility}
                         </span>
                     </p>
 
@@ -161,14 +171,28 @@ export const RuleInfo = (props: { language: "en" | "zh" }) => {
 
                     {ruleBooKdata.sections.map((section, index) => (
                         <div key={index}>
-                            <h2 className="text-xl font-bold mt-8 mb-4 text-center">
+                            <h2 className="text-xl font-bold mt-8 mb-4">
                                 {section.title}
                             </h2>
                             <p className="mb-4">{section.description}</p>
                             <ul className="list-disc pl-6 space-y-4">
-                                {section.content.map((paragraph, pIndex) => (
+                                {section.detail.map((paragraph, pIndex) => (
                                     <li key={pIndex} className="mb-4">
-                                        {paragraph}
+                                        {paragraph.content}
+                                        {paragraph.subContent && (
+                                            <ul className="list-disc pl-6 space-y-4 mt-6">
+                                                {paragraph.subContent.map(
+                                                    (SubContent, index) => (
+                                                        <li
+                                                            key={index}
+                                                            className="mb-4"
+                                                        >
+                                                            {SubContent}
+                                                        </li>
+                                                    )
+                                                )}
+                                            </ul>
+                                        )}
                                     </li>
                                 ))}
                             </ul>
