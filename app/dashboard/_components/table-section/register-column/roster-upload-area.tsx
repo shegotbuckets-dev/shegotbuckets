@@ -10,6 +10,58 @@ interface RosterUploadAreaProps {
     onDrop: (acceptedFiles: File[]) => void;
 }
 
+const TemplateDownload = () => (
+    <div className="text-sm">
+        <strong>
+            Download the roster template here:{" "}
+            <a
+                href="/templates/Template_SheGotBuckets_EventRegistration.csv"
+                download="SheGotBuckets_EventRegistration_Template.csv"
+                className="text-blue-500 hover:underline"
+                onClick={(e) => e.stopPropagation()}
+            >
+                Roster CSV Template
+            </a>
+        </strong>
+        <br />
+        <p>
+            Fill it out and upload it below. CSV must have these columns:
+            first_name, last_name, email, jersey_number.
+        </p>
+    </div>
+);
+
+const EmptyUploadState = () => (
+    <div className="flex flex-col items-center justify-center text-lg text-muted-foreground h-full">
+        Put your roster in CSV format here.
+        <br />
+        CSV must have these columns: first_name, last_name, email.
+    </div>
+);
+
+const UploadedFileState = ({
+    uploadedFile,
+    parsedData,
+}: {
+    uploadedFile: File;
+    parsedData: any[];
+}) => (
+    <div className="h-full flex flex-col">
+        <div className="bg-background py-2 mb-4 text-lg text-muted-foreground">
+            File uploaded: {uploadedFile.name}
+        </div>
+        <div className="flex-1 min-h-0">
+            {parsedData.length > 0 && (
+                <TableInDialog
+                    headers={Object.keys(parsedData[0])}
+                    data={parsedData}
+                    renderRow={(row) => Object.values(row)}
+                />
+            )}
+        </div>
+    </div>
+);
+
 export const RosterUploadArea = ({
     uploadedFile,
     parsedData,
@@ -20,52 +72,31 @@ export const RosterUploadArea = ({
         onDrop,
         accept: {
             "text/csv": [".csv"],
+            "text/plain": [".txt"],
+            "text/excel": [".xlsx"],
         },
         multiple: false,
         disabled: isRegistering,
     });
 
     return (
-        <div className="space-y-4 flex-1 min-h-[400px]">
-            <div className="text-sm">
-                <strong>
-                    CSV must have these columns: first_name, last_name, email
-                </strong>
-            </div>
+        <div className="space-y-4 h-full flex flex-col">
+            <TemplateDownload />
             <div
                 {...getRootProps()}
-                className={`border-2 border-dashed rounded-md p-8 text-center cursor-pointer h-[calc(100%-3rem)] ${
+                className={`flex-1 border-2 border-dashed rounded-md p-8 text-center cursor-pointer ${
                     isDragActive ? "border-primary" : "border-gray-300"
                 } ${isRegistering ? "opacity-50 cursor-not-allowed" : ""}`}
             >
                 <input {...getInputProps()} />
-                <div
-                    className={`text-lg text-muted-foreground mb-4 ${
-                        !uploadedFile
-                            ? "h-full flex flex-col items-center justify-center"
-                            : "sticky top-0 bg-background py-2"
-                    }`}
-                >
-                    {uploadedFile ? (
-                        `File uploaded: ${uploadedFile.name}`
-                    ) : (
-                        <>
-                            Put your roster in CSV format here.
-                            <br />
-                            CSV must have these columns: first_name, last_name,
-                            email.
-                        </>
-                    )}
-                </div>
-                <div className="overflow-auto">
-                    {parsedData.length > 0 && (
-                        <TableInDialog
-                            headers={Object.keys(parsedData[0])}
-                            data={parsedData}
-                            renderRow={(row) => Object.values(row)}
-                        />
-                    )}
-                </div>
+                {uploadedFile ? (
+                    <UploadedFileState
+                        uploadedFile={uploadedFile}
+                        parsedData={parsedData}
+                    />
+                ) : (
+                    <EmptyUploadState />
+                )}
             </div>
         </div>
     );

@@ -41,6 +41,52 @@ export const useRegisterForm = ({
         [toast]
     );
 
+    const verifyRosterData = (parsedData: RosterData[]): boolean => {
+        const emails = parsedData.map((player) => player.email.toLowerCase());
+        const duplicateEmails = emails.filter(
+            (email, index) => emails.indexOf(email) !== index
+        );
+
+        if (duplicateEmails.length > 0) {
+            toast({
+                variant: "destructive",
+                title: "Duplicate Emails Found",
+                description: `Please remove duplicate email entries for: ${duplicateEmails.join(", ")}`,
+            });
+            return false;
+        }
+
+        const jerseyNumbers = parsedData.map((player) => player.jersey_number);
+        const duplicateJerseyNumbers = jerseyNumbers.filter(
+            (jerseyNumber, index) =>
+                jerseyNumbers.indexOf(jerseyNumber) !== index
+        );
+
+        if (duplicateJerseyNumbers.length > 0) {
+            toast({
+                variant: "destructive",
+                title: "Duplicate Jersey Numbers Found",
+                description: `Please remove duplicate jersey number entries for: ${duplicateJerseyNumbers.join(", ")}`,
+            });
+            return false;
+        }
+
+        const invalidJerseyNumbers = parsedData.filter((player) =>
+            isNaN(parseInt(player.jersey_number, 10))
+        );
+
+        if (invalidJerseyNumbers.length > 0) {
+            toast({
+                variant: "destructive",
+                title: "Invalid Jersey Numbers",
+                description: "All jersey numbers must be valid integers",
+            });
+            return false;
+        }
+
+        return true;
+    };
+
     const handleConfirmRegistration = async () => {
         try {
             setIsRegistering(true);
@@ -54,19 +100,7 @@ export const useRegisterForm = ({
                 return;
             }
 
-            const emails = parsedData.map((player) =>
-                player.email.toLowerCase()
-            );
-            const duplicateEmails = emails.filter(
-                (email, index) => emails.indexOf(email) !== index
-            );
-
-            if (duplicateEmails.length > 0) {
-                toast({
-                    variant: "destructive",
-                    title: "Duplicate Emails Found",
-                    description: `Please remove duplicate entries for: ${duplicateEmails.join(", ")}`,
-                });
+            if (!verifyRosterData(parsedData)) {
                 setIsRegistering(false);
                 return;
             }
@@ -95,8 +129,9 @@ export const useRegisterForm = ({
                 team_id: team.team_id,
                 players: parsedData.map((player) => ({
                     user_email: player.email,
-                    first_name: player.first_name,
-                    last_name: player.last_name,
+                    first_name: player.legal_first_name,
+                    last_name: player.legal_last_name,
+                    jersey_number: parseInt(player.jersey_number, 10),
                 })),
             };
 

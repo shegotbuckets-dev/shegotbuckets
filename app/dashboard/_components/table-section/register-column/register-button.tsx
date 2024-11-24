@@ -50,7 +50,9 @@ export const RegisterButton = (props: RegisterButtonProps) => {
             <DialogTrigger asChild>
                 <span>Register</span>
             </DialogTrigger>
-            <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
+
+            <DialogContent className="h-[80vh] max-w-[60rem] flex flex-col">
+                {/* Fixed Header */}
                 <DialogHeader>
                     <DialogTitle className="text-xl">
                         Register for{" "}
@@ -71,20 +73,19 @@ export const RegisterButton = (props: RegisterButtonProps) => {
                     </div>
                 </DialogHeader>
 
-                <div className="flex flex-col flex-1 space-y-6">
-                    <div className="space-y-4">
-                        <div className="text-sm">
-                            <strong>
-                                Select your team and upload your roster to
-                                register for this event.
-                            </strong>
+                {/* Main Content */}
+                <div className="flex flex-col flex-1">
+                    {/* Team Selection */}
+                    <div className="mb-4">
+                        <div className="text-sm font-bold mb-4">
+                            Select your team and upload your roster to register
+                            for this event.
                         </div>
-
                         <Select
                             onValueChange={setSelectedTeam}
                             value={selectedTeam}
                         >
-                            <SelectTrigger>
+                            <SelectTrigger autoFocus={false}>
                                 <SelectValue placeholder="Select team" />
                             </SelectTrigger>
                             <SelectContent>
@@ -100,14 +101,18 @@ export const RegisterButton = (props: RegisterButtonProps) => {
                         </Select>
                     </div>
 
-                    <RosterUploadArea
-                        uploadedFile={uploadedFile}
-                        parsedData={parsedData}
-                        isRegistering={isRegistering}
-                        onDrop={onDrop}
-                    />
+                    {/* Roster Upload - Now takes more space */}
+                    <div className="flex-1 min-h-0 mb-4">
+                        <RosterUploadArea
+                            uploadedFile={uploadedFile}
+                            parsedData={parsedData}
+                            isRegistering={isRegistering}
+                            onDrop={onDrop}
+                        />
+                    </div>
 
-                    <div className="flex justify-end space-x-2">
+                    {/* Buttons - Fixed at bottom */}
+                    <div className="flex justify-end gap-2 pt-4 border-t">
                         <Button
                             variant="outline"
                             onClick={resetForm}
