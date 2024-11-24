@@ -88,6 +88,8 @@ export const STATUS_BADGE_CLASSNAME_CLICKABLE =
     "w-24 h-6 truncate text-center justify-center cursor-pointer";
 export const TEAM_BADGE_CLASSNAME =
     "w-32 h-6 truncate text-center justify-center cursor-default";
+export const WAIVER_BADGE_CLASSNAME =
+    "w-24 h-6 truncate text-center justify-center cursor-default";
 
 export interface BaseCellProps {
     event: EventTableData;
@@ -124,9 +126,10 @@ export interface EventDetailsProps {
 }
 
 export interface RosterData {
-    first_name: string;
-    last_name: string;
-    gmail: string;
+    legal_first_name: string;
+    legal_last_name: string;
+    email: string;
+    jersey_number: string;
     [key: string]: string;
 }
 
@@ -138,4 +141,10 @@ export interface RosterTableProps {
     roster: Database["public"]["Tables"]["registration_players"]["Row"][];
 }
 
-export const ROSTER_HEADERS = ["First Name", "Last Name", "Email"];
+export const ROSTER_HEADERS = [
+    "First Name",
+    "Last Name",
+    "Email",
+    "Jersey Number",
+    "Waiver",
+];

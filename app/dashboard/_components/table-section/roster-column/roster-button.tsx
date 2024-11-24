@@ -7,6 +7,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
+import { WaiverCellInRoster } from "../simple-cells";
 import { TableInDialog } from "../table-in-dialog";
 
 export const RosterButton = ({ event }: RosterButtonProps) => {
@@ -15,7 +16,7 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
             <DialogTrigger asChild>
                 <span>View Roster</span>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
+            <DialogContent className="h-[60vh] max-w-[60rem] flex flex-col">
                 <DialogHeader>
                     <DialogTitle className="text-xl">
                         Roster for{" "}
@@ -24,7 +25,7 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
                         </span>
                     </DialogTitle>
                 </DialogHeader>
-                <div className="overflow-y-auto max-h-[400px]">
+                <div className="flex-1 min-h-0 mt-4">
                     {event.roster.length === 0 ? (
                         <div className="text-center py-8 text-muted-foreground">
                             No players have been added to the roster yet.
@@ -37,6 +38,15 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
                                 player.first_name,
                                 player.last_name,
                                 player.user_email,
+                                player.jersey_number,
+                                <WaiverCellInRoster
+                                    key={`waiver-cell-${player.id}`}
+                                    value={
+                                        player.waiver_signed
+                                            ? "Signed"
+                                            : "Pending"
+                                    }
+                                />,
                             ]}
                         />
                     )}

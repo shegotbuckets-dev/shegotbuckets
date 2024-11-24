@@ -92,6 +92,8 @@ export type Database = {
             registration_players: {
                 Row: {
                     first_name: string;
+                    id: string;
+                    jersey_number: number;
                     last_name: string;
                     registration_id: string;
                     user_email: string;
@@ -99,13 +101,17 @@ export type Database = {
                 };
                 Insert: {
                     first_name: string;
+                    id?: string;
+                    jersey_number: number;
                     last_name: string;
                     registration_id: string;
                     user_email: string;
-                    waiver_signed: boolean;
+                    waiver_signed?: boolean;
                 };
                 Update: {
                     first_name?: string;
+                    id?: string;
+                    jersey_number?: number;
                     last_name?: string;
                     registration_id?: string;
                     user_email?: string;
@@ -113,36 +119,29 @@ export type Database = {
                 };
                 Relationships: [
                     {
-                        foreignKeyName: "team_players_team_id_fkey";
+                        foreignKeyName: "registration_players_registration_id_fkey";
                         columns: ["registration_id"];
                         isOneToOne: false;
-                        referencedRelation: "teams";
-                        referencedColumns: ["team_id"];
-                    },
-                    {
-                        foreignKeyName: "team_players_user_email_fkey";
-                        columns: ["user_email"];
-                        isOneToOne: false;
-                        referencedRelation: "users";
-                        referencedColumns: ["email"];
+                        referencedRelation: "registrations";
+                        referencedColumns: ["registration_id"];
                     },
                 ];
             };
             registrations: {
                 Row: {
-                    created_at: string | null;
+                    created_at: string;
                     event_id: string;
                     registration_id: string;
                     team_id: string;
                 };
                 Insert: {
-                    created_at?: string | null;
+                    created_at?: string;
                     event_id: string;
                     registration_id?: string;
                     team_id: string;
                 };
                 Update: {
-                    created_at?: string | null;
+                    created_at?: string;
                     event_id?: string;
                     registration_id?: string;
                     team_id?: string;
@@ -182,42 +181,9 @@ export type Database = {
                 };
                 Relationships: [];
             };
-            user_teams: {
-                Row: {
-                    joined_at: string | null;
-                    team_id: string;
-                    user_id: string;
-                };
-                Insert: {
-                    joined_at?: string | null;
-                    team_id: string;
-                    user_id: string;
-                };
-                Update: {
-                    joined_at?: string | null;
-                    team_id?: string;
-                    user_id?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: "user_teams_team_id_fkey";
-                        columns: ["team_id"];
-                        isOneToOne: false;
-                        referencedRelation: "teams";
-                        referencedColumns: ["team_id"];
-                    },
-                    {
-                        foreignKeyName: "user_teams_user_id_fkey";
-                        columns: ["user_id"];
-                        isOneToOne: false;
-                        referencedRelation: "users";
-                        referencedColumns: ["user_id"];
-                    },
-                ];
-            };
             users: {
                 Row: {
-                    created_at: string | null;
+                    created_at: string;
                     email: string;
                     first_name: string | null;
                     last_name: string | null;
@@ -225,7 +191,7 @@ export type Database = {
                     user_id: string;
                 };
                 Insert: {
-                    created_at?: string | null;
+                    created_at?: string;
                     email: string;
                     first_name?: string | null;
                     last_name?: string | null;
@@ -233,7 +199,7 @@ export type Database = {
                     user_id: string;
                 };
                 Update: {
-                    created_at?: string | null;
+                    created_at?: string;
                     email?: string;
                     first_name?: string | null;
                     last_name?: string | null;
@@ -247,7 +213,20 @@ export type Database = {
             [_ in never]: never;
         };
         Functions: {
-            [_ in never]: never;
+            execute_sql: {
+                Args: {
+                    sql: string;
+                };
+                Returns: undefined;
+            };
+            register_event_with_transaction: {
+                Args: {
+                    event_id: string;
+                    team_id: string;
+                    players: Json;
+                };
+                Returns: undefined;
+            };
         };
         Enums: {
             [_ in never]: never;

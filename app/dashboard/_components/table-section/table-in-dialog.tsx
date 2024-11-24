@@ -21,32 +21,34 @@ export const TableInDialog = <T,>({
     if (!data.length) return null;
 
     return (
-        <div className="overflow-auto max-h-[400px] mt-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        {headers.map((header) => (
-                            <TableHead key={header} className="text-center">
-                                {header}
-                            </TableHead>
-                        ))}
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {data.map((item, index) => (
-                        <TableRow key={index}>
-                            {renderRow(item).map((cell, cellIndex) => (
-                                <TableCell
-                                    key={cellIndex}
-                                    className="text-center"
-                                >
-                                    {cell}
-                                </TableCell>
+        <div className="relative h-full border rounded-md">
+            <div className="absolute inset-0 overflow-auto">
+                <Table>
+                    <TableHeader className="bg-gray-100">
+                        <TableRow>
+                            {headers.map((header) => (
+                                <TableHead key={header} className="text-center">
+                                    {header}
+                                </TableHead>
                             ))}
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map((item, index) => (
+                            <TableRow key={index}>
+                                {renderRow(item).map((cell, cellIndex) => (
+                                    <TableCell
+                                        key={cellIndex}
+                                        className="text-center"
+                                    >
+                                        {cell}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     );
 };
