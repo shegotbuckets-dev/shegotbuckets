@@ -1,5 +1,7 @@
+import { WaiverContentPDF } from "@/app/dashboard/_components/table-section/waiver-column/waiver-content-PDF";
 import { WaiverSignedEmail } from "@/app/dashboard/_components/table-section/waiver-column/waiver-email";
 
+import { renderToBuffer } from "@react-pdf/renderer";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -9,13 +11,23 @@ interface RequestBody {
     name: string;
     email: string;
     signatureData: string;
+    firstName: string;
+    lastName: string;
+    tournamentName: string;
+    location: string;
+    eventDate: string;
 }
 
 export async function POST(request: NextRequest) {
     try {
         const body: RequestBody = await request.json();
 
-        if (!body.email || !body.signatureData) {
+        if (
+            !body.email ||
+            !body.signatureData ||
+            !body.firstName ||
+            !body.lastName
+        ) {
             return NextResponse.json(
                 { error: "Missing required fields" },
                 { status: 400 }
@@ -31,16 +43,30 @@ export async function POST(request: NextRequest) {
         }
 
         const signatureBuffer = Buffer.from(signatureData[1], "base64");
+        const signatureDataUrl = `data:image/png;base64,${signatureBuffer.toString("base64")}`;
+
+        const pdfBuffer = await renderToBuffer(
+            WaiverContentPDF({
+                firstName: body.firstName,
+                lastName: body.lastName,
+                signatureDataUrl: signatureDataUrl,
+            })
+        );
 
         const { data, error } = await resend.emails.send({
             from: "sgb-no-reply <noreply@shegotbuckets.org>",
             to: [body.email],
-            subject: "Welcome to SGB!!!",
-            react: WaiverSignedEmail({ name: body.name }),
+            subject: "SGB Adult Player Registration Form",
+            react: WaiverSignedEmail({
+                name: body.name,
+                tournamentName: body.tournamentName,
+                location: body.location,
+                eventDate: body.eventDate,
+            }),
             attachments: [
                 {
-                    filename: "signature.png",
-                    content: signatureBuffer,
+                    filename: "waiver.pdf",
+                    content: pdfBuffer,
                 },
             ],
         });
