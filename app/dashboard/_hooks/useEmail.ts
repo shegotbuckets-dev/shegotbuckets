@@ -2,6 +2,11 @@ type emailData = {
     name: string;
     email: string;
     signatureData: string;
+    firstName: string;
+    lastName: string;
+    tournamentName: string;
+    location: string;
+    eventDate: string;
 };
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";

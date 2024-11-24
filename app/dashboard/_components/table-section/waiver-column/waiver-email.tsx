@@ -1,4 +1,3 @@
-// used for resend to send waiver signed email
 import {
     Body,
     Container,
@@ -14,17 +13,24 @@ import { Tailwind } from "@react-email/tailwind";
 interface WaiverSignedEmailProps {
     name?: string;
     signatureDate?: string;
+    tournamentName?: string;
+    location?: string;
+    eventDate?: string;
 }
 
 export const WaiverSignedEmail = ({
     name = "",
     signatureDate = new Date().toLocaleDateString(),
+    tournamentName = "",
+    location = "",
+    eventDate = "",
 }: WaiverSignedEmailProps) => {
     return (
         <Html>
             <Head />
             <Preview>
-                Welcome to SGB! Your waiver has been successfully signed.
+                Welcome to SGB! We are looking forward to meeting you at the
+                event.
             </Preview>
             <Tailwind>
                 <Body className="bg-gray-50 font-sans">
@@ -46,30 +52,32 @@ export const WaiverSignedEmail = ({
 
                             <Section className="bg-gray-50 rounded-lg p-6 mb-6">
                                 <Text className="text-gray-600 text-sm mb-2">
-                                    ✓ Waiver signed and processed
-                                </Text>
-                                <Text className="text-gray-600 text-sm mb-2">
-                                    ✓ Account activated
+                                    Tournament Name: {` ${tournamentName}`}
                                 </Text>
                                 <Text className="text-gray-600 text-sm">
-                                    ✓ Ready to participate in events
+                                    Date: {` ${eventDate}`}
+                                </Text>
+                                <Text className="text-gray-600 text-sm">
+                                    Location: {` ${location}`}
                                 </Text>
                             </Section>
-
-                            {/* <Hr className="border-gray-200 my-6" /> */}
-
-                            {/* <Text className="text-gray-600 text-sm mb-4">
-                  Need help or have questions? Our team is here to support you:
-                </Text>
-  
-                <Section className="text-center space-y-2 mb-6">
-                  <Link
-                    href="mailto:support@shegotbuckets.org"
-                    className="text-green-500 text-sm hover:text-green-600"
-                  >
-                    support@shegotbuckets.org
-                  </Link>
-                </Section> */}
+                            <Text className="text-gray-800 mb-6">
+                                For any questions, please do not hesitate to
+                                contact us at{" "}
+                                <a
+                                    href="mailto:info@shegotbuckets.org"
+                                    className="text-purple-600 hover:underline"
+                                >
+                                    info@shegotbuckets.org
+                                </a>
+                                .
+                            </Text>
+                            <Text className="text-gray-800 mb-2">
+                                Warm regards,
+                            </Text>
+                            <Text className="text-gray-800 mb-1">
+                                Event Team
+                            </Text>
                         </Section>
                         <Text className="text-center text-gray-400 text-xs">
                             © 2024 She Got Buckets. All rights reserved.
