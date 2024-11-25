@@ -7,10 +7,14 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Add this to your environment variables or configuration
+const ADMIN_EMAIL = "waivers@shegotbuckets.org";
+
 interface RequestBody {
     name: string;
     email: string;
     signatureData: string;
+    timestamp: string;
     firstName: string;
     lastName: string;
     tournamentName: string;
@@ -26,7 +30,8 @@ export async function POST(request: NextRequest) {
             !body.email ||
             !body.signatureData ||
             !body.firstName ||
-            !body.lastName
+            !body.lastName ||
+            !body.timestamp
         ) {
             return NextResponse.json(
                 { error: "Missing required fields" },
@@ -50,13 +55,14 @@ export async function POST(request: NextRequest) {
                 firstName: body.firstName,
                 lastName: body.lastName,
                 signatureDataUrl: signatureDataUrl,
+                timestamp: body.timestamp,
             })
         );
 
         const { data, error } = await resend.emails.send({
-            from: "sgb-no-reply <noreply@shegotbuckets.org>",
-            to: [body.email],
-            subject: "SGB Adult Player Registration Form",
+            from: "SHE GOT BUCKETS OFFICIAL: DO NOT REPLY <noreply@shegotbuckets.org>",
+            to: [body.email, ADMIN_EMAIL],
+            subject: `SGB Waiver - ${body.tournamentName}`,
             react: WaiverSignedEmail({
                 name: body.name,
                 tournamentName: body.tournamentName,
@@ -65,7 +71,7 @@ export async function POST(request: NextRequest) {
             }),
             attachments: [
                 {
-                    filename: "waiver.pdf",
+                    filename: `SGB Waiver - ${body.tournamentName}.pdf`,
                     content: pdfBuffer,
                 },
             ],

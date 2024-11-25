@@ -91,6 +91,7 @@ export const WaiverDialogContent = ({
                     name: user?.firstName || " ",
                     email: userEmail || " ",
                     signatureData: signature!,
+                    timestamp: new Date().toISOString(),
                     firstName: firstName!,
                     lastName: lastName!,
                     tournamentName: event?.name,
@@ -325,7 +326,7 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 Agreement.
             </p>
             <p>Ownership and Control of Materials</p>
-            <p>
+            <p className="font-bold">
                 To the fullest extent permitted by applicable law, I hereby
                 irrevocably waive all legal and equitable rights relating to all
                 liabilities, claims, demands, actions, suits, damages, and
@@ -352,7 +353,7 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 part.
             </p>
             <p>Waiver of Rights and Release of Claims</p>
-            <p>
+            <p className="font-bold">
                 I represent and warrant to SGB that I am at least eighteen (18)
                 years of age, and I have full right, power, and authority to
                 enter into this Agreement and grant the rights granted
@@ -424,7 +425,7 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 all the terms and conditions set forth in this agreement
                 (“Release”).
             </p>
-            <p>
+            <p className="font-bold">
                 I AM AWARE AND UNDERSTAND THAT THE ACTIVITY IS AN INHERENTLY
                 AND/OR POTENTIALLY DANGEROUS ACTIVITY AND INVOLVE THE RISK OF
                 SERIOUS INJURY, DISABILITY, DEATH, AND/OR PROPERTY DAMAGE. I

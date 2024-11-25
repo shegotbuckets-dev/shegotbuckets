@@ -1,5 +1,6 @@
 import {
     Document,
+    Font,
     Image,
     Page,
     StyleSheet,
@@ -7,11 +8,25 @@ import {
     View,
 } from "@react-pdf/renderer";
 
+Font.register({
+    family: "Open Sans",
+    fonts: [
+        {
+            src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf",
+        },
+        {
+            src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-700.ttf",
+            fontWeight: 700,
+        },
+    ],
+});
+
 const styles = StyleSheet.create({
     page: {
         flexDirection: "column",
         backgroundColor: "#ffffff",
         padding: 20,
+        fontFamily: "Open Sans",
     },
     section: {
         margin: 8,
@@ -20,30 +35,39 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 16,
         marginBottom: 10,
-        fontWeight: "bold",
+        fontFamily: "Open Sans",
+        fontWeight: 700,
     },
     text: {
         fontSize: 10,
         marginBottom: 10,
+        fontFamily: "Open Sans",
     },
-    bold: {
-        fontWeight: "bold",
+    boldText: {
+        fontSize: 10,
+        marginBottom: 10,
+        fontFamily: "Open Sans",
+        fontWeight: 700,
+    },
+    footerText: {
+        fontSize: 10,
+        fontFamily: "Open Sans",
+        paddingTop: 5,
     },
     headline: {
         textAlign: "center",
         fontSize: 20,
         marginBottom: 10,
-        fontWeight: "bold",
+        fontFamily: "Open Sans",
+        fontWeight: 700,
     },
     signatureImage: {
         width: 200,
         height: 50,
     },
     signatureSection: {
-        marginTop: 50,
         borderTopWidth: 1,
         borderTopColor: "#000000",
-        paddingTop: 10,
     },
 });
 
@@ -51,18 +75,22 @@ interface WaiverContentPDFProps {
     firstName: string;
     lastName: string;
     signatureDataUrl: string;
+    timestamp: string;
 }
 
 export const WaiverContentPDF = ({
     firstName,
     lastName,
     signatureDataUrl,
+    timestamp,
 }: WaiverContentPDFProps) => (
     <Document>
         <Page size="A4" style={styles.page}>
             <View style={styles.section}>
-                <Text style={styles.bold}>Legal First Name: {firstName}</Text>
-                <Text style={styles.bold}>Legal Last Name: {lastName}</Text>
+                <Text style={styles.boldText}>
+                    Legal First Name: {firstName}
+                </Text>
+                <Text style={styles.boldText}>Legal Last Name: {lastName}</Text>
 
                 <Text style={styles.text}></Text>
 
@@ -144,7 +172,7 @@ export const WaiverContentPDF = ({
                 <Text style={styles.title}>
                     Ownership and Control of Materials
                 </Text>
-                <Text style={styles.text}>
+                <Text style={styles.boldText}>
                     To the fullest extent permitted by applicable law, I hereby
                     irrevocably waive all legal and equitable rights relating to
                     all liabilities, claims, demands, actions, suits, damages,
@@ -175,7 +203,7 @@ export const WaiverContentPDF = ({
                 <Text style={styles.title}>
                     Waiver of Rights and Release of Claims
                 </Text>
-                <Text style={styles.text}>
+                <Text style={styles.boldText}>
                     I represent and warrant to SGB that I am at least eighteen
                     (18) years of age, and I have full right, power, and
                     authority to enter into this Agreement and grant the rights
@@ -230,7 +258,7 @@ export const WaiverContentPDF = ({
                     such courts.
                 </Text>
 
-                <Text style={styles.text}>
+                <Text style={styles.boldText}>
                     I AM AWARE AND UNDERSTAND THAT THE ACTIVITY IS AN INHERENTLY
                     AND/OR POTENTIALLY DANGEROUS ACTIVITY AND INVOLVE THE RISK
                     OF SERIOUS INJURY, DISABILITY, DEATH, AND/OR PROPERTY
@@ -379,7 +407,8 @@ export const WaiverContentPDF = ({
             </View>
 
             <View style={styles.signatureSection}>
-                <Text style={styles.text}>Signature:</Text>
+                <Text style={styles.footerText}>Date Signed: {timestamp}</Text>
+                <Text style={styles.footerText}>Signature:</Text>
                 <Image style={styles.signatureImage} src={signatureDataUrl} />
             </View>
         </Page>
