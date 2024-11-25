@@ -11,6 +11,7 @@ interface RequestBody {
     name: string;
     email: string;
     signatureData: string;
+    timestamp: string;
     firstName: string;
     lastName: string;
     tournamentName: string;
@@ -26,7 +27,8 @@ export async function POST(request: NextRequest) {
             !body.email ||
             !body.signatureData ||
             !body.firstName ||
-            !body.lastName
+            !body.lastName ||
+            !body.timestamp
         ) {
             return NextResponse.json(
                 { error: "Missing required fields" },
@@ -50,6 +52,7 @@ export async function POST(request: NextRequest) {
                 firstName: body.firstName,
                 lastName: body.lastName,
                 signatureDataUrl: signatureDataUrl,
+                timestamp: body.timestamp,
             })
         );
 

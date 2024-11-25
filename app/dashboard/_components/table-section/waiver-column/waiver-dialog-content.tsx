@@ -91,6 +91,7 @@ export const WaiverDialogContent = ({
                     name: user?.firstName || " ",
                     email: userEmail || " ",
                     signatureData: signature!,
+                    timestamp: new Date().toISOString(),
                     firstName: firstName!,
                     lastName: lastName!,
                     tournamentName: event?.name,

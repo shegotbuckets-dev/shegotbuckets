@@ -2,6 +2,7 @@ type emailData = {
     name: string;
     email: string;
     signatureData: string;
+    timestamp: string;
     firstName: string;
     lastName: string;
     tournamentName: string;

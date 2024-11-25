@@ -51,12 +51,14 @@ interface WaiverContentPDFProps {
     firstName: string;
     lastName: string;
     signatureDataUrl: string;
+    timestamp: string;
 }
 
 export const WaiverContentPDF = ({
     firstName,
     lastName,
     signatureDataUrl,
+    timestamp,
 }: WaiverContentPDFProps) => (
     <Document>
         <Page size="A4" style={styles.page}>
@@ -379,6 +381,7 @@ export const WaiverContentPDF = ({
             </View>
 
             <View style={styles.signatureSection}>
+                <Text style={styles.text}>Date Signed: {timestamp}</Text>
                 <Text style={styles.text}>Signature:</Text>
                 <Image style={styles.signatureImage} src={signatureDataUrl} />
             </View>
