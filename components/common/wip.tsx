@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // First, create a shared component for both pages
 export default function WorkInProgress({ features }: { features: string[] }) {
     return (
@@ -38,12 +40,12 @@ export default function WorkInProgress({ features }: { features: string[] }) {
                     </ul>
                 </div>
 
-                <a
+                <Link
                     href="/"
                     className="inline-block text-blue-500 hover:text-blue-700 underline"
                 >
                     Return to Home
-                </a>
+                </Link>
             </div>
         </main>
     );

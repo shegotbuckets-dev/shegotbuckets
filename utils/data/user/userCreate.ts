@@ -8,7 +8,7 @@ export const userCreate = async ({
     profile_image_url,
     user_id,
 }: userCreateProps) => {
-    const supabase = createAdminClient();
+    const supabase = await createAdminClient();
 
     try {
         const { error } = await supabase

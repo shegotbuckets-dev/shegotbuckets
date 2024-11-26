@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export const createAdminClient = () => {
+export const createAdminClient = async () => {
     if (
         !process.env.SUPABASE_SERVICE_ROLE_KEY ||
         !process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -9,7 +9,7 @@ export const createAdminClient = () => {
         throw new Error("Missing required Supabase configuration");
     }
 
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     return createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL,
         process.env.SUPABASE_SERVICE_ROLE_KEY,

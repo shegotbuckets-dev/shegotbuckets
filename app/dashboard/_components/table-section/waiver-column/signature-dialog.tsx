@@ -1,4 +1,10 @@
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { SignatureCanvas } from "./signature-canvas";
 
@@ -33,6 +39,11 @@ export const SignatureDialog = ({
                 )}
             </DialogTrigger>
             <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
+                <DialogHeader>
+                    <DialogTitle className="text-xl font-bold mb-4 text-center">
+                        Sign Your Name
+                    </DialogTitle>
+                </DialogHeader>
                 <SignatureCanvas
                     onSave={onSignatureSave}
                     onCancel={() => onOpenChange(false)}

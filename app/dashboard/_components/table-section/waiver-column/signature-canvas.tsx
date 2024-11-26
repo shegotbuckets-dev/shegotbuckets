@@ -140,7 +140,6 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
         >
-            <h2 className="text-xl font-bold mb-4">Sign Your Name</h2>
             <div className="relative">
                 <canvas
                     ref={canvasRef}

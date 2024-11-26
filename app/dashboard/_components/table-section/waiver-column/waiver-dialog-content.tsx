@@ -146,11 +146,7 @@ export const WaiverDialogContent = ({
     const isButtonEnabled = isBottomReached && isChecked && signature;
 
     return (
-        <div className="max-w-2xl mx-auto pt-6 space-y-6">
-            <h1 className="text-3xl font-bold text-center">
-                PUBLICITY WAIVER AND RELEASE
-            </h1>
-
+        <div className="max-w-2xl mx-auto space-y-6">
             <Alert>
                 <InfoIcon className="h-4 w-4" />
                 <AlertDescription>
@@ -211,8 +207,8 @@ export const WaiverDialogContent = ({
                 <Checkbox
                     id="terms"
                     checked={isChecked}
-                    onCheckedChange={(checked) =>
-                        setIsChecked(checked as boolean)
+                    onCheckedChange={(checked: boolean) =>
+                        setIsChecked(checked)
                     }
                 />
                 <label

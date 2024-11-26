@@ -10,7 +10,7 @@ export const userUpdate = async ({
     profile_image_url,
     user_id,
 }: userUpdateProps) => {
-    const supabase = createAdminClient();
+    const supabase = await createAdminClient();
 
     try {
         const { error } = await supabase

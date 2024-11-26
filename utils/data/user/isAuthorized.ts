@@ -16,7 +16,8 @@ export const isAuthorized = async (
     //     };
     // }
 
-    const result = await clerkClient.users.getUser(userId);
+    const clerk = await clerkClient();
+    const result = await clerk.users.getUser(userId);
 
     if (!result) {
         return {
@@ -25,7 +26,7 @@ export const isAuthorized = async (
         };
     }
 
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
 
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
