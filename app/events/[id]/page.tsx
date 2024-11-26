@@ -13,11 +13,10 @@ export const metadata = {
     title: "Events",
 };
 
-export default async function EventPage({
-    params,
-}: {
-    params: { id: string };
-}) {
+type Params = Promise<{ id: string }>;
+
+export default async function EventPage(props: { params: Params }) {
+    const params = await props.params;
     const league = await fetchLeagueById(params.id);
     // Option 1: Add a loading check
     if (!league || !league.image) {
