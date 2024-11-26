@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import AuthWrapper from "@/components/wrapper/auth-wrapper";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -51,6 +52,7 @@ export default function RootLayout({
     return (
         <AuthWrapper>
             <html lang="en" suppressHydrationWarning>
+                <GoogleAnalytics gaId="G-SZ9BB19B6R" />
                 <body className={GeistSans.className}>
                     <Provider>
                         <ThemeProvider
