@@ -38,7 +38,7 @@ function VideoPlaceholder() {
     );
 }
 
-export default function HeroSection() {
+export const HeroSection = () => {
     return (
         <section
             className="relative h-[90vh] w-full overflow-hidden flex items-center"
@@ -89,4 +89,4 @@ export default function HeroSection() {
             </div>
         </section>
     );
-}
+};

@@ -1,4 +1,4 @@
-import { CarouselNavigation } from "../ui/motion-carousel";
+import { CarouselNavigation } from "../../ui/motion-carousel";
 
 export default function EventsCarouselNav({
     carouselNavPosition,

@@ -9,11 +9,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, CircleDollarSign, MapPin, Users } from "lucide-react";
 
-export default function AboutInforEvent({
+export const EventAbout = ({
     league,
 }: {
     league: Database["public"]["Tables"]["leagues"]["Row"];
-}) {
+}) => {
     const [selectedLeague, setSelectedLeague] = useState<
         "Southern Conference" | "Northern Conference" | "National Finals"
     >("National Finals");
@@ -112,4 +112,4 @@ export default function AboutInforEvent({
             </section>
         </>
     );
-}
+};

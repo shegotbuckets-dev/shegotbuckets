@@ -1,7 +1,8 @@
-import EventsCarousel from "@/components/events-carousel/events-carousel";
 import { Separator } from "@/components/ui/separator";
 
-export default async function EventsSection() {
+import EventsCarousel from "./events-carousel/events-carousel";
+
+export const EventsSection = () => {
     return (
         <section className="w-4/5 mx-auto my-12 md:my-16 lg:my-20">
             <div className="container">
@@ -13,4 +14,4 @@ export default async function EventsSection() {
             </div>
         </section>
     );
-}
+};

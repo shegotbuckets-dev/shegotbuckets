@@ -13,7 +13,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Award, BookOpen, ChevronRight, Flag, Trophy } from "lucide-react";
 
-export default function LeagueInfor() {
+export const LeagueInfo = () => {
     return (
         <section className="pt-20 pb-28 bg-white/10">
             <div className="container mx-auto px-4">
@@ -59,7 +59,7 @@ export default function LeagueInfor() {
             </div>
         </section>
     );
-}
+};
 
 export const RuleBook = () => {
     const [language, setLanguage] = useState<"en" | "zh">("en");
