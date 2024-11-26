@@ -2,22 +2,22 @@
 
 ## Exporting
 
--   Use `export default` for page components
--   Use `export const` for everything else (components, hooks, utilities)
+- Use `export default` for page components
+- Use `export const` for everything else (components, hooks, utilities)
 
 ## Importing
 
 Use `@` imports for:
 
--   Deep imports across different directories
--   Shared components/utilities
--   When the path would require multiple `../`
+- Deep imports across different directories
+- Shared components/utilities
+- When the path would require multiple `../`
 
 Use `./` imports for:
 
--   Files in the same directory
--   Closely related components
--   Direct parent/child relationships
+- Files in the same directory
+- Closely related components
+- Direct parent/child relationships
 
 # Getting Started
 
@@ -50,11 +50,11 @@ The commit message type must be one of the following:
 
 ## Prerequisites
 
--   Node.js and npminstalled
--   Accounts and API keys for:
-    -   Supabase
-    -   Clerk
-    -   Stripe (if using payments)
+- Node.js and npminstalled
+- Accounts and API keys for:
+    - Supabase
+    - Clerk
+    - Stripe (if using payments)
 
 ## Setup
 
@@ -77,21 +77,21 @@ The commit message type must be one of the following:
 
 ## Additional Configuration
 
--   Webhooks: Set up webhooks for Clerk (if using auth) at `/api/auth/webhook` and for Stripe (if using payments) at `/api/payments/webhook`.
--   Customize the landing page, dashboard, and other components as needed.
+- Webhooks: Set up webhooks for Clerk (if using auth) at `/api/auth/webhook` and for Stripe (if using payments) at `/api/payments/webhook`.
+- Customize the landing page, dashboard, and other components as needed.
 
 ## Important Security Notes
 
--   Enable Row Level Security (RLS) in your Supabase project to ensure data protection at the database level.
--   Always make Supabase calls on the server-side (in API routes or server components) to keep your service key secure.
+- Enable Row Level Security (RLS) in your Supabase project to ensure data protection at the database level.
+- Always make Supabase calls on the server-side (in API routes or server components) to keep your service key secure.
 
 ## Learn More
 
 Refer to the documentation of the individual technologies used in this project for more detailed information:
 
--   [Next.js Documentation](https://nextjs.org/docs)
--   [Tailwind CSS Documentation](https://tailwindcss.com/docs)
--   [Supabase Documentation](https://supabase.io/docs)
--   [Prisma Documentation](https://www.prisma.io/docs)
--   [Clerk Documentation](https://clerk.dev/docs) (if using auth)
--   [Stripe Documentation](https://stripe.com/docs) (if using payments)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Supabase Documentation](https://supabase.io/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Clerk Documentation](https://clerk.dev/docs) (if using auth)
+- [Stripe Documentation](https://stripe.com/docs) (if using payments)
