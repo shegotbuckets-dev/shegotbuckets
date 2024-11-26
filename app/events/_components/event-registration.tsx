@@ -1,7 +1,7 @@
 import RegistrationButton from "@/components/common/register-button";
 import { Button } from "@/components/ui/button";
 
-export default function Registration() {
+export const EventRegistration = () => {
     return (
         <section id="registration-event" className="py-20 bg-white/10">
             <div className="container mx-auto px-4 text-center">
@@ -19,4 +19,4 @@ export default function Registration() {
             </div>
         </section>
     );
-}
+};

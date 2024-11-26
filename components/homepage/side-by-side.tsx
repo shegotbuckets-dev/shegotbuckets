@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function SideBySide() {
+export const SideBySide = () => {
     return (
         <section className="w-4/5 mx-auto my-16">
             <div className="container py-8">
@@ -63,4 +63,4 @@ export default function SideBySide() {
             </div>
         </section>
     );
-}
+};

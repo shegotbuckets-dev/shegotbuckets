@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { useEffect, useState } from "react";
 
-export default function TestimonialSection() {
+export const TestimonialSection = () => {
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
@@ -156,4 +156,4 @@ export default function TestimonialSection() {
             </div>
         </section>
     );
-}
+};

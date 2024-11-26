@@ -48,7 +48,7 @@ const involvementOptions: InvolvementOption[] = [
     },
 ];
 
-export default function GetInvolvedSection() {
+export const GetInvolvedSection = () => {
     return (
         <section className="w-4/5 mx-auto my-16 bg-gray-50 dark:bg-black">
             <div className="container py-8">
@@ -94,4 +94,4 @@ export default function GetInvolvedSection() {
             </div>
         </section>
     );
-}
+};

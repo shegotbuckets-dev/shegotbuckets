@@ -1,9 +1,9 @@
-import BannerSection from "@/components/homepage/banner-section";
-import EventsSection from "@/components/homepage/events-section";
-import HeroSection from "@/components/homepage/hero-section";
-import GetInvolvedSection from "@/components/homepage/involve-section";
-import SideBySide from "@/components/homepage/side-by-side";
-import TestimonialSection from "@/components/homepage/testimonial-section";
+import { BannerSection } from "@/components/homepage/banner-section";
+import { EventsSection } from "@/components/homepage/events-section";
+import { HeroSection } from "@/components/homepage/hero-section";
+import { GetInvolvedSection } from "@/components/homepage/involve-section";
+import { SideBySide } from "@/components/homepage/side-by-side";
+import { TestimonialSection } from "@/components/homepage/testimonial-section";
 import PageWrapper from "@/components/wrapper/page-wrapper";
 
 export default function Home() {

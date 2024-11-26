@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function BannerSection() {
+export const BannerSection = () => {
     const stats = [
         {
             value: "14%",
@@ -62,4 +62,4 @@ export default function BannerSection() {
             </p>
         </section>
     );
-}
+};

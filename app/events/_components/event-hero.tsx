@@ -6,11 +6,11 @@ import { SupabaseStorageBucket } from "@/utils/types";
 
 import Image from "next/image";
 
-export default function HeroSectionEvent({
+export const EventHeroSection = ({
     league,
 }: {
     league: Database["public"]["Tables"]["leagues"]["Row"];
-}) {
+}) => {
     const { league_id, image, name } = league;
 
     return (
@@ -46,4 +46,4 @@ export default function HeroSectionEvent({
             </div>
         </section>
     );
-}
+};

@@ -1,5 +1,5 @@
-import EventCard from "@/components/events-carousel/event-card";
-import EventsCarouselNav from "@/components/events-carousel/events-carousel-nav";
+import EventCard from "@/components/homepage/events-carousel/event-card";
+import EventsCarouselNav from "@/components/homepage/events-carousel/events-carousel-nav";
 import {
     Carousel,
     CarouselContent,

@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { throttle } from "lodash";
 import { ChevronUp } from "lucide-react";
 
-export default function AnchorNavBar() {
+export const AnchorNavBar = () => {
     const [activeSection, setActiveSection] = useState("");
     const [showScrollTop, setShowScrollTop] = useState(false);
     const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
@@ -118,4 +118,4 @@ export default function AnchorNavBar() {
             )}
         </motion.nav>
     );
-}
+};

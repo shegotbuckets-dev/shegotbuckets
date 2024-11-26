@@ -34,7 +34,7 @@ const champions: Champion[] = [
     },
 ];
 
-export default function HallOfRecord() {
+export const HallOfRecord = () => {
     return (
         <section className="py-20 bg-gray-200/25" id="hallRecord-event">
             <div className="container mx-auto px-4">
@@ -70,4 +70,4 @@ export default function HallOfRecord() {
             </div>
         </section>
     );
-}
+};
