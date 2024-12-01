@@ -89,14 +89,18 @@ export const RegisterButton = (props: RegisterButtonProps) => {
                                 <SelectValue placeholder="Select team" />
                             </SelectTrigger>
                             <SelectContent>
-                                {props.teams.map((team) => (
-                                    <SelectItem
-                                        key={team.team_id}
-                                        value={team.name}
-                                    >
-                                        {team.name}
-                                    </SelectItem>
-                                ))}
+                                {props.teams
+                                    .sort((a, b) =>
+                                        a.name.localeCompare(b.name)
+                                    )
+                                    .map((team) => (
+                                        <SelectItem
+                                            key={team.team_id}
+                                            value={team.name}
+                                        >
+                                            {team.name}
+                                        </SelectItem>
+                                    ))}
                             </SelectContent>
                         </Select>
                     </div>
