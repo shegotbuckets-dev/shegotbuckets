@@ -48,7 +48,7 @@ const SOCIAL_LINKS = [
             </svg>
         ),
         label: "RED 小红书",
-        href: "https://www.xiaohongshu.com/",
+        href: "https://www.xiaohongshu.com/user/profile/5ae0ba7e4eacab74a1529074",
     },
     {
         icon: <Instagram className="h-5 w-5" />,
