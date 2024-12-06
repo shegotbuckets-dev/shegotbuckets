@@ -43,17 +43,18 @@ export const useRegisterForm = ({
     );
 
     const verifyRosterData = (parsedData: RosterData[]): boolean => {
-        const emails = parsedData.map((player) => {
-            const isValid = isValidEmail(player.email.toLowerCase());
-            if (!isValid) {
-                toast({
-                    variant: "destructive",
-                    title: "Invalid Email",
-                    description: `Please remove invalid email entries for: ${player.email}`,
-                });
-            }
-            return isValid;
-        });
+        const emails = parsedData.map((player) => player.email.toLowerCase());
+
+        const invalidEmails = emails.filter((email) => !isValidEmail(email));
+
+        if (invalidEmails.length > 0) {
+            toast({
+                variant: "destructive",
+                title: "Invalid Email",
+                description: `Please correct the following invalid email entries: ${invalidEmails.join(", ")}`,
+            });
+            return false;
+        }
 
         const duplicateEmails = emails.filter(
             (email, index) => emails.indexOf(email) !== index
