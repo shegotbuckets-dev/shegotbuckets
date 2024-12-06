@@ -42,7 +42,7 @@ function prepareTableData(
             const userPlayerData = registrationPlayers.find(
                 (player) =>
                     player.registration_id === registration.registration_id &&
-                    player.user_email === user_email
+                    player.user_email?.toLocaleLowerCase() === user_email
             );
 
             if (userPlayerData) {
@@ -115,7 +115,7 @@ export const EventsTable = ({
         const data = dashboardData.events.map((event) =>
             prepareTableData(
                 event,
-                email,
+                email?.toLocaleLowerCase(),
                 dashboardData.registrations,
                 dashboardData.registrationPlayers,
                 dashboardData.teams

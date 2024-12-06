@@ -1,5 +1,6 @@
 import { RegisterButtonProps, RosterData } from "@/app/dashboard/types";
 import { useToast } from "@/components/ui/use-toast";
+import { isValidEmail } from "@/lib/utils";
 
 import { useCallback, useState } from "react";
 
@@ -42,7 +43,18 @@ export const useRegisterForm = ({
     );
 
     const verifyRosterData = (parsedData: RosterData[]): boolean => {
-        const emails = parsedData.map((player) => player.email.toLowerCase());
+        const emails = parsedData.map((player) => {
+            const isValid = isValidEmail(player.email.toLowerCase());
+            if (!isValid) {
+                toast({
+                    variant: "destructive",
+                    title: "Invalid Email",
+                    description: `Please remove invalid email entries for: ${player.email}`,
+                });
+            }
+            return isValid;
+        });
+
         const duplicateEmails = emails.filter(
             (email, index) => emails.indexOf(email) !== index
         );
@@ -128,7 +140,7 @@ export const useRegisterForm = ({
                 event_id: event.event_id,
                 team_id: team.team_id,
                 players: parsedData.map((player) => ({
-                    user_email: player.email,
+                    user_email: player.email.toLowerCase(),
                     first_name: player.legal_first_name,
                     last_name: player.legal_last_name,
                     jersey_number: parseInt(player.jersey_number, 10),
