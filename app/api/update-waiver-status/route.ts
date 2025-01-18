@@ -7,8 +7,6 @@ export async function POST(request: Request) {
         const body = await request.json();
         const { registration_id, user_email, status } = body; // Extract user_email from the request body
 
-        console.log(user_email, status);
-
         if (!user_email) {
             return new Response(
                 JSON.stringify({

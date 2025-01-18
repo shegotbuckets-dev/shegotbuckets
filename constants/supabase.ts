@@ -89,6 +89,34 @@ export type Database = {
                 };
                 Relationships: [];
             };
+            members: {
+                Row: {
+                    member_id: string | null;
+                    name: string | null;
+                    title: string | null;
+                    image: string | null;
+                    committee: string;
+                    description: string | null;
+                    image_url: string | null;
+                };
+                Insert: {
+                    member_id: string | null;
+                    name: string | null;
+                    title: string | null;
+                    image: string | null;
+                    committee: string;
+                    description: string | null;
+                };
+                Update: {
+                    member_id: string | null;
+                    name: string | null;
+                    title: string | null;
+                    image: string | null;
+                    committee: string;
+                    description: string | null;
+                };
+                Relationships: [];
+            };
             registration_players: {
                 Row: {
                     first_name: string;
