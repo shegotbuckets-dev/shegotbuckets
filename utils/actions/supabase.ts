@@ -42,6 +42,10 @@ export async function fetchTeams() {
     return fetchFromTable("teams") as Promise<TableRow<"teams">[]>;
 }
 
+export async function fetchMembers() {
+    return fetchFromTable("members") as Promise<TableRow<"members">[]>;
+}
+
 export async function fetchRegistrations() {
     return fetchFromTable("registrations") as Promise<
         TableRow<"registrations">[]
@@ -67,6 +71,25 @@ export async function fetchLeagueById(
     }
 
     return league;
+}
+
+export async function fetchMemberDetailById(memberID: string): Promise<any> {
+    if (!memberID) {
+        throw new Error("Member ID is required");
+    }
+
+    const supabase = await createServerClient();
+    const { data: member, error } = await supabase
+        .from("members")
+        .select("*")
+        .eq("member_id", memberID)
+        .single();
+
+    if (error) {
+        throw new Error(`Failed to fetch events: ${error.message}`);
+    }
+
+    return member;
 }
 
 // Keep the existing insertMultipleRowsToTable function
