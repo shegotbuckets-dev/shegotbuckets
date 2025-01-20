@@ -1,7 +1,7 @@
 import { AnchorNavBar } from "@/components/common/anchor-nav";
 import TeamMarquee from "@/components/common/team-marquee";
 import WorkInProgress from "@/components/common/wip";
-import { fetchLeagueById } from "@/utils/actions/supabase";
+import { fetchEvents, fetchLeagueById } from "@/utils/actions/supabase";
 
 import { EventAbout } from "../_components/event-about";
 import { EventHeroSection } from "../_components/event-hero";
@@ -24,6 +24,11 @@ export default async function EventPage({
         return <WorkInProgress features={[]} />;
     }
 
+    const events = await fetchEvents();
+    if (!events) {
+        return <WorkInProgress features={[]} />;
+    }
+
     return (
         <div className="min-h-screen bg-background text-foreground pt-20">
             {/* Hero Section */}
@@ -31,7 +36,12 @@ export default async function EventPage({
             {/* Team Marquee */}
             <TeamMarquee />
             {/* About Infor Section */}
-            <EventAbout league={league} />
+            <EventAbout
+                league={league}
+                events={events.filter(
+                    (event) => event.league_id === league.league_id
+                )}
+            />
             {/* League Information */}
             <LeagueInfo />
             {/* Hall of Record */}

@@ -51,9 +51,8 @@ export const HallOfRecord = () => {
                                 <Image
                                     src={champion.imageUrl}
                                     alt={`${champion.name} team photo`}
-                                    layout="fill"
-                                    objectFit="cover"
-                                    className="transition-transform duration-300 hover:scale-105"
+                                    fill
+                                    className="object-cover transition-transform duration-300 hover:scale-105"
                                 />
                             </div>
                             <CardHeader className="p-6">
