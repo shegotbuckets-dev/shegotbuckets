@@ -1,3 +1,7 @@
+import { Button } from "@/components/ui/button";
+
+import Link from "next/link";
+
 export const AboutStory = () => {
     return (
         <section className="py-16">
@@ -9,10 +13,15 @@ export const AboutStory = () => {
                             <h2 className="text-4xl font-bold mb-6">
                                 Our Story
                             </h2>
-                            <p className="text-muted-foreground">
+                            <p className="text-muted-foreground mb-4">
                                 Watch how She Got Buckets is changing the game
                                 for Asian women in basketball.
                             </p>
+                            <Link href="https://www.youtube.com/channel/UCRop7F7123gr14AS-5oFLWA">
+                                <Button variant="default">
+                                    Learn More About In Our Chanel
+                                </Button>
+                            </Link>
                         </div>
                     </div>
 
