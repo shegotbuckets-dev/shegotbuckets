@@ -68,11 +68,13 @@ const getNavItems = (eventChildren: NavItemChild[]): NavItem[] => {
 const getLeagueComponents = (
     leagues: Database["public"]["Tables"]["leagues"]["Row"][]
 ): NavItemChild[] => {
-    return leagues?.map((league) => ({
-        id: league.league_id,
-        title: league.name,
-        subtitle: league.description ?? "",
-    }));
+    return leagues
+        ?.filter((league) => league.show)
+        .map((league) => ({
+            id: league.league_id,
+            title: league.name,
+            subtitle: league.description ?? "",
+        }));
 };
 
 export default function NavBar() {
