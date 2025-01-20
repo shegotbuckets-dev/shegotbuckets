@@ -7,7 +7,7 @@ import { SupabaseStorageBucket } from "@/utils/types";
 
 import { Suspense } from "react";
 
-import { ArrowLeft, Facebook, Instagram, Linkedin } from "lucide-react";
+import { ArrowLeft, Instagram, Linkedin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -128,19 +128,6 @@ const MemberDetailContent = async ({ id }: { id: string }) => {
                                     >
                                         <Instagram className="h-4 w-4" />
                                         <span>Instagram</span>
-                                    </Link>
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    className="hover:bg-black hover:text-white transition-colors"
-                                    asChild
-                                >
-                                    <Link
-                                        href="#facebook"
-                                        className="flex items-center gap-2"
-                                    >
-                                        <Facebook className="h-4 w-4" />
-                                        <span>Facebook</span>
                                     </Link>
                                 </Button>
                                 <Button
