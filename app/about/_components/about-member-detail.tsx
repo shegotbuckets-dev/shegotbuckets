@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Database } from "@/constants/supabase";
+import { getMediaUrl } from "@/lib/utils";
 import { fetchMemberDetailById } from "@/utils/actions/supabase";
+import { SupabaseStorageBucket } from "@/utils/types";
 
-import { use } from "react";
 import { Suspense } from "react";
 
 import { Facebook, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export function MemberDetailPage({ params }: { params: { id: string } }) {
+export const MemberDetailPage = ({ params }: { params: { id: string } }) => {
     return (
         <div className="min-h-screen bg-background text-foreground pt-20">
             <Suspense fallback={<MemberDetailSkeleton />}>
@@ -19,9 +19,9 @@ export function MemberDetailPage({ params }: { params: { id: string } }) {
             </Suspense>
         </div>
     );
-}
+};
 
-function MemberDetailSkeleton() {
+const MemberDetailSkeleton = () => {
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <Card className="w-full max-w-[1200px] p-8 rounded-3xl border-2">
@@ -53,12 +53,14 @@ function MemberDetailSkeleton() {
             </Card>
         </div>
     );
-}
+};
 
-function MemberDetailContent({ id }: { id: string }) {
-    const memberDetail: Database["public"]["Tables"]["members"]["Row"] = use(
-        fetchMemberDetailById(id)
-    );
+const MemberDetailContent = async ({ id }: { id: string }) => {
+    const memberDetail = await fetchMemberDetailById(id);
+
+    if (!memberDetail) {
+        return <div>Member not found</div>;
+    }
 
     return (
         <div className="min-h-screen bg-[#f5f3f1] flex items-center justify-center p-4">
@@ -67,9 +69,7 @@ function MemberDetailContent({ id }: { id: string }) {
                     <div className="space-y-8 flex flex-col justify-between">
                         <div className="space-y-4">
                             <h1 className="text-6xl font-serif">
-                                {memberDetail.name?.split(" ")[0]}
-                                <br />
-                                {memberDetail.name?.split(" ")[1]}
+                                {memberDetail.name}
                             </h1>
                         </div>
 
@@ -109,10 +109,18 @@ function MemberDetailContent({ id }: { id: string }) {
                     </div>
                     <div className="relative h-[600px] w-full">
                         <Image
-                            src={"/images/sgb-together.png"}
+                            src={
+                                memberDetail.image_url &&
+                                memberDetail.image_url.length > 0
+                                    ? getMediaUrl(
+                                          SupabaseStorageBucket.MEMBERS,
+                                          memberDetail.image_url ?? ""
+                                      )
+                                    : "/images/sgb-together.png"
+                            }
                             alt={`profile picture`}
                             fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-105 grayscale"
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                         />
                     </div>
@@ -120,4 +128,4 @@ function MemberDetailContent({ id }: { id: string }) {
             </Card>
         </div>
     );
-}
+};

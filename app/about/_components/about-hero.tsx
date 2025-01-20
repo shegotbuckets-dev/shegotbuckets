@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export function AboutHero() {
+export const AboutHero = () => {
     return (
         <section
             className="relative h-[55vh] w-full overflow-hidden flex items-center"
@@ -29,4 +29,4 @@ export function AboutHero() {
             </div>
         </section>
     );
-}
+};
