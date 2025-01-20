@@ -73,23 +73,29 @@ export async function fetchLeagueById(
     return league;
 }
 
-export async function fetchMemberDetailById(memberID: string): Promise<any> {
-    if (!memberID) {
-        throw new Error("Member ID is required");
-    }
-
+export async function fetchSingleFromTable<T extends TableNames>(
+    table: T,
+    column: string,
+    value: string
+): Promise<TableRow<T> | null> {
     const supabase = await createServerClient();
-    const { data: member, error } = await supabase
-        .from("members")
+    const { data, error } = await supabase
+        .from(table)
         .select("*")
-        .eq("member_id", memberID)
+        .eq(column, value)
         .single();
 
     if (error) {
-        throw new Error(`Failed to fetch events: ${error.message}`);
+        if (error.code === "PGRST116") return null;
+        throw new Error(`Failed to fetch from ${table}: ${error.message}`);
     }
 
-    return member;
+    return data;
+}
+
+export async function fetchMemberDetailById(memberID: string) {
+    if (!memberID) throw new Error("Member ID is required");
+    return fetchSingleFromTable("members", "member_id", memberID);
 }
 
 // Keep the existing insertMultipleRowsToTable function

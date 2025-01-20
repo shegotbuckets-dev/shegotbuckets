@@ -61,4 +61,5 @@ export enum SupabaseStorageBucket {
     EVENTS = "events",
     LEAGUES = "leagues",
     HOME = "home",
+    MEMBERS = "members",
 }

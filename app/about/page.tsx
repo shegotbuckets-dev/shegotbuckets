@@ -24,7 +24,10 @@ export default function About() {
             </div>
 
             {/* Members section - white/transparent background */}
-            <div className="flex w-full justify-center items-center bg-white/10">
+            <div
+                id="team-section"
+                className="flex w-full justify-center items-center bg-white/10"
+            >
                 <div className="w-full max-w-7xl">
                     <AboutMembers />
                 </div>
