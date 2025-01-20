@@ -6,10 +6,12 @@ import { SupabaseStorageBucket } from "@/utils/types";
 
 import Image from "next/image";
 
-export const EventHeroSection = ({
+export const LeagueHero = ({
     league,
+    events,
 }: {
     league: Database["public"]["Tables"]["leagues"]["Row"];
+    events: Database["public"]["Tables"]["events"]["Row"][];
 }) => {
     const { league_id, image, name } = league;
 
@@ -40,7 +42,7 @@ export const EventHeroSection = ({
                     2024 -2025 Season
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-8"></div>
-                <RegistrationButton>
+                <RegistrationButton options={events}>
                     <HeartBeatButton>Register Now</HeartBeatButton>
                 </RegistrationButton>
             </div>

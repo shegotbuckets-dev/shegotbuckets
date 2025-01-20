@@ -1,12 +1,12 @@
 import { AnchorNavBar } from "@/components/common/anchor-nav";
 import TeamMarquee from "@/components/common/team-marquee";
 import WorkInProgress from "@/components/common/wip";
-import { fetchLeagueById } from "@/utils/actions/supabase";
+import { fetchEvents, fetchLeagueById } from "@/utils/actions/supabase";
 
-import { EventAbout } from "../_components/event-about";
-import { EventHeroSection } from "../_components/event-hero";
 import { EventRegistration } from "../_components/event-registration";
 import { HallOfRecord } from "../_components/hall-of-record";
+import { LeagueEvents } from "../_components/league-events";
+import { LeagueHero } from "../_components/league-hero";
 import { LeagueInfo } from "../_components/league-info";
 
 export const metadata = {
@@ -24,20 +24,26 @@ export default async function EventPage({
         return <WorkInProgress features={[]} />;
     }
 
+    let events = await fetchEvents();
+    if (!events) {
+        return <WorkInProgress features={[]} />;
+    }
+    events = events.filter((event) => event.league_id === league.league_id);
+
     return (
         <div className="min-h-screen bg-background text-foreground pt-20">
             {/* Hero Section */}
-            <EventHeroSection league={league} />
+            <LeagueHero league={league} events={events} />
             {/* Team Marquee */}
             <TeamMarquee />
             {/* About Infor Section */}
-            <EventAbout league={league} />
+            <LeagueEvents league={league} events={events} />
             {/* League Information */}
             <LeagueInfo />
             {/* Hall of Record */}
             <HallOfRecord />
             {/* Registration Section */}
-            <EventRegistration />
+            <EventRegistration league={league} events={events} />
             {/* Anchor Navbar */}
             <AnchorNavBar />
         </div>

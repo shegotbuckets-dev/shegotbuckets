@@ -9,22 +9,22 @@ export default function About() {
             {/* Hero section - no background needed as it has its own background */}
             <AboutHero />
 
-            {/* Story section - light background */}
-            <div className="flex w-full justify-center items-center bg-gray-200/25">
+            {/* Story section - white/transparent background */}
+            <div className="flex w-full justify-center items-center bg-white/10">
                 <div className="w-full max-w-7xl">
                     <AboutStory />
                 </div>
             </div>
 
-            {/* Journey section - white/transparent background */}
-            <div className="flex w-full justify-center items-center bg-white/10">
+            {/* Journey section - light background */}
+            <div className="flex w-full justify-center items-center bg-gray-200/25">
                 <div className="w-full max-w-7xl">
                     <AboutJourney />
                 </div>
             </div>
 
-            {/* Members section - light background */}
-            <div className="flex w-full justify-center items-center bg-gray-200/25">
+            {/* Members section - white/transparent background */}
+            <div className="flex w-full justify-center items-center bg-white/10">
                 <div className="w-full max-w-7xl">
                     <AboutMembers />
                 </div>
