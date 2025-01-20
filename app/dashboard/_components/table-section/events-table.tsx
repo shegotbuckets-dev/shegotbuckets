@@ -131,10 +131,10 @@ export const EventsTable = ({
 
     const searchParams = useSearchParams();
 
-    const conferenceId = searchParams.get("conferenceId");
+    const eventId = searchParams.get("eventId");
 
     useEffect(() => {
-        if (conferenceId) {
+        if (eventId) {
             setIsFlashing(true);
 
             const timer = setTimeout(() => {
@@ -143,7 +143,7 @@ export const EventsTable = ({
 
             return () => clearTimeout(timer);
         }
-    }, [conferenceId]);
+    }, [eventId]);
 
     return (
         <div className="overflow-x-auto">
@@ -162,7 +162,7 @@ export const EventsTable = ({
                             className={
                                 isFlashing &&
                                 searchParams &&
-                                event.event_id === conferenceId
+                                event.event_id === eventId
                                     ? "animate-pulse bg-yellow-100 dark:bg-yellow-800 transition-colors duration-770 ease-in-out"
                                     : ""
                             }
