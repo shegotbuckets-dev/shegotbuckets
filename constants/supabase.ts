@@ -70,6 +70,7 @@ export type Database = {
                     league_id: string;
                     location: string | null;
                     name: string;
+                    show: boolean;
                 };
                 Insert: {
                     date?: string | null;
@@ -78,6 +79,7 @@ export type Database = {
                     league_id?: string;
                     location?: string | null;
                     name: string;
+                    show?: boolean;
                 };
                 Update: {
                     date?: string | null;
@@ -86,34 +88,34 @@ export type Database = {
                     league_id?: string;
                     location?: string | null;
                     name?: string;
+                    show?: boolean;
                 };
                 Relationships: [];
             };
             members: {
                 Row: {
-                    member_id: string | null;
-                    name: string | null;
-                    title: string | null;
-                    image: string | null;
-                    committee: string;
+                    committee: string | null;
                     description: string | null;
                     image_url: string | null;
+                    member_id: string;
+                    name: string | null;
+                    title: string | null;
                 };
                 Insert: {
-                    member_id: string | null;
-                    name: string | null;
-                    title: string | null;
-                    image: string | null;
-                    committee: string;
-                    description: string | null;
+                    committee?: string | null;
+                    description?: string | null;
+                    image_url?: string | null;
+                    member_id?: string;
+                    name?: string | null;
+                    title?: string | null;
                 };
                 Update: {
-                    member_id: string | null;
-                    name: string | null;
-                    title: string | null;
-                    image: string | null;
-                    committee: string;
-                    description: string | null;
+                    committee?: string | null;
+                    description?: string | null;
+                    image_url?: string | null;
+                    member_id?: string;
+                    name?: string | null;
+                    title?: string | null;
                 };
                 Relationships: [];
             };

@@ -173,19 +173,35 @@ const EventCardActions = ({
 }) => {
     return (
         <div className="flex flex-row gap-4 mt-6">
-            {event.active && (
-                <Link href="/dashboard">
-                    <Button className="w-full">Register Now</Button>
-                </Link>
+            {event.active ? (
+                <>
+                    <Link href="/dashboard">
+                        <Button className="w-full">Register Now</Button>
+                    </Link>
+                    <div className="sm:w-[140px]">
+                        <DialogButton
+                            href={
+                                event.league_id
+                                    ? `/events/${event.league_id}`
+                                    : `/`
+                            }
+                            buttonText="Event Details"
+                            buttonVariant="outline"
+                            buttonClassName="w-full border-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                        />
+                    </div>
+                </>
+            ) : (
+                <div className="sm:w-[140px]">
+                    <Button
+                        variant="outline"
+                        className="w-full text-muted-foreground cursor-not-allowed opacity-50"
+                        disabled
+                    >
+                        History Event
+                    </Button>
+                </div>
             )}
-            <div className="sm:w-[140px]">
-                <DialogButton
-                    href={event.league_id ? `/events/${event.league_id}` : `/`}
-                    buttonText="Event Details"
-                    buttonVariant="outline"
-                    buttonClassName="w-full border-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                />
-            </div>
         </div>
     );
 };
