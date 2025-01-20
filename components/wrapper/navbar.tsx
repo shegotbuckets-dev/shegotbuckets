@@ -189,8 +189,9 @@ const MobileMenu = ({ navItems }: { navItems: NavItem[] }) => (
                                     {item.children.map((child) => (
                                         <DialogClose key={child.id} asChild>
                                             <Link
-                                                href={`/${item.href}/${child.id}`}
+                                                href={`${item.href}/${child.id}`}
                                                 className="px-4 py-1 hover:underline"
+                                                replace
                                             >
                                                 {child.title}
                                             </Link>
@@ -233,7 +234,10 @@ const DesktopMenuItems = ({ navItems }: { navItems: NavItem[] }) => (
                                     key={child.title}
                                     title={child.title}
                                     href={`${item.href}/${child.id}`}
-                                ></ListItem>
+                                    replace
+                                >
+                                    {child.subtitle}
+                                </ListItem>
                             ))}
                         </ul>
                     </NavigationMenuContent>
@@ -256,23 +260,23 @@ const DesktopMenuItems = ({ navItems }: { navItems: NavItem[] }) => (
 
 const ListItem = React.forwardRef<
     React.ElementRef<"a">,
-    React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => (
+    React.ComponentPropsWithoutRef<"a"> & { replace?: boolean }
+>(({ className, title, children, replace, ...props }, ref) => (
     <li>
         <NavigationMenuLink asChild>
-            <a
-                ref={ref}
+            <Link
+                href={props.href || ""}
+                replace={replace}
                 className={cn(
                     "block select-none rounded-md p-3 text-[15px] leading-none no-underline outline-none transition-colors hover:bg-accent focus:shadow-[0_0_0_2px] focus:shadow-violet7",
                     className
                 )}
-                {...props}
             >
                 <div className="mb-[5px] font-medium leading-[1.2] text-violet12">
                     {title}
                 </div>
                 <p className="leading-[1.4] text-mauve11">{children}</p>
-            </a>
+            </Link>
         </NavigationMenuLink>
     </li>
 ));
