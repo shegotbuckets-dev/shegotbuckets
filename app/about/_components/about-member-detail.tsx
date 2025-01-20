@@ -7,13 +7,13 @@ import { SupabaseStorageBucket } from "@/utils/types";
 
 import { Suspense } from "react";
 
-import { Facebook, Instagram } from "lucide-react";
+import { ArrowLeft, Facebook, Instagram, Linkedin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export const MemberDetailPage = ({ params }: { params: { id: string } }) => {
     return (
-        <div className="min-h-screen bg-background text-foreground pt-20">
+        <div className="bg-background text-foreground">
             <Suspense fallback={<MemberDetailSkeleton />}>
                 <MemberDetailContent id={params.id} />
             </Suspense>
@@ -23,8 +23,8 @@ export const MemberDetailPage = ({ params }: { params: { id: string } }) => {
 
 const MemberDetailSkeleton = () => {
     return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-            <Card className="w-full max-w-[1200px] p-8 rounded-3xl border-2">
+        <div className="flex items-center justify-center py-12">
+            <Card className="w-full max-w-4xl p-8">
                 <div className="grid lg:grid-cols-2 gap-12">
                     <div className="space-y-8">
                         <div className="space-y-4">
@@ -63,69 +63,104 @@ const MemberDetailContent = async ({ id }: { id: string }) => {
     }
 
     return (
-        <div className="min-h-screen bg-[#f5f3f1] flex items-center justify-center p-4">
-            <Card className="w-full max-w-[1200px] p-8 rounded-3xl border-2">
-                <div className="grid lg:grid-cols-2 gap-12">
-                    <div className="space-y-8 flex flex-col justify-between">
-                        <div className="space-y-4">
-                            <h1 className="text-6xl font-serif">
-                                {memberDetail.name}
-                            </h1>
+        <div className="bg-[#f5f3f1] pt-28 pb-12">
+            {/* Container */}
+            <div className="max-w-4xl mx-auto px-4">
+                {/* Back Link */}
+                <div className="mb-8">
+                    <Link
+                        href="/about#team-section"
+                        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        <ArrowLeft className="h-4 w-4" />
+                        <span>Back to Members</span>
+                    </Link>
+                </div>
+
+                {/* Content Card */}
+                <Card className="p-8">
+                    <div className="grid lg:grid-cols-12 gap-8">
+                        {/* Left Image Side - 30% */}
+                        <div className="lg:col-span-4 relative h-[400px]">
+                            <Image
+                                src={
+                                    memberDetail.image_url &&
+                                    memberDetail.image_url.length > 0
+                                        ? getMediaUrl(
+                                              SupabaseStorageBucket.MEMBERS,
+                                              memberDetail.image_url ?? ""
+                                          )
+                                        : "/images/sgb-together.png"
+                                }
+                                alt={`${memberDetail.name}'s profile picture`}
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 768px) 100vw, 30vw"
+                            />
                         </div>
 
-                        <div className="space-y-6 text-muted-foreground">
-                            <p className="text-xl">
-                                {memberDetail.description}
-                            </p>
-                        </div>
-                        <div className="flex gap-4 pt-4">
-                            <Button
-                                variant="ghost"
-                                className="hover:bg-black hover:text-white transition-colors"
-                                asChild
-                            >
-                                <Link
-                                    href="#instagram"
-                                    className="flex items-center gap-2"
+                        {/* Right Content Side - 70% */}
+                        <div className="lg:col-span-8 space-y-6">
+                            <div>
+                                <h1 className="text-3xl font-bold mb-2">
+                                    {memberDetail.name}
+                                </h1>
+                                <p className="text-lg text-muted-foreground">
+                                    {memberDetail.title}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p className="text-base leading-relaxed">
+                                    {memberDetail.description}
+                                </p>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <Button
+                                    variant="ghost"
+                                    className="hover:bg-black hover:text-white transition-colors"
+                                    asChild
                                 >
-                                    <Instagram className="h-4 w-4" />
-                                    <span>Instagram</span>
-                                </Link>
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                className="hover:bg-black hover:text-white transition-colors"
-                                asChild
-                            >
-                                <Link
-                                    href="#facebook"
-                                    className="flex items-center gap-2"
+                                    <Link
+                                        href="#instagram"
+                                        className="flex items-center gap-2"
+                                    >
+                                        <Instagram className="h-4 w-4" />
+                                        <span>Instagram</span>
+                                    </Link>
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    className="hover:bg-black hover:text-white transition-colors"
+                                    asChild
                                 >
-                                    <Facebook className="h-4 w-4" />
-                                    <span>Facebook</span>
-                                </Link>
-                            </Button>
+                                    <Link
+                                        href="#facebook"
+                                        className="flex items-center gap-2"
+                                    >
+                                        <Facebook className="h-4 w-4" />
+                                        <span>Facebook</span>
+                                    </Link>
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    className="hover:bg-black hover:text-white transition-colors"
+                                    asChild
+                                >
+                                    <Link
+                                        href="#linkedin"
+                                        className="flex items-center gap-2"
+                                    >
+                                        <Linkedin className="h-4 w-4" />
+                                        <span>LinkedIn</span>
+                                    </Link>
+                                </Button>
+                            </div>
                         </div>
                     </div>
-                    <div className="relative h-[600px] w-full">
-                        <Image
-                            src={
-                                memberDetail.image_url &&
-                                memberDetail.image_url.length > 0
-                                    ? getMediaUrl(
-                                          SupabaseStorageBucket.MEMBERS,
-                                          memberDetail.image_url ?? ""
-                                      )
-                                    : "/images/sgb-together.png"
-                            }
-                            alt={`profile picture`}
-                            fill
-                            className="object-cover transition-transform duration-300 group-hover:scale-105"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                        />
-                    </div>
-                </div>
-            </Card>
+                </Card>
+            </div>
         </div>
     );
 };

@@ -6,7 +6,7 @@ export default function AboutMemberPage({
     params: { id: string };
 }) {
     return (
-        <main className="min-h-screen bg-background">
+        <main>
             <MemberDetailPage params={params} />
         </main>
     );
