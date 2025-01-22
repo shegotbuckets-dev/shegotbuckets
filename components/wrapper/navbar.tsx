@@ -73,7 +73,7 @@ const getLeagueComponents = (
         .map((league) => ({
             id: league.league_id,
             title: league.name,
-            subtitle: league.description ?? "",
+            subtitle: "",
         }));
 };
 
