@@ -66,7 +66,7 @@ export const RegisterButton = (props: RegisterButtonProps) => {
                             <EventDetails
                                 date={props.event.date}
                                 location={props.event.location}
-                                price={props.event.price}
+                                price={String(props.event.price)}
                             />
                         </DialogDescription>
                         <Separator />

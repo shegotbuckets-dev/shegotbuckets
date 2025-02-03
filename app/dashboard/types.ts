@@ -125,7 +125,7 @@ export interface RegisterButtonProps {
 export interface EventDetailsProps {
     date: string;
     location: string;
-    price: string;
+    price: string | number;
 }
 
 export interface RosterData {

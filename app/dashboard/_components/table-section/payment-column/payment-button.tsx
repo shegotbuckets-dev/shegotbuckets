@@ -1,6 +1,6 @@
 "use client";
 
-import { EventTableData } from "@/app/dashboard/types";
+import { EventTableData, PaymentStatus } from "@/app/dashboard/types";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,

@@ -90,7 +90,7 @@ function prepareTableData(
         rosterUploaded: roster.length > 0,
         roster: roster,
         waiverSigned: userEventData.waiverSigned,
-        paymentStatus: userEventData.registered ? "unpaid" : undefined,
+        paymentStatus: userEventData.registered ? "unpaid" : "unpaid",
     };
 }
 
