@@ -15,6 +15,10 @@ import Image from "next/image";
 
 type UserData = Database["public"]["Tables"]["users"]["Row"];
 
+function capitalizeFirstLetter(str: string) {
+    return str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : str;
+}
+
 function Description({ children }: { children: React.ReactNode }) {
     return <p className="text-sm text-muted-foreground">{children}</p>;
 }
@@ -85,9 +89,16 @@ export default function Profile() {
                     </div>
                     <div>
                         <h2 className="text-2xl font-semibold">
-                            {userData?.preferred_first_name ??
-                                userData?.legal_first_name ??
-                                "No name set"}
+                            {[
+                                capitalizeFirstLetter(
+                                    userData?.preferred_first_name ??
+                                        userData?.legal_first_name ??
+                                        "No name"
+                                ),
+                                capitalizeFirstLetter(
+                                    userData?.legal_last_name ?? "set"
+                                ),
+                            ].join(" ")}
                         </h2>
                     </div>
                 </div>
