@@ -9,7 +9,13 @@ import config from "@/config";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-export const DashboardTopNav = () => {
+interface DashboardTopNavProps {
+    showSidebarTrigger?: boolean;
+}
+
+export const DashboardTopNav = ({
+    showSidebarTrigger = true,
+}: DashboardTopNavProps) => {
     const { theme } = useTheme();
 
     return (
@@ -17,7 +23,7 @@ export const DashboardTopNav = () => {
             <header className="fixed top-0 z-50 flex w-full h-14 lg:h-16 items-center border-b px-3 lg:px-6 bg-white dark:bg-gray-800 shadow">
                 {/* Left section - Sidebar Trigger */}
                 <div className="flex items-center">
-                    <SidebarTrigger />
+                    {showSidebarTrigger && <SidebarTrigger />}
                 </div>
 
                 {/* Center section - Logo */}

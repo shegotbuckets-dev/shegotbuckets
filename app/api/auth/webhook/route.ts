@@ -1,3 +1,4 @@
+import { createAdminClient } from "@/lib/supabase-admin";
 import { userCreate } from "@/utils/data/user/userCreate";
 import { userUpdate } from "@/utils/data/user/userUpdate";
 
@@ -45,18 +46,31 @@ export async function POST(req: Request) {
     switch (eventType) {
         case "user.created":
             try {
-                const result = await userCreate({
-                    email: payload?.data?.email_addresses?.[0]?.email_address,
-                    first_name: payload?.data?.first_name || null,
-                    last_name: payload?.data?.last_name || null,
-                    profile_image_url: payload?.data?.profile_image_url || null,
-                    user_id: payload?.data?.id,
-                });
+                const supabase = createAdminClient();
+
+                const { data, error } = await supabase
+                    .from("users")
+                    .insert([
+                        {
+                            user_id: evt.data.id,
+                            email: evt.data.email_addresses[0].email_address,
+                            first_name: evt.data.first_name,
+                            last_name: evt.data.last_name,
+                            profile_image_url: evt.data.image_url,
+                            data_collected: false,
+                        },
+                    ])
+                    .select()
+                    .single();
+
+                console.log("User creation response:", { data, error });
+
+                if (error) throw error;
 
                 return NextResponse.json({
                     status: 200,
                     message: "User info inserted",
-                    result,
+                    result: data,
                 });
             } catch (error: any) {
                 console.error("User creation error:", error);

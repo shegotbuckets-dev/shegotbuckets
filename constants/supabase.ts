@@ -213,26 +213,56 @@ export type Database = {
             };
             users: {
                 Row: {
+                    address: string | null;
                     created_at: string;
+                    data_collected: boolean;
+                    date_of_birth: string | null;
                     email: string;
                     first_name: string | null;
+                    headshot_url: string | null;
+                    instagram_account: string | null;
                     last_name: string | null;
+                    legal_first_name: string | null;
+                    legal_last_name: string | null;
+                    phone_number: string | null;
+                    player_introduction: string | null;
+                    preferred_first_name: string | null;
                     profile_image_url: string | null;
                     user_id: string;
                 };
                 Insert: {
+                    address?: string | null;
                     created_at?: string;
+                    data_collected?: boolean;
+                    date_of_birth?: string | null;
                     email: string;
                     first_name?: string | null;
+                    headshot_url?: string | null;
+                    instagram_account?: string | null;
                     last_name?: string | null;
+                    legal_first_name?: string | null;
+                    legal_last_name?: string | null;
+                    phone_number?: string | null;
+                    player_introduction?: string | null;
+                    preferred_first_name?: string | null;
                     profile_image_url?: string | null;
                     user_id: string;
                 };
                 Update: {
+                    address?: string | null;
                     created_at?: string;
+                    data_collected?: boolean;
+                    date_of_birth?: string | null;
                     email?: string;
                     first_name?: string | null;
+                    headshot_url?: string | null;
+                    instagram_account?: string | null;
                     last_name?: string | null;
+                    legal_first_name?: string | null;
+                    legal_last_name?: string | null;
+                    phone_number?: string | null;
+                    player_introduction?: string | null;
+                    preferred_first_name?: string | null;
                     profile_image_url?: string | null;
                     user_id?: string;
                 };

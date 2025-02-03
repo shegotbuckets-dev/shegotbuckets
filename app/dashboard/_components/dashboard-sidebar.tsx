@@ -17,7 +17,7 @@ import {
     // CircleDollarSign,
     HomeIcon,
     Icon,
-    Settings, // Users,
+    User2Icon,
 } from "lucide-react";
 import type { IconNode } from "lucide-react";
 
@@ -25,7 +25,7 @@ import type { IconNode } from "lucide-react";
 const items: SidebarNav[] = [
     {
         title: "Dashboard",
-        url: "/dashboard",
+        url: "/dashboard/home",
         icon: HomeIcon,
     },
     // {
@@ -45,9 +45,9 @@ const items: SidebarNav[] = [
     //     icon: Users,
     // },
     {
-        title: "Settings",
-        url: "/dashboard/settings",
-        icon: Settings,
+        title: "Profile",
+        url: "/dashboard/profile",
+        icon: User2Icon,
         separator: true,
     },
 ];
