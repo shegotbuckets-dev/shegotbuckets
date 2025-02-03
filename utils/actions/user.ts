@@ -15,30 +15,15 @@ export async function fetchUserData(userId: string) {
         throw new Error("User ID is required");
     }
 
-    console.log("fetchUserData called with userId:", userId);
-
     const supabase = await createAdminClient();
-
-    console.log("Supabase client created, making query...");
-
     const { data, error } = await supabase
         .from("users")
         .select("*")
         .eq("user_id", userId)
         .single();
 
-    console.log("Supabase response:", {
-        data,
-        error,
-        status: error?.code,
-        message: error?.message,
-    });
-
     if (error) {
-        if (error.code === "PGRST116") {
-            console.log("No data found for user");
-            return null;
-        }
+        if (error.code === "PGRST116") return null;
         throw new Error(`Failed to fetch user data: ${error.message}`);
     }
 

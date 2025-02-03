@@ -77,6 +77,8 @@ export default function Profile() {
                                 src={userData.headshot_url}
                                 alt="Player headshot"
                                 fill
+                                priority
+                                sizes="(max-width: 768px) 96px, 96px"
                                 className="object-cover rounded-full border-2 border-border"
                             />
                         ) : (
