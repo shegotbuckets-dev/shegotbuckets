@@ -1,6 +1,6 @@
-import { LandingPage } from "./_components/landing-page";
+import { RegistrationForm } from "./registration-form";
 
-export default function DashboardPage() {
+export async function LandingPage() {
     return (
         <main className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-6">PLAYER REGISTRATION</h1>
@@ -17,7 +17,7 @@ export default function DashboardPage() {
                 You cannot change the information below once registered, so
                 please review carefully before submission.
             </p>
-            <LandingPage />
+            <RegistrationForm />
         </main>
     );
 }

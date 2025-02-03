@@ -40,7 +40,7 @@ export function UserProfile() {
                             <span>Dashboard</span>
                         </DropdownMenuItem>
                     </Link>
-                    <Link href="/user-profile">
+                    <Link href="/dashboard/profile">
                         <DropdownMenuItem>
                             <User className="mr-2 h-4 w-4" />
                             <span>Profile</span>

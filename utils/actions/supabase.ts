@@ -1,6 +1,7 @@
 "use server";
 
 import { Database } from "@/constants/supabase";
+import { createAdminClient } from "@/lib/supabase-admin";
 import { createServerClient } from "@/lib/supabase-server";
 
 type TableNames = keyof Database["public"]["Tables"];
