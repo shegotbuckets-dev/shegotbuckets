@@ -3,7 +3,9 @@ import { RegistrationForm } from "./registration-form";
 export async function LandingPage() {
     return (
         <main className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-6">PLAYER REGISTRATION</h1>
+            <h1 className="text-3xl font-bold mb-6">
+                Complete Your Registration
+            </h1>
             <p className="mb-4">
                 Please fill out the information below to complete your
                 registration. English only.

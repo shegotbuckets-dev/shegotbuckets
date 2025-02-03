@@ -18,6 +18,13 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
@@ -33,6 +40,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, isValid, parse } from "date-fns";
+import { setMonth, setYear } from "date-fns";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -74,6 +82,11 @@ export function RegistrationForm() {
         // Try to parse MM/DD/YYYY format
         const parsed = parse(dateString, "MM/dd/yyyy", new Date());
         if (isValid(parsed)) return parsed;
+
+        // Try to parse M/D/YYYY format
+        const parsed2 = parse(dateString, "M/d/yyyy", new Date());
+        if (isValid(parsed2)) return parsed2;
+
         return null;
     };
 
@@ -129,105 +142,179 @@ export function RegistrationForm() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8 max-w-2xl"
             >
-                <FormField
-                    control={form.control}
-                    name="legalFirstName"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Legal First Name</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                As shown on your government-issued ID.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="legalLastName"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Legal Last Name</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                As shown on your government-issued ID.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="preferredFirstName"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Preferred First Name</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Optional. This will be used for game
-                                announcements.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="dateOfBirth"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                            <FormLabel>Date of Birth</FormLabel>
-                            <div className="flex gap-4">
+                <div className="flex gap-4">
+                    <FormField
+                        control={form.control}
+                        name="legalFirstName"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>Legal First Name</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        placeholder="MM/DD/YYYY"
-                                        value={
-                                            field.value
-                                                ? format(
-                                                      field.value,
-                                                      "MM/dd/yyyy"
-                                                  )
-                                                : ""
-                                        }
-                                        onChange={(e) => {
-                                            const date = parseDateString(
-                                                e.target.value
-                                            );
-                                            if (date) {
-                                                field.onChange(date);
-                                            }
-                                        }}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
+                                <FormDescription>
+                                    As shown on your government-issued ID.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="legalLastName"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>Legal Last Name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    As shown on your government-issued ID.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="dateOfBirth"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>Date of Birth</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button
-                                            variant={"outline"}
-                                            className={cn(
-                                                "w-[280px] pl-3 text-left font-normal",
-                                                !field.value &&
-                                                    "text-muted-foreground"
-                                            )}
-                                        >
-                                            {field.value ? (
-                                                format(field.value, "PPP")
-                                            ) : (
-                                                <span>Pick a date</span>
-                                            )}
-                                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                        </Button>
+                                        <FormControl>
+                                            <Button
+                                                variant={"outline"}
+                                                className={cn(
+                                                    "w-full pl-3 text-left font-normal",
+                                                    !field.value &&
+                                                        "text-muted-foreground"
+                                                )}
+                                            >
+                                                {field.value ? (
+                                                    format(field.value, "PPP")
+                                                ) : (
+                                                    <span>Pick a date</span>
+                                                )}
+                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                            </Button>
+                                        </FormControl>
                                     </PopoverTrigger>
                                     <PopoverContent
                                         className="w-auto p-0"
                                         align="start"
                                     >
+                                        <div className="flex items-center justify-between p-2">
+                                            <Select
+                                                value={
+                                                    field.value
+                                                        ? field.value
+                                                              .getFullYear()
+                                                              .toString()
+                                                        : new Date()
+                                                              .getFullYear()
+                                                              .toString()
+                                                }
+                                                onValueChange={(year) => {
+                                                    const newYear = parseInt(
+                                                        year,
+                                                        10
+                                                    );
+                                                    if (field.value) {
+                                                        const newDate = setYear(
+                                                            field.value,
+                                                            newYear
+                                                        );
+                                                        field.onChange(newDate);
+                                                    } else {
+                                                        const newDate = setYear(
+                                                            new Date(),
+                                                            newYear
+                                                        );
+                                                        field.onChange(newDate);
+                                                    }
+                                                }}
+                                            >
+                                                <SelectTrigger className="w-[100px]">
+                                                    <SelectValue placeholder="Year" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {Array.from(
+                                                        { length: 124 },
+                                                        (_, i) =>
+                                                            new Date().getFullYear() -
+                                                            i
+                                                    ).map((year) => (
+                                                        <SelectItem
+                                                            key={year}
+                                                            value={year.toString()}
+                                                        >
+                                                            {year}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <Select
+                                                value={
+                                                    field.value
+                                                        ? field.value
+                                                              .getMonth()
+                                                              .toString()
+                                                        : new Date()
+                                                              .getMonth()
+                                                              .toString()
+                                                }
+                                                onValueChange={(month) => {
+                                                    const newMonth = parseInt(
+                                                        month,
+                                                        10
+                                                    );
+                                                    if (field.value) {
+                                                        const newDate =
+                                                            setMonth(
+                                                                field.value,
+                                                                newMonth
+                                                            );
+                                                        field.onChange(newDate);
+                                                    } else {
+                                                        const newDate =
+                                                            setMonth(
+                                                                new Date(),
+                                                                newMonth
+                                                            );
+                                                        field.onChange(newDate);
+                                                    }
+                                                }}
+                                            >
+                                                <SelectTrigger className="w-[130px]">
+                                                    <SelectValue placeholder="Month" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {[
+                                                        "January",
+                                                        "February",
+                                                        "March",
+                                                        "April",
+                                                        "May",
+                                                        "June",
+                                                        "July",
+                                                        "August",
+                                                        "September",
+                                                        "October",
+                                                        "November",
+                                                        "December",
+                                                    ].map((month, index) => (
+                                                        <SelectItem
+                                                            key={month}
+                                                            value={index.toString()}
+                                                        >
+                                                            {month}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                         <Calendar
                                             mode="single"
                                             selected={field.value}
@@ -236,33 +323,72 @@ export function RegistrationForm() {
                                                 date > new Date() ||
                                                 date < new Date("1900-01-01")
                                             }
-                                            initialFocus
+                                            month={field.value || new Date()}
+                                            onMonthChange={(newMonth) => {
+                                                field.onChange(newMonth);
+                                            }}
+                                            className="rounded-md border"
                                         />
                                     </PopoverContent>
                                 </Popover>
-                            </div>
-                            <FormDescription>
-                                Enter date in MM/DD/YYYY format or use the date
-                                picker. This should match the date on your
-                                government-issued ID.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Phone Number</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                                <FormDescription>
+                                    As shown on your government-issued ID.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
+                <div className="flex gap-4">
+                    <FormField
+                        control={form.control}
+                        name="preferredFirstName"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>
+                                    Preferred First Name (Optional)
+                                </FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>Phone Number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="instagramAccount"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>
+                                    Instagram Account (Optional)
+                                </FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="@yourusername"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
                 <FormField
                     control={form.control}
                     name="address"
@@ -276,55 +402,13 @@ export function RegistrationForm() {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="certification"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                            <FormControl>
-                                <Checkbox
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                />
-                            </FormControl>
-                            <div className="space-y-1 leading-none">
-                                <FormLabel>
-                                    I certify that all information provided
-                                    above is accurate and matches my
-                                    government-issued ID.
-                                </FormLabel>
-                            </div>
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="instagramAccount"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Instagram Account (Optional)</FormLabel>
-                            <FormControl>
-                                <Input placeholder="@yourusername" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                We would love to highlight game photos and
-                                videos on our Instagram account
-                                (shegotbuckets_basketball). If you would love to
-                                have us tag you in photos, please provide your
-                                Instagram username.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+
                 <FormField
                     control={form.control}
                     name="playerIntroduction"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>
-                                Player Introduction (Optional)
-                            </FormLabel>
+                            <FormLabel>Introduction (Optional)</FormLabel>
                             <FormControl>
                                 <Textarea
                                     placeholder="Share some fun facts about yourself (hometown, school, grade, etc.)"
@@ -340,6 +424,7 @@ export function RegistrationForm() {
                         </FormItem>
                     )}
                 />
+
                 <FormField
                     control={form.control}
                     name="playerHeadshot"
@@ -381,6 +466,29 @@ export function RegistrationForm() {
                         </FormItem>
                     )}
                 />
+
+                <FormField
+                    control={form.control}
+                    name="certification"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                                <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                                <FormLabel>
+                                    I certify that all information provided
+                                    above is accurate and matches my
+                                    government-issued ID.
+                                </FormLabel>
+                            </div>
+                        </FormItem>
+                    )}
+                />
+
                 <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting ? (
                         <>
@@ -388,7 +496,7 @@ export function RegistrationForm() {
                             Submitting...
                         </>
                     ) : (
-                        "Submit Registration"
+                        "Complete"
                     )}
                 </Button>
             </form>
