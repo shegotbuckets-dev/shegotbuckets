@@ -21,6 +21,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 
+import { PaymentCell } from "./payment-column/payment-cell";
 import { RegisterOrParticipatedCell } from "./register-column/register-cell";
 import { RosterCell } from "./roster-column/roster-cell";
 import { TeamCell } from "./simple-cells";
@@ -89,6 +90,7 @@ function prepareTableData(
         rosterUploaded: roster.length > 0,
         roster: roster,
         waiverSigned: userEventData.waiverSigned,
+        paymentStatus: userEventData.registered ? "unpaid" : undefined,
     };
 }
 
@@ -191,6 +193,14 @@ export const EventsTable = ({
                             {event.active && (
                                 <TableCell>
                                     <WaiverCell
+                                        event={event}
+                                        onButtonSuccess={onButtonSuccess}
+                                    />
+                                </TableCell>
+                            )}
+                            {event.active && (
+                                <TableCell>
+                                    <PaymentCell
                                         event={event}
                                         onButtonSuccess={onButtonSuccess}
                                     />

@@ -22,13 +22,14 @@ export interface EventTableData {
     subtitle: string;
     date: string;
     location: string;
-    price: string;
+    price: string | number;
     team: string;
     registered: boolean;
     rosterUploaded: boolean;
     waiverSigned: boolean;
     active: boolean;
     roster: Database["public"]["Tables"]["registration_players"]["Row"][];
+    paymentStatus: PaymentStatus;
 }
 
 export interface UserEventData {
@@ -54,6 +55,7 @@ export const HEADERS: TableHeaders = {
         "Register",
         "Roster",
         "Waiver",
+        "Payment",
     ],
     activeWithTeam: [
         "Event",
@@ -64,6 +66,7 @@ export const HEADERS: TableHeaders = {
         "Register",
         "Roster",
         "Waiver",
+        "Payment",
     ],
     previous: ["Event", "Season", "Date", "Location", "Participated", "Roster"],
     previousWithTeam: [
@@ -148,3 +151,5 @@ export const ROSTER_HEADERS = [
     "Jersey Number",
     "Waiver",
 ];
+
+export type PaymentStatus = "unpaid" | "paid" | "processing";
