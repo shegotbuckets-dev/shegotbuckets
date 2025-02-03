@@ -33,9 +33,11 @@ export const userCreate = async ({
         ]);
 
         if (error) {
+            console.log("something wrong!");
             return error;
         }
 
+        console.log("successfully added user into supabase");
         return { success: true };
     } catch (error: any) {
         throw error;
