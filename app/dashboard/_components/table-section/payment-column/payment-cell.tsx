@@ -49,6 +49,7 @@ export function PaymentCell({ event, onButtonSuccess }: PaymentCellProps) {
                     title: "Error",
                     description: "No price found",
                 });
+                return;
             }
 
             const response = await fetch("/api/payments/create-checkout", {
@@ -69,7 +70,9 @@ export function PaymentCell({ event, onButtonSuccess }: PaymentCellProps) {
             if (error) throw new Error(error);
 
             const stripe = await stripePromise;
-            await stripe?.redirectToCheckout({ sessionId });
+            const { error: redirectError } =
+                (await stripe?.redirectToCheckout({ sessionId })) ?? {};
+            if (redirectError) throw redirectError;
 
             await onButtonSuccess?.();
         } catch (error) {

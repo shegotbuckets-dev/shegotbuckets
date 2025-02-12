@@ -127,6 +127,16 @@ export const EventsTable = ({
 }: EventsTableProps) => {
     const { user } = useUser();
     const email = user?.emailAddresses[0].emailAddress;
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const success = searchParams.get("success");
+        const eventId = searchParams.get("event_id");
+
+        if (success === "true" && eventId) {
+            onButtonSuccess(); // Refresh data
+        }
+    }, [searchParams, onButtonSuccess]);
 
     const [isFlashing, setIsFlashing] = useState(false);
 
@@ -148,8 +158,6 @@ export const EventsTable = ({
     }, [dashboardData, email]);
 
     const hasTeamColumn = tableData.some((event) => event.team !== "N/A");
-
-    const searchParams = useSearchParams();
 
     const eventId = searchParams.get("eventId");
 

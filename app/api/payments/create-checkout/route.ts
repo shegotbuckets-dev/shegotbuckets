@@ -54,7 +54,7 @@ export async function POST(req: Request) {
             },
             customer_email: email,
             mode: "payment",
-            success_url: `${baseUrl}/dashboard?success=true&event_id=${event_id}`,
+            success_url: `${baseUrl}/dashboard?success=true&event_id=${event_id}&t=${Date.now()}`,
             cancel_url: `${baseUrl}/dashboard?canceled=true`,
         });
 
