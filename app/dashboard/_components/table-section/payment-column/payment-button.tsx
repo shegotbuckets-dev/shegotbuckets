@@ -1,6 +1,6 @@
 "use client";
 
-import { EventTableData, PaymentStatus } from "@/app/dashboard/types";
+import { EventTableData } from "@/app/dashboard/types";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -12,22 +12,34 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
+import { useUser } from "@clerk/nextjs";
+import { loadStripe } from "@stripe/stripe-js";
 import { Loader2 } from "lucide-react";
+
+// Initialize Stripe
+const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 interface PaymentButtonProps {
     event: EventTableData;
-    paymentStatus: PaymentStatus;
-    onPaymentClick: () => Promise<void>;
+    paymentStatus: boolean;
+    onPaymentClick: () => void;
+    isLoading: boolean;
 }
 
 export function PaymentButton({
     event,
     paymentStatus,
     onPaymentClick,
+    isLoading,
 }: PaymentButtonProps) {
+    const buttonText = paymentStatus ? "Paid" : "Pay Now";
+    const disabled = paymentStatus || isLoading;
+
     if (!event.price || event.price === "N/A") return null;
 
-    if (paymentStatus === "paid") {
+    if (paymentStatus) {
         return (
             <Button variant="outline" disabled className="w-[100px]">
                 Paid
@@ -83,16 +95,16 @@ export function PaymentButton({
                     <div className="flex justify-end gap-2 pt-4 border-t">
                         <Button
                             onClick={onPaymentClick}
-                            disabled={paymentStatus === "processing"}
+                            disabled={disabled}
                             className="w-[100px]"
                         >
-                            {paymentStatus === "processing" ? (
+                            {isLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Processing
+                                    Redirecting...
                                 </>
                             ) : (
-                                "Pay Now"
+                                buttonText
                             )}
                         </Button>
                     </div>

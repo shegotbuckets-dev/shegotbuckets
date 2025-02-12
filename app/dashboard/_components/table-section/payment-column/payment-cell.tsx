@@ -1,3 +1,5 @@
+"use client";
+
 import {
     BADGE_TEXT,
     EventTableData,
@@ -5,6 +7,12 @@ import {
     STATUS_BADGE_CLASSNAME_CLICKABLE,
 } from "@/app/dashboard/types";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/components/ui/use-toast";
+
+import { useState } from "react";
+
+import { useUser } from "@clerk/nextjs";
+import { loadStripe } from "@stripe/stripe-js";
 
 import { PaymentButton } from "./payment-button";
 
@@ -13,36 +21,84 @@ interface PaymentCellProps {
     onButtonSuccess?: () => void;
 }
 
+const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
+
 export function PaymentCell({ event, onButtonSuccess }: PaymentCellProps) {
-    const handlePaymentClick = async () => {
+    const { user } = useUser();
+    const { toast } = useToast();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handlePayment = async () => {
+        setIsLoading(true);
         try {
-            // This will be implemented later with Stripe
-            // For now, just call onButtonSuccess
+            const email = user?.emailAddresses[0]?.emailAddress;
+            if (!email) {
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "No user email found",
+                });
+                return;
+            }
+
+            const response = await fetch("/api/payments/create-checkout", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    event_id: event.event_id,
+                    registration_id: event.registration_id,
+                    team_id: event.team_id,
+                    user_email: event.user_email,
+                    // price: event.price,
+                    price: 500,
+                    email,
+                    eventName: event.name,
+                }),
+            });
+
+            const { sessionId, error } = await response.json();
+            if (error) throw new Error(error);
+
+            const stripe = await stripePromise;
+            await stripe?.redirectToCheckout({ sessionId });
+
             await onButtonSuccess?.();
         } catch (error) {
             console.error("Payment error:", error);
+            toast({
+                variant: "destructive",
+                title: "Payment Error",
+                description: "Failed to process payment",
+            });
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    // TODO: Uncomment this check when implementing full payment flow
-    // if (!event.registered) {
-    //     return (
-    //         <Badge variant="secondary" className={STATUS_BADGE_CLASSNAME}>
-    //             {BADGE_TEXT.NA}
-    //         </Badge>
-    //     );
-    // }
+    if (!event.registered) {
+        return (
+            <Badge variant="secondary" className={STATUS_BADGE_CLASSNAME}>
+                {BADGE_TEXT.NA}
+            </Badge>
+        );
+    }
 
-    return event.paymentStatus === "paid" ? (
+    return event.paymentStatus ? (
         <Badge variant="green" className={STATUS_BADGE_CLASSNAME}>
             Paid
         </Badge>
     ) : (
-        <Badge variant="outline" className={STATUS_BADGE_CLASSNAME_CLICKABLE}>
+        <Badge
+            variant={event.paymentStatus ? "green" : "pending"}
+            className={STATUS_BADGE_CLASSNAME_CLICKABLE}
+        >
             <PaymentButton
                 event={event}
                 paymentStatus={event.paymentStatus}
-                onPaymentClick={handlePaymentClick}
+                onPaymentClick={handlePayment}
+                isLoading={isLoading}
             />
         </Badge>
     );

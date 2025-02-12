@@ -1,7 +1,6 @@
 "use server";
 
 import { Database } from "@/constants/supabase";
-import { createAdminClient } from "@/lib/supabase-admin";
 import { createServerClient } from "@/lib/supabase-server";
 
 type TableNames = keyof Database["public"]["Tables"];
@@ -48,8 +47,8 @@ export async function fetchMembers() {
 }
 
 export async function fetchRegistrations() {
-    return fetchFromTable("registrations") as Promise<
-        TableRow<"registrations">[]
+    return fetchFromTable("event_registrations") as Promise<
+        TableRow<"event_registrations">[]
     >;
 }
 

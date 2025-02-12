@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
         // Call the custom Postgres function
         const { error } = await supabase.rpc(
-            "register_event_with_transaction",
+            "register_event_and_update_event_players_table",
             {
                 event_id,
                 team_id,

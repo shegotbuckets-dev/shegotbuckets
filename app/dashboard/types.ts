@@ -11,31 +11,35 @@ export interface SidebarNav {
 export interface DashboardData {
     events: Database["public"]["Tables"]["events"]["Row"][];
     teams: Database["public"]["Tables"]["teams"]["Row"][];
-    registrations: Database["public"]["Tables"]["registrations"]["Row"][];
-    registrationPlayers: Database["public"]["Tables"]["registration_players"]["Row"][];
+    registrations: Database["public"]["Tables"]["event_registrations"]["Row"][];
+    registrationPlayers: Database["public"]["Tables"]["event_players"]["Row"][];
+    payments: Database["public"]["Tables"]["event_payments"]["Row"][];
 }
 
 export interface EventTableData {
     event_id: string;
-    registration_id: string | undefined;
+    registration_id: string | undefined | null;
     name: string;
     subtitle: string;
     date: string;
     location: string;
     price: string | number;
+    user_email: string;
+    team_id: string;
     team: string;
     registered: boolean;
     rosterUploaded: boolean;
     waiverSigned: boolean;
     active: boolean;
-    roster: Database["public"]["Tables"]["registration_players"]["Row"][];
-    paymentStatus: PaymentStatus;
+    roster: Database["public"]["Tables"]["event_players"]["Row"][];
+    paymentStatus: boolean;
+    paymentLink: string;
 }
 
 export interface UserEventData {
-    registration_id: string | undefined;
+    registration_id: string | undefined | null;
     registered: boolean;
-    teamId: string | undefined;
+    teamId: string | undefined | null;
     waiverSigned: boolean;
 }
 
@@ -118,7 +122,7 @@ export const BADGE_TEXT = {
 export interface RegisterButtonProps {
     event: EventTableData;
     teams: Database["public"]["Tables"]["teams"]["Row"][];
-    registrations: Database["public"]["Tables"]["registrations"]["Row"][];
+    registrations: Database["public"]["Tables"]["event_registrations"]["Row"][];
     onButtonSuccess: () => void;
 }
 
@@ -141,7 +145,7 @@ export interface RosterButtonProps {
 }
 
 export interface RosterTableProps {
-    roster: Database["public"]["Tables"]["registration_players"]["Row"][];
+    roster: Database["public"]["Tables"]["event_players"]["Row"][];
 }
 
 export const ROSTER_HEADERS = [
@@ -151,5 +155,3 @@ export const ROSTER_HEADERS = [
     "Jersey Number",
     "Waiver",
 ];
-
-export type PaymentStatus = "unpaid" | "paid" | "processing";

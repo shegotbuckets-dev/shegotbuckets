@@ -40,7 +40,7 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
                                 player.user_email,
                                 player.jersey_number,
                                 <WaiverCellInRoster
-                                    key={`waiver-cell-${player.id}`}
+                                    key={`waiver-cell-${player.player_id}`}
                                     value={
                                         player.waiver_signed
                                             ? "Signed"

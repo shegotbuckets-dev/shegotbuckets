@@ -9,6 +9,118 @@ export type Json =
 export type Database = {
     public: {
         Tables: {
+            event_payments: {
+                Row: {
+                    amount: number | null;
+                    created_at: string | null;
+                    currency: string | null;
+                    event_id: string | null;
+                    metadata: Json | null;
+                    payment_id: string;
+                    payment_status: boolean | null;
+                    registration_id: string | null;
+                    team_id: string | null;
+                    updated_at: string | null;
+                    user_email: string | null;
+                    user_id: string | null;
+                };
+                Insert: {
+                    amount?: number | null;
+                    created_at?: string | null;
+                    currency?: string | null;
+                    event_id?: string | null;
+                    metadata?: Json | null;
+                    payment_id: string;
+                    payment_status?: boolean | null;
+                    registration_id?: string | null;
+                    team_id?: string | null;
+                    updated_at?: string | null;
+                    user_email?: string | null;
+                    user_id?: string | null;
+                };
+                Update: {
+                    amount?: number | null;
+                    created_at?: string | null;
+                    currency?: string | null;
+                    event_id?: string | null;
+                    metadata?: Json | null;
+                    payment_id?: string;
+                    payment_status?: boolean | null;
+                    registration_id?: string | null;
+                    team_id?: string | null;
+                    updated_at?: string | null;
+                    user_email?: string | null;
+                    user_id?: string | null;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "event_payments_registration_id_fkey";
+                        columns: ["registration_id"];
+                        isOneToOne: false;
+                        referencedRelation: "event_registrations";
+                        referencedColumns: ["registration_id"];
+                    },
+                ];
+            };
+            event_players: {
+                Row: {
+                    first_name: string | null;
+                    jersey_number: number | null;
+                    last_name: string | null;
+                    player_id: string;
+                    registration_id: string | null;
+                    user_email: string | null;
+                    waiver_signed: boolean | null;
+                };
+                Insert: {
+                    first_name?: string | null;
+                    jersey_number?: number | null;
+                    last_name?: string | null;
+                    player_id?: string;
+                    registration_id?: string | null;
+                    user_email?: string | null;
+                    waiver_signed?: boolean | null;
+                };
+                Update: {
+                    first_name?: string | null;
+                    jersey_number?: number | null;
+                    last_name?: string | null;
+                    player_id?: string;
+                    registration_id?: string | null;
+                    user_email?: string | null;
+                    waiver_signed?: boolean | null;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "event_players_registration_id_fkey";
+                        columns: ["registration_id"];
+                        isOneToOne: false;
+                        referencedRelation: "event_registrations";
+                        referencedColumns: ["registration_id"];
+                    },
+                ];
+            };
+            event_registrations: {
+                Row: {
+                    created_at: string | null;
+                    event_id: string | null;
+                    registration_id: string;
+                    team_id: string | null;
+                };
+                Insert: {
+                    created_at?: string | null;
+                    event_id?: string | null;
+                    registration_id?: string;
+                    team_id?: string | null;
+                };
+                Update: {
+                    created_at?: string | null;
+                    event_id?: string | null;
+                    registration_id?: string;
+                    team_id?: string | null;
+                };
+                Relationships: [];
+            };
             events: {
                 Row: {
                     active: boolean;
@@ -18,6 +130,7 @@ export type Database = {
                     image: string;
                     league_id: string | null;
                     location: string | null;
+                    payment_link: string;
                     price: string | null;
                     reg_ddl: string;
                     subtitle: string | null;
@@ -32,6 +145,7 @@ export type Database = {
                     image: string;
                     league_id?: string | null;
                     location?: string | null;
+                    payment_link?: string;
                     price?: string | null;
                     reg_ddl: string;
                     subtitle?: string | null;
@@ -46,6 +160,7 @@ export type Database = {
                     image?: string;
                     league_id?: string | null;
                     location?: string | null;
+                    payment_link?: string;
                     price?: string | null;
                     reg_ddl?: string;
                     subtitle?: string | null;
@@ -118,6 +233,80 @@ export type Database = {
                     title?: string | null;
                 };
                 Relationships: [];
+            };
+            payments: {
+                Row: {
+                    amount: number;
+                    created_at: string;
+                    currency: string;
+                    event_id: string;
+                    metadata: Json | null;
+                    payment_id: string;
+                    payment_status: boolean;
+                    registration_id: string;
+                    team_id: string;
+                    updated_at: string;
+                    user_email: string;
+                    user_id: string;
+                };
+                Insert: {
+                    amount: number;
+                    created_at?: string;
+                    currency?: string;
+                    event_id: string;
+                    metadata?: Json | null;
+                    payment_id?: string;
+                    payment_status?: boolean;
+                    registration_id: string;
+                    team_id: string;
+                    updated_at?: string;
+                    user_email: string;
+                    user_id: string;
+                };
+                Update: {
+                    amount?: number;
+                    created_at?: string;
+                    currency?: string;
+                    event_id?: string;
+                    metadata?: Json | null;
+                    payment_id?: string;
+                    payment_status?: boolean;
+                    registration_id?: string;
+                    team_id?: string;
+                    updated_at?: string;
+                    user_email?: string;
+                    user_id?: string;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "payments_event_id_fkey";
+                        columns: ["event_id"];
+                        isOneToOne: false;
+                        referencedRelation: "events";
+                        referencedColumns: ["event_id"];
+                    },
+                    {
+                        foreignKeyName: "payments_registration_id_fkey";
+                        columns: ["registration_id"];
+                        isOneToOne: false;
+                        referencedRelation: "registrations";
+                        referencedColumns: ["registration_id"];
+                    },
+                    {
+                        foreignKeyName: "payments_team_id_fkey";
+                        columns: ["team_id"];
+                        isOneToOne: false;
+                        referencedRelation: "teams";
+                        referencedColumns: ["team_id"];
+                    },
+                    {
+                        foreignKeyName: "payments_user_id_fkey";
+                        columns: ["user_id"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
+                        referencedColumns: ["user_id"];
+                    },
+                ];
             };
             registration_players: {
                 Row: {
@@ -276,6 +465,14 @@ export type Database = {
             execute_sql: {
                 Args: {
                     sql: string;
+                };
+                Returns: undefined;
+            };
+            register_event_and_update_event_players_table: {
+                Args: {
+                    event_id: string;
+                    team_id: string;
+                    players: Json;
                 };
                 Returns: undefined;
             };

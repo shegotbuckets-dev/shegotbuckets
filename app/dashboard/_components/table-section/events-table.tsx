@@ -30,51 +30,65 @@ import { WaiverCell } from "./waiver-column/waiver-cell";
 function prepareTableData(
     event: Database["public"]["Tables"]["events"]["Row"],
     user_email: string | undefined,
-    registrations: Database["public"]["Tables"]["registrations"]["Row"][],
-    registrationPlayers: Database["public"]["Tables"]["registration_players"]["Row"][],
-    teams: Database["public"]["Tables"]["teams"]["Row"][]
+    registrations: Database["public"]["Tables"]["event_registrations"]["Row"][],
+    registrationPlayers: Database["public"]["Tables"]["event_players"]["Row"][],
+    teams: Database["public"]["Tables"]["teams"]["Row"][],
+    payments: Database["public"]["Tables"]["event_payments"]["Row"][]
 ): EventTableData {
-    const eventRegistrations = registrations.filter(
-        (registration) => registration.event_id === event.event_id
-    );
+    // First find user's registration for this event
+    const { userPlayer, userRegistration } = registrationPlayers.reduce<{
+        userPlayer: (typeof registrationPlayers)[0] | undefined;
+        userRegistration: (typeof registrations)[0] | undefined;
+    }>(
+        (acc, player) => {
+            if (acc.userPlayer) return acc; // Already found
 
-    const userEventData = eventRegistrations.reduce<UserEventData>(
-        (acc, registration) => {
-            const userPlayerData = registrationPlayers.find(
-                (player) =>
-                    player.registration_id === registration.registration_id &&
-                    player.user_email?.toLocaleLowerCase() === user_email
+            const registration = registrations.find(
+                (reg) =>
+                    reg.event_id === event.event_id &&
+                    reg.registration_id === player.registration_id
             );
 
-            if (userPlayerData) {
-                return {
-                    registered: true,
-                    teamId: registration.team_id,
-                    registration_id: userPlayerData.registration_id,
-                    waiverSigned: userPlayerData.waiver_signed,
-                };
+            if (
+                registration &&
+                player.user_email?.toLowerCase() === user_email?.toLowerCase()
+            ) {
+                acc.userPlayer = player;
+                acc.userRegistration = registration;
             }
-            return { ...acc };
+
+            return acc;
         },
-        {
-            registration_id: undefined,
-            registered: false,
-            teamId: undefined,
-            waiverSigned: false,
-        }
+        { userPlayer: undefined, userRegistration: undefined }
     );
 
-    const team = userEventData.registered
-        ? (teams.find((team) => team.team_id === userEventData.teamId)?.name ??
-          "N/A")
-        : "N/A";
-
-    const roster = userEventData.registered
+    // Then get all players for this registration
+    const allPlayers = userRegistration
         ? registrationPlayers.filter(
               (player) =>
-                  player.registration_id === userEventData.registration_id
+                  player.registration_id === userRegistration.registration_id
           )
         : [];
+
+    const userEventData: UserEventData = {
+        registration_id: userPlayer?.registration_id,
+        registered: !!userPlayer,
+        teamId: userRegistration?.team_id,
+        waiverSigned: !!userPlayer?.waiver_signed,
+    };
+
+    // Get payment in one lookup
+    const paymentForRegistration = userRegistration
+        ? payments.find(
+              (p) => p.registration_id === userRegistration.registration_id
+          )
+        : undefined;
+
+    // Get team name in one lookup
+    const team = userRegistration?.team_id
+        ? (teams.find((t) => t.team_id === userRegistration.team_id)?.name ??
+          "N/A")
+        : "N/A";
 
     return {
         event_id: event.event_id,
@@ -85,12 +99,15 @@ function prepareTableData(
         location: event.location ?? "N/A",
         price: event.price ?? "N/A",
         active: event.active,
+        user_email: userPlayer?.user_email ?? "N/A",
+        team_id: userEventData.teamId ?? "N/A",
         team,
         registered: userEventData.registered,
-        rosterUploaded: roster.length > 0,
-        roster: roster,
+        rosterUploaded: allPlayers.length > 0,
+        roster: allPlayers,
         waiverSigned: userEventData.waiverSigned,
-        paymentStatus: userEventData.registered ? "unpaid" : "unpaid",
+        paymentStatus: paymentForRegistration?.payment_status ?? false,
+        paymentLink: event.payment_link,
     };
 }
 
@@ -120,7 +137,8 @@ export const EventsTable = ({
                 email?.toLocaleLowerCase(),
                 dashboardData.registrations,
                 dashboardData.registrationPlayers,
-                dashboardData.teams
+                dashboardData.teams,
+                dashboardData.payments
             )
         );
         return {
