@@ -23,20 +23,17 @@ interface PaymentData {
     };
 }
 
+export const runtime = "edge";
+export const dynamic = "force-dynamic";
+export const preferredRegion = "auto";
+
 export async function POST(req: Request) {
     const body = await req.text();
-    const sig = headers().get("stripe-signature");
-
-    if (!sig) {
-        return NextResponse.json(
-            { error: "Missing stripe-signature header" },
-            { status: 400 }
-        );
-    }
+    const signature = headers().get("stripe-signature")!;
 
     let event: Stripe.Event;
     try {
-        event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+        event = stripe.webhooks.constructEvent(body, signature, endpointSecret);
     } catch (err) {
         console.error("Webhook signature verification failed:", err);
         return NextResponse.json(
@@ -116,9 +113,3 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ status: "success" });
 }
-
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
