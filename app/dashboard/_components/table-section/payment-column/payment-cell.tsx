@@ -73,8 +73,6 @@ export function PaymentCell({ event, onButtonSuccess }: PaymentCellProps) {
             const { error: redirectError } =
                 (await stripe?.redirectToCheckout({ sessionId })) ?? {};
             if (redirectError) throw redirectError;
-
-            await onButtonSuccess?.();
         } catch (error) {
             console.error("Payment error:", error);
             toast({
