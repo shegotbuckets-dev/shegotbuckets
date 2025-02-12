@@ -1,10 +1,13 @@
 import { endpointSecret, stripe } from "@/lib/stripe";
 import { createAdminClient } from "@/lib/supabase-admin";
 
-import { randomUUID } from "crypto";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import type { Stripe } from "stripe";
+
+function generateUUID(): string {
+    return crypto.randomUUID();
+}
 
 interface PaymentData {
     payment_id: string;
@@ -65,7 +68,7 @@ export async function POST(req: Request) {
             const supabase = await createAdminClient();
 
             const paymentData: PaymentData = {
-                payment_id: randomUUID(),
+                payment_id: generateUUID(),
                 event_id: session.metadata.event_id,
                 registration_id: session.metadata.registration_id,
                 team_id: session.metadata.team_id,
