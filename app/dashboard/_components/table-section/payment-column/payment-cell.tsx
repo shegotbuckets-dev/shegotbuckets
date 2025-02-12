@@ -43,6 +43,14 @@ export function PaymentCell({ event, onButtonSuccess }: PaymentCellProps) {
                 return;
             }
 
+            if (event.price_number === -1) {
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "No price found",
+                });
+            }
+
             const response = await fetch("/api/payments/create-checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -51,8 +59,7 @@ export function PaymentCell({ event, onButtonSuccess }: PaymentCellProps) {
                     registration_id: event.registration_id,
                     team_id: event.team_id,
                     user_email: event.user_email,
-                    // price: event.price,
-                    price: 500,
+                    price: event.price_number,
                     email,
                     eventName: event.name,
                 }),

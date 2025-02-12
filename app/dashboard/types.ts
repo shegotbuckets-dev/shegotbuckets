@@ -24,6 +24,7 @@ export interface EventTableData {
     date: string;
     location: string;
     price: string | number;
+    price_number: number;
     user_email: string;
     team_id: string;
     team: string;
@@ -33,7 +34,6 @@ export interface EventTableData {
     active: boolean;
     roster: Database["public"]["Tables"]["event_players"]["Row"][];
     paymentStatus: boolean;
-    paymentLink: string;
 }
 
 export interface UserEventData {

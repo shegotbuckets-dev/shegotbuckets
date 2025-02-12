@@ -21,10 +21,10 @@ export async function POST(req: Request) {
             eventName,
         } = await req.json();
 
-        // Ensure price is a valid number and convert to cents
-        const unitAmount =
-            Math.round(typeof price === "string" ? parseFloat(price) : price) *
-            100;
+        // Ensure price is a valid number
+        const unitAmount = Math.round(
+            typeof price === "string" ? parseFloat(price) : price
+        );
 
         // Validate the amount
         if (isNaN(unitAmount)) {

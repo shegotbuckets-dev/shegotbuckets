@@ -98,6 +98,7 @@ function prepareTableData(
         date: event.date ?? "N/A",
         location: event.location ?? "N/A",
         price: event.price ?? "N/A",
+        price_number: event.price_number ?? -1,
         active: event.active,
         user_email: userPlayer?.user_email ?? "N/A",
         team_id: userEventData.teamId ?? "N/A",
@@ -107,7 +108,6 @@ function prepareTableData(
         roster: allPlayers,
         waiverSigned: userEventData.waiverSigned,
         paymentStatus: paymentForRegistration?.payment_status ?? false,
-        paymentLink: event.payment_link,
     };
 }
 

@@ -12,7 +12,7 @@ export type Database = {
             event_payments: {
                 Row: {
                     amount: number | null;
-                    created_at: string | null;
+                    created_at: string;
                     currency: string | null;
                     event_id: string | null;
                     metadata: Json | null;
@@ -20,13 +20,12 @@ export type Database = {
                     payment_status: boolean | null;
                     registration_id: string | null;
                     team_id: string | null;
-                    updated_at: string | null;
+                    updated_at: string;
                     user_email: string | null;
-                    user_id: string | null;
                 };
                 Insert: {
                     amount?: number | null;
-                    created_at?: string | null;
+                    created_at?: string;
                     currency?: string | null;
                     event_id?: string | null;
                     metadata?: Json | null;
@@ -34,13 +33,12 @@ export type Database = {
                     payment_status?: boolean | null;
                     registration_id?: string | null;
                     team_id?: string | null;
-                    updated_at?: string | null;
+                    updated_at?: string;
                     user_email?: string | null;
-                    user_id?: string | null;
                 };
                 Update: {
                     amount?: number | null;
-                    created_at?: string | null;
+                    created_at?: string;
                     currency?: string | null;
                     event_id?: string | null;
                     metadata?: Json | null;
@@ -48,9 +46,8 @@ export type Database = {
                     payment_status?: boolean | null;
                     registration_id?: string | null;
                     team_id?: string | null;
-                    updated_at?: string | null;
+                    updated_at?: string;
                     user_email?: string | null;
-                    user_id?: string | null;
                 };
                 Relationships: [
                     {
@@ -102,19 +99,19 @@ export type Database = {
             };
             event_registrations: {
                 Row: {
-                    created_at: string | null;
+                    created_at: string;
                     event_id: string | null;
                     registration_id: string;
                     team_id: string | null;
                 };
                 Insert: {
-                    created_at?: string | null;
+                    created_at?: string;
                     event_id?: string | null;
                     registration_id?: string;
                     team_id?: string | null;
                 };
                 Update: {
-                    created_at?: string | null;
+                    created_at?: string;
                     event_id?: string | null;
                     registration_id?: string;
                     team_id?: string | null;
@@ -130,8 +127,8 @@ export type Database = {
                     image: string;
                     league_id: string | null;
                     location: string | null;
-                    payment_link: string;
                     price: string | null;
+                    price_number: number | null;
                     reg_ddl: string;
                     subtitle: string | null;
                     title: string;
@@ -145,8 +142,8 @@ export type Database = {
                     image: string;
                     league_id?: string | null;
                     location?: string | null;
-                    payment_link?: string;
                     price?: string | null;
+                    price_number?: number | null;
                     reg_ddl: string;
                     subtitle?: string | null;
                     title: string;
@@ -160,8 +157,8 @@ export type Database = {
                     image?: string;
                     league_id?: string | null;
                     location?: string | null;
-                    payment_link?: string;
                     price?: string | null;
+                    price_number?: number | null;
                     reg_ddl?: string;
                     subtitle?: string | null;
                     title?: string;
