@@ -1,5 +1,4 @@
 import { stripe } from "@/lib/stripe";
-import { createServerClient } from "@/lib/supabase-server";
 
 import { NextResponse } from "next/server";
 
@@ -21,10 +20,10 @@ export async function POST(req: Request) {
             eventName,
         } = await req.json();
 
-        // Ensure price is a valid number
-        const unitAmount = Math.round(
-            typeof price === "string" ? parseFloat(price) : price
-        );
+        // Ensure price is a valid number and convert to cents
+        const unitAmount =
+            Math.round(typeof price === "string" ? parseFloat(price) : price) *
+            100;
 
         // Validate the amount
         if (isNaN(unitAmount)) {
