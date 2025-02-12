@@ -16,16 +16,11 @@ import { loadStripe } from "@stripe/stripe-js";
 
 import { PaymentButton } from "./payment-button";
 
-interface PaymentCellProps {
-    event: EventTableData;
-    onButtonSuccess?: () => void;
-}
-
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
-export function PaymentCell({ event, onButtonSuccess }: PaymentCellProps) {
+export function PaymentCell({ event }: { event: EventTableData }) {
     const { user } = useUser();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);

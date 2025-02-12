@@ -226,10 +226,7 @@ export const EventsTable = ({
                             )}
                             {event.active && (
                                 <TableCell>
-                                    <PaymentCell
-                                        event={event}
-                                        onButtonSuccess={onButtonSuccess}
-                                    />
+                                    <PaymentCell event={event} />
                                 </TableCell>
                             )}
                         </TableRow>
