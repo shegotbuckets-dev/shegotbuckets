@@ -18,34 +18,27 @@ export async function POST(req: Request) {
             price,
             email,
             eventName,
+            hasTeam2,
         } = await req.json();
 
-        // Ensure price is a valid number and convert to cents
-        const unitAmount =
-            Math.round(typeof price === "string" ? parseFloat(price) : price) *
-            100;
+        const line_items = [
+            {
+                price: "price_1QrTB3KcXW8i0WF4S1Pv94uW",
+                quantity: 1,
+            },
+        ];
 
-        // Validate the amount
-        if (isNaN(unitAmount)) {
-            return NextResponse.json(
-                { error: "Invalid price amount" },
-                { status: 400 }
-            );
+        // Add team 2 fee if selected
+        if (hasTeam2) {
+            line_items.push({
+                price: "price_1QrTCIKcXW8i0WF4aVmz6zmd",
+                quantity: 1,
+            });
         }
 
         const session = await stripe.checkout.sessions.create({
-            line_items: [
-                {
-                    price_data: {
-                        currency: "usd",
-                        product_data: {
-                            name: eventName,
-                        },
-                        unit_amount: unitAmount, // This will be in cents
-                    },
-                    quantity: 1,
-                },
-            ],
+            line_items,
+            allow_promotion_codes: true,
             metadata: {
                 event_id,
                 registration_id,
@@ -56,6 +49,8 @@ export async function POST(req: Request) {
             mode: "payment",
             success_url: `${baseUrl}/dashboard?success=true&event_id=${event_id}&t=${Date.now()}`,
             cancel_url: `${baseUrl}/dashboard?canceled=true`,
+            payment_method_types: ["card"],
+            billing_address_collection: "auto",
         });
 
         return NextResponse.json({ sessionId: session.id });

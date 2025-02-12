@@ -23,8 +23,7 @@ export interface EventTableData {
     subtitle: string;
     date: string;
     location: string;
-    price: string | number;
-    price_number: number;
+    price: string;
     user_email: string;
     team_id: string;
     team: string;

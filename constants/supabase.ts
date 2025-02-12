@@ -128,7 +128,6 @@ export type Database = {
                     league_id: string | null;
                     location: string | null;
                     price: string | null;
-                    price_number: number | null;
                     reg_ddl: string;
                     subtitle: string | null;
                     title: string;
@@ -143,7 +142,6 @@ export type Database = {
                     league_id?: string | null;
                     location?: string | null;
                     price?: string | null;
-                    price_number?: number | null;
                     reg_ddl: string;
                     subtitle?: string | null;
                     title: string;
@@ -158,7 +156,6 @@ export type Database = {
                     league_id?: string | null;
                     location?: string | null;
                     price?: string | null;
-                    price_number?: number | null;
                     reg_ddl?: string;
                     subtitle?: string | null;
                     title?: string;
@@ -230,80 +227,6 @@ export type Database = {
                     title?: string | null;
                 };
                 Relationships: [];
-            };
-            payments: {
-                Row: {
-                    amount: number;
-                    created_at: string;
-                    currency: string;
-                    event_id: string;
-                    metadata: Json | null;
-                    payment_id: string;
-                    payment_status: boolean;
-                    registration_id: string;
-                    team_id: string;
-                    updated_at: string;
-                    user_email: string;
-                    user_id: string;
-                };
-                Insert: {
-                    amount: number;
-                    created_at?: string;
-                    currency?: string;
-                    event_id: string;
-                    metadata?: Json | null;
-                    payment_id?: string;
-                    payment_status?: boolean;
-                    registration_id: string;
-                    team_id: string;
-                    updated_at?: string;
-                    user_email: string;
-                    user_id: string;
-                };
-                Update: {
-                    amount?: number;
-                    created_at?: string;
-                    currency?: string;
-                    event_id?: string;
-                    metadata?: Json | null;
-                    payment_id?: string;
-                    payment_status?: boolean;
-                    registration_id?: string;
-                    team_id?: string;
-                    updated_at?: string;
-                    user_email?: string;
-                    user_id?: string;
-                };
-                Relationships: [
-                    {
-                        foreignKeyName: "payments_event_id_fkey";
-                        columns: ["event_id"];
-                        isOneToOne: false;
-                        referencedRelation: "events";
-                        referencedColumns: ["event_id"];
-                    },
-                    {
-                        foreignKeyName: "payments_registration_id_fkey";
-                        columns: ["registration_id"];
-                        isOneToOne: false;
-                        referencedRelation: "registrations";
-                        referencedColumns: ["registration_id"];
-                    },
-                    {
-                        foreignKeyName: "payments_team_id_fkey";
-                        columns: ["team_id"];
-                        isOneToOne: false;
-                        referencedRelation: "teams";
-                        referencedColumns: ["team_id"];
-                    },
-                    {
-                        foreignKeyName: "payments_user_id_fkey";
-                        columns: ["user_id"];
-                        isOneToOne: false;
-                        referencedRelation: "users";
-                        referencedColumns: ["user_id"];
-                    },
-                ];
             };
             registration_players: {
                 Row: {

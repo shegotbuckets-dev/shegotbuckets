@@ -2,6 +2,7 @@
 
 import { EventTableData } from "@/app/dashboard/types";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogContent,
@@ -12,19 +13,14 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
-import { useUser } from "@clerk/nextjs";
-import { loadStripe } from "@stripe/stripe-js";
-import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
-// Initialize Stripe
-const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+import { Loader2 } from "lucide-react";
 
 interface PaymentButtonProps {
     event: EventTableData;
     paymentStatus: boolean;
-    onPaymentClick: () => void;
+    onPaymentClick: (hasTeam2: boolean) => void;
     isLoading: boolean;
 }
 
@@ -34,10 +30,9 @@ export function PaymentButton({
     onPaymentClick,
     isLoading,
 }: PaymentButtonProps) {
+    const [hasTeam2, setHasTeam2] = useState(false);
     const buttonText = paymentStatus ? "Paid" : "Pay Now";
     const disabled = paymentStatus || isLoading;
-
-    if (!event.price || event.price === "N/A") return null;
 
     if (paymentStatus) {
         return (
@@ -91,10 +86,24 @@ export function PaymentButton({
                         to secure payment.
                     </div>
 
+                    {/* Add checkbox before buttons */}
+                    <div className="flex items-center space-x-2 py-4">
+                        <Checkbox
+                            id="team2"
+                            checked={hasTeam2}
+                            onCheckedChange={(checked) =>
+                                setHasTeam2(!!checked)
+                            }
+                        />
+                        <label htmlFor="team2" className="text-sm">
+                            I have a team 2 to participate
+                        </label>
+                    </div>
+
                     {/* Buttons */}
                     <div className="flex justify-end gap-2 pt-4 border-t">
                         <Button
-                            onClick={onPaymentClick}
+                            onClick={() => onPaymentClick(hasTeam2)}
                             disabled={disabled}
                             className="w-[100px]"
                         >

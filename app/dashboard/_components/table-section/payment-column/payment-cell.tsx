@@ -25,7 +25,7 @@ export function PaymentCell({ event }: { event: EventTableData }) {
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
 
-    const handlePayment = async () => {
+    const handlePayment = async (hasTeam2: boolean) => {
         setIsLoading(true);
         try {
             const email = user?.emailAddresses[0]?.emailAddress;
@@ -38,15 +38,6 @@ export function PaymentCell({ event }: { event: EventTableData }) {
                 return;
             }
 
-            if (event.price_number === -1) {
-                toast({
-                    variant: "destructive",
-                    title: "Error",
-                    description: "No price found",
-                });
-                return;
-            }
-
             const response = await fetch("/api/payments/create-checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -55,9 +46,9 @@ export function PaymentCell({ event }: { event: EventTableData }) {
                     registration_id: event.registration_id,
                     team_id: event.team_id,
                     user_email: event.user_email,
-                    price: event.price_number,
                     email,
-                    eventName: event.name,
+                    eventName: event.name + " - " + event.subtitle,
+                    hasTeam2,
                 }),
             });
 
