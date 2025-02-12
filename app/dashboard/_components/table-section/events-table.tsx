@@ -19,7 +19,7 @@ import { Database } from "@/constants/supabase";
 import { useEffect, useMemo, useState } from "react";
 
 import { useUser } from "@clerk/nextjs";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { PaymentCell } from "./payment-column/payment-cell";
 import { RegisterOrParticipatedCell } from "./register-column/register-cell";
@@ -127,15 +127,16 @@ export const EventsTable = ({
     const { user } = useUser();
     const email = user?.emailAddresses[0].emailAddress;
     const searchParams = useSearchParams();
+    const router = useRouter();
 
     useEffect(() => {
         const success = searchParams.get("success");
         const eventId = searchParams.get("event_id");
-
         if (success === "true" && eventId) {
-            onButtonSuccess(); // Refresh data
+            onButtonSuccess();
+            router.replace("/dashboard");
         }
-    }, [searchParams, onButtonSuccess]);
+    }, [searchParams, onButtonSuccess, router]);
 
     const [isFlashing, setIsFlashing] = useState(false);
 

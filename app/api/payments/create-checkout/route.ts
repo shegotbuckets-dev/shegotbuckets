@@ -15,7 +15,6 @@ export async function POST(req: Request) {
             registration_id,
             team_id,
             user_email,
-            price,
             email,
             eventName,
             hasTeam2,
@@ -51,6 +50,21 @@ export async function POST(req: Request) {
             cancel_url: `${baseUrl}/dashboard?canceled=true`,
             payment_method_types: ["card"],
             billing_address_collection: "auto",
+            // Custom text for checkout page
+            custom_text: {
+                submit: {
+                    message: `Registration fee for SGB ${eventName}. You will receive a confirmation email after payment.`,
+                },
+            },
+            // Tax settings
+            automatic_tax: {
+                enabled: true,
+            },
+            // Description that appears on receipts and invoices
+            payment_intent_data: {
+                description: `SGB Tournament Registration - ${eventName}`,
+                statement_descriptor: "SGB TOURNAMENT",
+            },
         });
 
         return NextResponse.json({ sessionId: session.id });

@@ -31,8 +31,14 @@ export function PaymentButton({
     isLoading,
 }: PaymentButtonProps) {
     const [hasTeam2, setHasTeam2] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const buttonText = paymentStatus ? "Paid" : "Pay Now";
     const disabled = paymentStatus || isLoading;
+
+    const handlePayClick = async () => {
+        await onPaymentClick(hasTeam2);
+        setDialogOpen(false);
+    };
 
     if (paymentStatus) {
         return (
@@ -43,7 +49,7 @@ export function PaymentButton({
     }
 
     return (
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
                 <span>Pay Now</span>
             </DialogTrigger>
@@ -103,7 +109,7 @@ export function PaymentButton({
                     {/* Buttons */}
                     <div className="flex justify-end gap-2 pt-4 border-t">
                         <Button
-                            onClick={() => onPaymentClick(hasTeam2)}
+                            onClick={handlePayClick}
                             disabled={disabled}
                             className="w-[100px]"
                         >

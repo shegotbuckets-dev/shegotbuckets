@@ -56,9 +56,7 @@ export function PaymentCell({ event }: { event: EventTableData }) {
             if (error) throw new Error(error);
 
             const stripe = await stripePromise;
-            const { error: redirectError } =
-                (await stripe?.redirectToCheckout({ sessionId })) ?? {};
-            if (redirectError) throw redirectError;
+            await stripe?.redirectToCheckout({ sessionId });
         } catch (error) {
             console.error("Payment error:", error);
             toast({
@@ -66,7 +64,6 @@ export function PaymentCell({ event }: { event: EventTableData }) {
                 title: "Payment Error",
                 description: "Failed to process payment",
             });
-        } finally {
             setIsLoading(false);
         }
     };
