@@ -14,7 +14,7 @@ type Champion = {
 const champions: Champion[] = [
     {
         id: 1,
-        name: "Team Alpha",
+        name: "HARVARD CWB",
         year: 2024,
         imageUrl: getMediaUrl(
             SupabaseStorageBucket.LEAGUES,
@@ -24,7 +24,7 @@ const champions: Champion[] = [
     },
     {
         id: 2,
-        name: "Hoops Elite",
+        name: "UMICH CWB",
         year: 2023,
         imageUrl: getMediaUrl(
             SupabaseStorageBucket.LEAGUES,
