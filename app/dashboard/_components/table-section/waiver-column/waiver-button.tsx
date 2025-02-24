@@ -9,7 +9,6 @@ export const WaiverButton = ({ event, onButtonSuccess }: WaiverCellProps) => {
     const [open, setOpen] = useState(false);
 
     const handleWaiverSigned = () => {
-        console.log("[WaiverButton] Waiver signed, refreshing");
         setOpen(false);
         onButtonSuccess();
     };
