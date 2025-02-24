@@ -29,6 +29,7 @@ export const useEventsData = () => {
         try {
             const events = await fetchFromTable("events");
             const registrations = await fetchFromTable("event_registrations");
+            const payments = await fetchFromTable("event_payments");
             const teams = await fetchFromTable("teams");
 
             // Get only this user's player records
@@ -41,7 +42,7 @@ export const useEventsData = () => {
             );
 
             const processedEvents = events.map((event) => {
-                // Get all registrations for this event
+                // Get all registrations for this eventc
                 const eventRegistrations = registrations.filter(
                     (r) => r.event_id === event.event_id
                 );
@@ -61,6 +62,15 @@ export const useEventsData = () => {
                       )
                     : undefined;
 
+                const paymentStatus = payments
+                    .filter((p) => p.event_id === event.event_id)
+                    .some(
+                        (p) =>
+                            p.registration_id ===
+                                userRegistration?.registration_id &&
+                            p.payment_status === true
+                    );
+
                 return {
                     ...event,
                     userStatus: {
@@ -70,7 +80,7 @@ export const useEventsData = () => {
                             ? teamMap.get(userRegistration.team_id)
                             : undefined,
                         waiverSigned: !!userPlayer?.waiver_signed,
-                        paymentStatus: false,
+                        paymentStatus: paymentStatus,
                     },
                 };
             });
