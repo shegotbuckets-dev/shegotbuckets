@@ -42,7 +42,6 @@ export async function POST(req: Request) {
             endpointSecret
         );
     } catch (err) {
-        console.error("Webhook signature verification failed:", err);
         return NextResponse.json(
             {
                 error: `Webhook verification failed: ${
@@ -58,10 +57,6 @@ export async function POST(req: Request) {
 
         // Validate required metadata
         if (!session.metadata?.event_id || !session.metadata?.registration_id) {
-            console.error(
-                "Missing required metadata in session:",
-                session.metadata
-            );
             return NextResponse.json(
                 { error: "Missing required payment metadata" },
                 { status: 400 }
@@ -92,10 +87,6 @@ export async function POST(req: Request) {
                 .select();
 
             if (error) {
-                console.error("Database error:", {
-                    code: error.code,
-                    message: error.message,
-                });
                 throw error;
             }
 
@@ -104,7 +95,6 @@ export async function POST(req: Request) {
             );
             return NextResponse.json({ status: "success", data });
         } catch (error) {
-            console.error("Payment recording failed:", error);
             return NextResponse.json(
                 {
                     error: "Failed to record payment",

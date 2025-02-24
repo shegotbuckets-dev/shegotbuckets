@@ -135,10 +135,9 @@ export function RegistrationForm() {
 
             throw new Error("Failed to confirm registration status");
         } catch (error) {
-            console.error("[Registration] Form submission error:", error);
             toast({
                 title: "Registration Failed",
-                description: "Please try again.",
+                description: "Please try again." + error,
                 variant: "destructive",
             });
         } finally {

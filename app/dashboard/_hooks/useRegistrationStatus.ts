@@ -32,7 +32,6 @@ export const useRegistrationStatus = () => {
             setLoading(false);
             return newStatus;
         } catch (error) {
-            console.error("[Registration] Error checking status:", error);
             setLoading(false);
             return null;
         }

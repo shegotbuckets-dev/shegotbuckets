@@ -48,7 +48,6 @@ export async function POST(req: Request) {
         );
 
         if (error) {
-            console.error("Transaction failed:", error.message);
             return NextResponse.json(
                 { error: "Transaction failed" },
                 { status: 500 }
@@ -59,7 +58,6 @@ export async function POST(req: Request) {
             message: "Players registered successfully",
         });
     } catch (err) {
-        console.error("Unexpected error:", err);
         return NextResponse.json(
             { error: "Unexpected server error" },
             { status: 500 }

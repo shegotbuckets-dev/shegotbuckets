@@ -9,12 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { WaiverButton } from "./waiver-button";
 
 export const WaiverCell = ({ event, onButtonSuccess }: WaiverCellProps) => {
-    console.log("[WaiverCell] Rendering with event:", {
-        id: event.event_id,
-        isRegistered: event.userStatus.isRegistered,
-        waiverSigned: event.userStatus.waiverSigned,
-    });
-
     if (!event.userStatus.isRegistered) {
         return (
             <Badge variant="secondary" className={STATUS_BADGE_CLASSNAME}>

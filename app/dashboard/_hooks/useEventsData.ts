@@ -61,13 +61,6 @@ export const useEventsData = () => {
                       )
                     : undefined;
 
-                console.log("[useEventsData] Processing:", {
-                    eventId: event.event_id,
-                    eventRegistrations: eventRegistrations.length,
-                    userRegistration: userRegistration?.registration_id,
-                    userPlayer: userPlayer?.player_id,
-                });
-
                 return {
                     ...event,
                     userStatus: {
@@ -87,7 +80,6 @@ export const useEventsData = () => {
                 previousEvents: processedEvents.filter((e) => !e.active),
             });
         } catch (error) {
-            console.error("[useEventsData] Error:", error);
             setEventsData({
                 activeEvents: [],
                 previousEvents: [],

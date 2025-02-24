@@ -10,7 +10,6 @@ export const DashboardContent = () => {
     const { loading, eventsData, refresh } = useEventsData();
 
     const handleTableAction = useCallback(() => {
-        console.log("[DashboardContent] Refreshing data");
         refresh();
     }, [refresh]);
 
