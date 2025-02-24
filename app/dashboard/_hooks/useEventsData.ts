@@ -1,0 +1,105 @@
+import { EventBasicInfo, EventsData } from "@/app/dashboard/types";
+import { Database } from "@/constants/supabase";
+import { fetchFromTable } from "@/utils/actions/supabase";
+
+import { useCallback, useEffect, useState } from "react";
+
+import { useUser } from "@clerk/nextjs";
+
+type EventRegistration =
+    Database["public"]["Tables"]["event_registrations"]["Row"];
+type EventPlayer = Database["public"]["Tables"]["event_players"]["Row"];
+type Team = Database["public"]["Tables"]["teams"]["Row"];
+
+export const useEventsData = () => {
+    const { user } = useUser();
+    const [loading, setLoading] = useState(true);
+    const [eventsData, setEventsData] = useState<EventsData>({
+        activeEvents: [],
+        previousEvents: [],
+    });
+
+    const fetchEventsData = useCallback(async () => {
+        const userEmail = user?.emailAddresses[0]?.emailAddress;
+        if (!userEmail) {
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const events = await fetchFromTable("events");
+            const registrations = await fetchFromTable("event_registrations");
+            const teams = await fetchFromTable("teams");
+
+            // Get only this user's player records
+            const userPlayers = await fetchFromTable("event_players", {
+                eq: { column: "user_email", value: userEmail },
+            });
+
+            const teamMap = new Map(
+                teams.map((team) => [team.team_id, team.name])
+            );
+
+            const processedEvents = events.map((event) => {
+                // Get all registrations for this event
+                const eventRegistrations = registrations.filter(
+                    (r) => r.event_id === event.event_id
+                );
+
+                // Find if user is registered in any team for this event
+                const userPlayer = userPlayers.find((p) =>
+                    eventRegistrations.some(
+                        (r) => r.registration_id === p.registration_id
+                    )
+                );
+
+                // Get user's specific registration if they're registered
+                const userRegistration = userPlayer
+                    ? eventRegistrations.find(
+                          (r) =>
+                              r.registration_id === userPlayer.registration_id
+                      )
+                    : undefined;
+
+                console.log("[useEventsData] Processing:", {
+                    eventId: event.event_id,
+                    eventRegistrations: eventRegistrations.length,
+                    userRegistration: userRegistration?.registration_id,
+                    userPlayer: userPlayer?.player_id,
+                });
+
+                return {
+                    ...event,
+                    userStatus: {
+                        isRegistered: !!userPlayer,
+                        registration_id: userRegistration?.registration_id,
+                        team: userRegistration?.team_id
+                            ? teamMap.get(userRegistration.team_id)
+                            : undefined,
+                        waiverSigned: !!userPlayer?.waiver_signed,
+                        paymentStatus: false,
+                    },
+                };
+            });
+
+            setEventsData({
+                activeEvents: processedEvents.filter((e) => e.active),
+                previousEvents: processedEvents.filter((e) => !e.active),
+            });
+        } catch (error) {
+            console.error("[useEventsData] Error:", error);
+            setEventsData({
+                activeEvents: [],
+                previousEvents: [],
+            });
+        } finally {
+            setLoading(false);
+        }
+    }, [user]);
+
+    useEffect(() => {
+        fetchEventsData();
+    }, [fetchEventsData]);
+
+    return { loading, eventsData, refresh: fetchEventsData };
+};

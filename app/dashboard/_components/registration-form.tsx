@@ -1,5 +1,6 @@
 "use client";
 
+import { useRegistrationStatus } from "@/app/dashboard/_hooks/useRegistrationStatus";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -28,7 +29,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import { submitRegistration } from "@/utils/actions/user";
+import { fetchUserData, submitRegistration } from "@/utils/actions/user";
 import {
     type PlayerRegistration,
     playerRegistrationSchema,
@@ -51,6 +52,7 @@ export function RegistrationForm() {
     const { toast } = useToast();
     const router = useRouter();
     const { userId } = useAuth();
+    const { refresh } = useRegistrationStatus();
 
     const form = useForm<PlayerRegistration>({
         resolver: zodResolver(playerRegistrationSchema),
@@ -95,7 +97,7 @@ export function RegistrationForm() {
             setIsSubmitting(true);
             if (!userId) throw new Error("User not found");
 
-            // Create FormData
+            // Create FormData and submit
             const formData = new FormData();
             formData.append("userId", userId);
             formData.append("legalFirstName", values.legalFirstName);
@@ -116,19 +118,27 @@ export function RegistrationForm() {
 
             await submitRegistration(formData);
 
-            toast({
-                title: "Registration Successful",
-                description:
-                    "Welcome to She Got Buckets! Redirecting to dashboard...",
-            });
+            // Wait for status to be updated
+            let attempts = 0;
+            let newStatus = null;
+            while (attempts < 5 && !newStatus?.isRegistered) {
+                newStatus = await refresh();
 
-            setTimeout(() => router.push("/dashboard/home"), 2000);
+                if (newStatus?.isRegistered) {
+                    window.location.href = "/dashboard/home";
+                    return;
+                }
+
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                attempts++;
+            }
+
+            throw new Error("Failed to confirm registration status");
         } catch (error) {
-            console.error("Registration error:", error);
+            console.error("[Registration] Form submission error:", error);
             toast({
                 title: "Registration Failed",
-                description:
-                    "There was an error submitting your registration. Please try again.",
+                description: "Please try again.",
                 variant: "destructive",
             });
         } finally {

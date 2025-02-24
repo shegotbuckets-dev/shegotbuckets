@@ -6,18 +6,25 @@ import { createServerClient } from "@/lib/supabase-server";
 type TableNames = keyof Database["public"]["Tables"];
 type TableRow<T extends TableNames> = Database["public"]["Tables"][T]["Row"];
 
+interface FetchTableOptions {
+    select?: string;
+    eq?: { column: string; value: string };
+    ilike?: { column: string; value: string };
+}
+
 export async function fetchFromTable<T extends TableNames>(
     table: T,
-    options?: {
-        select?: string;
-        eq?: { column: string; value: string };
-    }
+    options?: FetchTableOptions
 ): Promise<TableRow<T>[]> {
     const supabase = await createServerClient();
-    let query = supabase.from(table).select(options?.select || "*");
+    let query = supabase.from(table).select(options?.select ?? "*");
 
     if (options?.eq) {
         query = query.eq(options.eq.column, options.eq.value);
+    }
+
+    if (options?.ilike) {
+        query = query.ilike(options.ilike.column, options.ilike.value);
     }
 
     const { data, error } = await query;

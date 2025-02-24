@@ -1,9 +1,9 @@
-import { LandingPage } from "./_components/landing-page";
+import { DashboardContent } from "./_components/dashboard-content";
 
 export default function DashboardPage() {
     return (
-        <main className="container mx-auto px-4 py-8">
-            <LandingPage />
+        <main className="flex-1 overflow-y-auto">
+            <DashboardContent />
         </main>
     );
 }

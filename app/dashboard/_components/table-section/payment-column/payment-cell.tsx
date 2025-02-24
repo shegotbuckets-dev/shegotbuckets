@@ -2,7 +2,8 @@
 
 import {
     BADGE_TEXT,
-    EventTableData,
+    BaseCellProps,
+    PaymentRequestData,
     STATUS_BADGE_CLASSNAME,
     STATUS_BADGE_CLASSNAME_CLICKABLE,
 } from "@/app/dashboard/types";
@@ -20,7 +21,7 @@ const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
 
-export function PaymentCell({ event }: { event: EventTableData }) {
+export const PaymentCell = ({ event }: BaseCellProps) => {
     const { user } = useUser();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
@@ -38,18 +39,18 @@ export function PaymentCell({ event }: { event: EventTableData }) {
                 return;
             }
 
+            const paymentData: PaymentRequestData = {
+                event_id: event.event_id,
+                registration_id: event.userStatus.registration_id,
+                email,
+                eventName: `${event.title_short ?? event.title} - ${event.subtitle}`,
+                hasTeam2,
+            };
+
             const response = await fetch("/api/payments/create-checkout", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    event_id: event.event_id,
-                    registration_id: event.registration_id,
-                    team_id: event.team_id,
-                    user_email: event.user_email,
-                    email,
-                    eventName: event.name + " - " + event.subtitle,
-                    hasTeam2,
-                }),
+                body: JSON.stringify(paymentData),
             });
 
             const { sessionId, error } = await response.json();
@@ -68,7 +69,7 @@ export function PaymentCell({ event }: { event: EventTableData }) {
         }
     };
 
-    if (!event.registered) {
+    if (!event.userStatus.isRegistered) {
         return (
             <Badge variant="secondary" className={STATUS_BADGE_CLASSNAME}>
                 {BADGE_TEXT.NA}
@@ -76,21 +77,18 @@ export function PaymentCell({ event }: { event: EventTableData }) {
         );
     }
 
-    return event.paymentStatus ? (
+    return event.userStatus.paymentStatus ? (
         <Badge variant="green" className={STATUS_BADGE_CLASSNAME}>
             Paid
         </Badge>
     ) : (
-        <Badge
-            variant={event.paymentStatus ? "green" : "pending"}
-            className={STATUS_BADGE_CLASSNAME_CLICKABLE}
-        >
+        <Badge variant="pending" className={STATUS_BADGE_CLASSNAME_CLICKABLE}>
             <PaymentButton
                 event={event}
-                paymentStatus={event.paymentStatus}
+                paymentStatus={event.userStatus.paymentStatus}
                 onPaymentClick={handlePayment}
                 isLoading={isLoading}
             />
         </Badge>
     );
-}
+};

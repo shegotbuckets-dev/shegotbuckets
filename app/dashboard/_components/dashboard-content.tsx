@@ -1,11 +1,18 @@
 "use client";
 
-import { useDashboardData } from "@/app/dashboard/_hooks/useDashboardData";
+import { useEventsData } from "@/app/dashboard/_hooks/useEventsData";
 
-import { EventsTableContainer } from "./table-section/events-table-container";
+import { useCallback } from "react";
+
+import { EventsTable } from "./table-section/events-table";
 
 export const DashboardContent = () => {
-    const { loading, dashboardData, refresh } = useDashboardData();
+    const { loading, eventsData, refresh } = useEventsData();
+
+    const handleTableAction = useCallback(() => {
+        console.log("[DashboardContent] Refreshing data");
+        refresh();
+    }, [refresh]);
 
     return (
         <div className="space-y-6">
@@ -15,15 +22,10 @@ export const DashboardContent = () => {
                     <h2 className="text-2xl font-semibold">Available Events</h2>
                 </div>
                 <div className="p-4">
-                    <EventsTableContainer
+                    <EventsTable
+                        events={eventsData.activeEvents}
+                        onButtonSuccess={handleTableAction}
                         loading={loading}
-                        dashboardData={{
-                            ...dashboardData,
-                            events: dashboardData.events.filter(
-                                (event) => event.active
-                            ),
-                        }}
-                        onButtonSuccess={refresh}
                     />
                 </div>
             </section>
@@ -34,15 +36,10 @@ export const DashboardContent = () => {
                     <h2 className="text-2xl font-semibold">Previous Events</h2>
                 </div>
                 <div className="p-4">
-                    <EventsTableContainer
+                    <EventsTable
+                        events={eventsData.previousEvents}
+                        onButtonSuccess={handleTableAction}
                         loading={loading}
-                        dashboardData={{
-                            ...dashboardData,
-                            events: dashboardData.events.filter(
-                                (event) => !event.active
-                            ),
-                        }}
-                        onButtonSuccess={refresh}
                     />
                 </div>
             </section>

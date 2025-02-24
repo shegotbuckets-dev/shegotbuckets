@@ -10,32 +10,26 @@ import { RegisterButton } from "./register-button";
 
 export const RegisterOrParticipatedCell = ({
     event,
-    dashboardData,
     onButtonSuccess,
 }: RegisterOrParticipatedCellProps) => {
     if (!event.active) {
         return (
             <Badge
-                variant={event.registered ? "green" : "secondary"}
+                variant={event.userStatus.isRegistered ? "green" : "secondary"}
                 className={STATUS_BADGE_CLASSNAME}
             >
-                {event.registered ? BADGE_TEXT.YES : BADGE_TEXT.NO}
+                {event.userStatus.isRegistered ? BADGE_TEXT.YES : BADGE_TEXT.NO}
             </Badge>
         );
     }
 
-    return event.registered ? (
+    return event.userStatus.isRegistered ? (
         <Badge variant="green" className={STATUS_BADGE_CLASSNAME}>
             {BADGE_TEXT.REGISTERED}
         </Badge>
     ) : (
         <Badge variant="outline" className={STATUS_BADGE_CLASSNAME_CLICKABLE}>
-            <RegisterButton
-                event={event}
-                teams={dashboardData.teams}
-                registrations={dashboardData.registrations}
-                onButtonSuccess={onButtonSuccess}
-            />
+            <RegisterButton event={event} onButtonSuccess={onButtonSuccess} />
         </Badge>
     );
 };

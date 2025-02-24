@@ -1,7 +1,7 @@
 "use client";
 
 import { useRegisterForm } from "@/app/dashboard/_hooks/useRegisterForm";
-import { RegisterButtonProps } from "@/app/dashboard/types";
+import { RegisterButtonProps, TeamOption } from "@/app/dashboard/types";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -19,11 +19,24 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { Database } from "@/constants/supabase";
+import { fetchFromTable } from "@/utils/actions/supabase";
+
+import { useEffect, useState } from "react";
 
 import { EventDetails } from "./event-details";
 import { RosterUploadArea } from "./roster-upload-area";
 
-export const RegisterButton = (props: RegisterButtonProps) => {
+export const RegisterButton = ({
+    event,
+    onButtonSuccess,
+}: RegisterButtonProps) => {
+    const [teams, setTeams] = useState<TeamOption[]>([]);
+    const [registrations, setRegistrations] = useState<
+        Database["public"]["Tables"]["event_registrations"]["Row"][]
+    >([]);
+    const [loading, setLoading] = useState(false);
+
     const {
         selectedTeam,
         setSelectedTeam,
@@ -35,7 +48,40 @@ export const RegisterButton = (props: RegisterButtonProps) => {
         onDrop,
         resetForm,
         handleConfirmRegistration,
-    } = useRegisterForm(props);
+    } = useRegisterForm({
+        event,
+        teams,
+        registrations,
+        onButtonSuccess,
+    });
+
+    // Fetch both teams and registrations when dialog opens
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const [teamsData, registrationsData] = await Promise.all([
+                    fetchFromTable("teams"),
+                    fetchFromTable("event_registrations", {
+                        eq: {
+                            column: "event_id",
+                            value: event.event_id,
+                        },
+                    }),
+                ]);
+                setTeams(teamsData);
+                setRegistrations(registrationsData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (open) {
+            fetchData();
+        }
+    }, [open]);
 
     return (
         <Dialog
@@ -52,30 +98,27 @@ export const RegisterButton = (props: RegisterButtonProps) => {
             </DialogTrigger>
 
             <DialogContent className="h-[80vh] max-w-[60rem] flex flex-col">
-                {/* Fixed Header */}
                 <DialogHeader>
                     <DialogTitle className="text-xl">
                         Register for{" "}
                         <span className="bg-blue-100 p-1 px-2 rounded">
-                            {props.event.name}
+                            {event.title_short ?? event.title}
                         </span>
                     </DialogTitle>
                     <div className="space-y-4 pt-2">
                         <Separator />
                         <DialogDescription asChild>
                             <EventDetails
-                                date={props.event.date}
-                                location={props.event.location}
-                                price={String(props.event.price)}
+                                date={event.date ?? "TBD"}
+                                location={event.location ?? "TBD"}
+                                price={event.price ?? "TBD"}
                             />
                         </DialogDescription>
                         <Separator />
                     </div>
                 </DialogHeader>
 
-                {/* Main Content */}
                 <div className="flex flex-col flex-1">
-                    {/* Team Selection */}
                     <div className="mb-4">
                         <div className="text-sm font-bold mb-4">
                             Select your team and upload your roster to register
@@ -84,12 +127,19 @@ export const RegisterButton = (props: RegisterButtonProps) => {
                         <Select
                             onValueChange={setSelectedTeam}
                             value={selectedTeam}
+                            disabled={loading}
                         >
                             <SelectTrigger autoFocus={false}>
-                                <SelectValue placeholder="Select team" />
+                                <SelectValue
+                                    placeholder={
+                                        loading
+                                            ? "Loading teams..."
+                                            : "Select team"
+                                    }
+                                />
                             </SelectTrigger>
                             <SelectContent>
-                                {props.teams
+                                {teams
                                     .sort((a, b) =>
                                         a.name.localeCompare(b.name)
                                     )
@@ -105,7 +155,6 @@ export const RegisterButton = (props: RegisterButtonProps) => {
                         </Select>
                     </div>
 
-                    {/* Roster Upload - Now takes more space */}
                     <div className="flex-1 min-h-0 mb-4">
                         <RosterUploadArea
                             uploadedFile={uploadedFile}
@@ -115,7 +164,6 @@ export const RegisterButton = (props: RegisterButtonProps) => {
                         />
                     </div>
 
-                    {/* Buttons - Fixed at bottom */}
                     <div className="flex justify-end gap-2 pt-4 border-t">
                         <Button
                             variant="outline"

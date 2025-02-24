@@ -13,11 +13,11 @@ interface TableInDialogProps<T> {
     renderRow: (item: T) => React.ReactNode[];
 }
 
-export const TableInDialog = <T,>({
+export function TableInDialog<T>({
     headers,
     data,
     renderRow,
-}: TableInDialogProps<T>) => {
+}: TableInDialogProps<T>) {
     if (!data.length) return null;
 
     return (
@@ -51,4 +51,4 @@ export const TableInDialog = <T,>({
             </div>
         </div>
     );
-};
+}

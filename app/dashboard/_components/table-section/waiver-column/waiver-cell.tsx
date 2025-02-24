@@ -9,7 +9,13 @@ import { Badge } from "@/components/ui/badge";
 import { WaiverButton } from "./waiver-button";
 
 export const WaiverCell = ({ event, onButtonSuccess }: WaiverCellProps) => {
-    if (!event.registered) {
+    console.log("[WaiverCell] Rendering with event:", {
+        id: event.event_id,
+        isRegistered: event.userStatus.isRegistered,
+        waiverSigned: event.userStatus.waiverSigned,
+    });
+
+    if (!event.userStatus.isRegistered) {
         return (
             <Badge variant="secondary" className={STATUS_BADGE_CLASSNAME}>
                 {BADGE_TEXT.NA}
@@ -17,7 +23,7 @@ export const WaiverCell = ({ event, onButtonSuccess }: WaiverCellProps) => {
         );
     }
 
-    return event.waiverSigned ? (
+    return event.userStatus.waiverSigned ? (
         <Badge variant="green" className={STATUS_BADGE_CLASSNAME}>
             {BADGE_TEXT.WAIVER_SIGNED}
         </Badge>
