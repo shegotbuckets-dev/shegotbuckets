@@ -1,5 +1,9 @@
 "use client";
 
+import {
+    type PlayerRegistration,
+    playerRegistrationSchema,
+} from "@/app/dashboard/types";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,17 +33,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { submitRegistration } from "@/utils/actions/user";
-import {
-    type PlayerRegistration,
-    playerRegistrationSchema,
-} from "@/utils/types";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format, isValid, parse } from "date-fns";
+import { format } from "date-fns";
 import { setMonth, setYear } from "date-fns";
 import { CalendarIcon, Loader2 } from "lucide-react";
 import Image from "next/image";
@@ -77,19 +77,6 @@ export function RegistrationForm() {
         }
     };
 
-    // Add this helper function to parse date string
-    const parseDateString = (dateString: string): Date | null => {
-        // Try to parse MM/DD/YYYY format
-        const parsed = parse(dateString, "MM/dd/yyyy", new Date());
-        if (isValid(parsed)) return parsed;
-
-        // Try to parse M/D/YYYY format
-        const parsed2 = parse(dateString, "M/d/yyyy", new Date());
-        if (isValid(parsed2)) return parsed2;
-
-        return null;
-    };
-
     async function onSubmit(values: PlayerRegistration) {
         try {
             setIsSubmitting(true);
@@ -124,7 +111,6 @@ export function RegistrationForm() {
 
             setTimeout(() => router.push("/dashboard/home"), 2000);
         } catch (error) {
-            console.error("Registration error:", error);
             toast({
                 title: "Registration Failed",
                 description:
@@ -148,7 +134,10 @@ export function RegistrationForm() {
                         name="legalFirstName"
                         render={({ field }) => (
                             <FormItem className="flex-1">
-                                <FormLabel>Legal First Name</FormLabel>
+                                <FormLabel className="flex items-center gap-1">
+                                    Legal First Name
+                                    <span className="text-red-500">*</span>
+                                </FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -164,7 +153,10 @@ export function RegistrationForm() {
                         name="legalLastName"
                         render={({ field }) => (
                             <FormItem className="flex-1">
-                                <FormLabel>Legal Last Name</FormLabel>
+                                <FormLabel className="flex items-center gap-1">
+                                    Legal Last Name
+                                    <span className="text-red-500">*</span>
+                                </FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -177,10 +169,31 @@ export function RegistrationForm() {
                     />
                     <FormField
                         control={form.control}
+                        name="preferredFirstName"
+                        render={({ field }) => (
+                            <FormItem className="flex-1">
+                                <FormLabel>
+                                    Preferred First Name (Optional)
+                                </FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
+                <div className="flex gap-4">
+                    <FormField
+                        control={form.control}
                         name="dateOfBirth"
                         render={({ field }) => (
                             <FormItem className="flex-1">
-                                <FormLabel>Date of Birth</FormLabel>
+                                <FormLabel className="flex items-center gap-1">
+                                    Date of Birth
+                                    <span className="text-red-500">*</span>
+                                </FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <FormControl>
@@ -338,50 +351,17 @@ export function RegistrationForm() {
                             </FormItem>
                         )}
                     />
-                </div>
-
-                <div className="flex gap-4">
-                    <FormField
-                        control={form.control}
-                        name="preferredFirstName"
-                        render={({ field }) => (
-                            <FormItem className="flex-1">
-                                <FormLabel>
-                                    Preferred First Name (Optional)
-                                </FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
                     <FormField
                         control={form.control}
                         name="phoneNumber"
                         render={({ field }) => (
                             <FormItem className="flex-1">
-                                <FormLabel>Phone Number</FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="instagramAccount"
-                        render={({ field }) => (
-                            <FormItem className="flex-1">
-                                <FormLabel>
-                                    Instagram Account (Optional)
+                                <FormLabel className="flex items-center gap-1">
+                                    Phone Number
+                                    <span className="text-red-500">*</span>
                                 </FormLabel>
                                 <FormControl>
-                                    <Input
-                                        placeholder="@yourusername"
-                                        {...field}
-                                    />
+                                    <Input {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -391,10 +371,43 @@ export function RegistrationForm() {
 
                 <FormField
                     control={form.control}
+                    name="instagramAccount"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="flex items-center gap-1">
+                                Social Media Account (Instagram)
+                                <span className="text-red-500">*</span>
+                            </FormLabel>
+                            <FormControl>
+                                <Input placeholder="@yourusername" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                <span className="font-bold">
+                                    She Got Buckets Social Media Initiatives:
+                                </span>{" "}
+                                We would love to highlight your game photos and
+                                videos (ins: shegotbuckets_basketball). You can
+                                always remove your tagged photos under
+                                Instagram&apos;s settings or opt out anytime.{" "}
+                                <span className="font-bold">
+                                    You may fill N/A if you would like to opt
+                                    out from game photo tags.
+                                </span>
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
                     name="address"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Address</FormLabel>
+                            <FormLabel className="flex items-center gap-1">
+                                Address
+                                <span className="text-red-500">*</span>
+                            </FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -430,7 +443,10 @@ export function RegistrationForm() {
                     name="playerHeadshot"
                     render={({ field: { onChange, value, ...rest } }) => (
                         <FormItem>
-                            <FormLabel>Player Headshot</FormLabel>
+                            <FormLabel className="flex items-center gap-1">
+                                Player Headshot
+                                <span className="text-red-500">*</span>
+                            </FormLabel>
                             <FormControl>
                                 <div className="space-y-4">
                                     <Input
@@ -458,9 +474,9 @@ export function RegistrationForm() {
                                 </div>
                             </FormControl>
                             <FormDescription>
-                                Please upload your headshot (JPG format only,
-                                max 5MB). This will only be used for stats
-                                tracking.
+                                Please Upload Your Headshot (JPG format only,
+                                max 5MB, this will only be used for stats
+                                tracking and event check-in)
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
