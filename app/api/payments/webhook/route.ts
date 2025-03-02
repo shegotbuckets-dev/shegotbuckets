@@ -9,23 +9,6 @@ function generateUUID(): string {
     return crypto.randomUUID();
 }
 
-interface PaymentData {
-    payment_id: string;
-    event_id: string | undefined;
-    registration_id: string | undefined;
-    team_id: string | undefined;
-    user_email: string | null;
-    amount: number;
-    currency: string;
-    payment_status: boolean;
-    metadata: {
-        event_id?: string;
-        registration_id?: string;
-        team_id?: string;
-        stripe_session_id: string;
-    };
-}
-
 export const runtime = "edge";
 export const dynamic = "force-dynamic";
 export const preferredRegion = "auto";
