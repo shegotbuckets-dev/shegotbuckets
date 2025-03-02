@@ -21,25 +21,6 @@ export async function POST(req: Request) {
             stripe_price_ids,
         } = await req.json();
 
-        console.log(
-            "event_id",
-            event_id,
-            "registration_id",
-            registration_id,
-            "team_id",
-            team_id,
-            "user_email",
-            user_email,
-            "email",
-            email,
-            "eventName",
-            eventName,
-            "hasTeam2",
-            hasTeam2,
-            "stripe_price_ids",
-            stripe_price_ids
-        );
-
         // Validate price IDs
         if (!stripe_price_ids?.required?.length) {
             return NextResponse.json(
@@ -75,7 +56,7 @@ export async function POST(req: Request) {
             },
             customer_email: email,
             mode: "payment",
-            success_url: `${baseUrl}/dashboard?success=true&event_id=${event_id}&t=${Date.now()}`,
+            success_url: `${baseUrl}/dashboard/home?success=true&event_id=${event_id}&t=${Date.now()}`,
             cancel_url: `${baseUrl}/dashboard?canceled=true`,
             payment_method_types: ["card"],
             billing_address_collection: "auto",

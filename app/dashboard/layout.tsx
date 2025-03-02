@@ -21,14 +21,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         if (!loading && status.userData) {
-            if (status.isRegistered) {
-                if (pathname === "/dashboard") {
-                    router.push("/dashboard/home");
-                }
-            } else {
-                if (pathname !== "/dashboard") {
-                    router.push("/dashboard");
-                }
+            if (!status.isRegistered && pathname !== "/dashboard") {
+                router.push("/dashboard");
             }
         }
     }, [loading, status, pathname, router]);

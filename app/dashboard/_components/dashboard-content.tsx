@@ -1,6 +1,7 @@
 "use client";
 
 import { useEventsData } from "@/app/dashboard/_hooks/useEventsData";
+import { usePaymentSuccess } from "@/app/dashboard/_hooks/usePaymentSuccess";
 
 import { useCallback } from "react";
 
@@ -8,6 +9,7 @@ import { EventsTable } from "./table-section/events-table";
 
 export const DashboardContent = () => {
     const { loading, eventsData, refresh } = useEventsData();
+    usePaymentSuccess();
 
     const handleTableAction = useCallback(() => {
         refresh();

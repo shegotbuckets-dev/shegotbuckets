@@ -56,14 +56,7 @@ export const useEventsData = () => {
                       )
                     : undefined;
 
-                const paymentStatus = payments
-                    .filter((p) => p.event_id === event.event_id)
-                    .some(
-                        (p) =>
-                            p.registration_id ===
-                                userRegistration?.registration_id &&
-                            p.payment_status === true
-                    );
+                const paymentStatus = userRegistration?.paid ?? false;
 
                 // Transform stripe_price_ids from Json to StripePriceIds
                 let parsedPriceIds: StripePriceIds | null = null;
@@ -89,6 +82,8 @@ export const useEventsData = () => {
                     }
                 }
 
+                const team_id = userRegistration?.team_id || undefined;
+
                 return {
                     ...event,
                     userStatus: {
@@ -97,6 +92,7 @@ export const useEventsData = () => {
                         team: userRegistration?.team_id
                             ? teamMap.get(userRegistration.team_id)
                             : undefined,
+                        team_id,
                         waiverSigned: !!userPlayer?.waiver_signed,
                         paymentStatus: paymentStatus,
                     },

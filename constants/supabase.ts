@@ -17,7 +17,6 @@ export type Database = {
                     event_id: string | null;
                     metadata: Json | null;
                     payment_id: string;
-                    payment_status: boolean | null;
                     registration_id: string | null;
                     team_id: string | null;
                     updated_at: string;
@@ -30,7 +29,6 @@ export type Database = {
                     event_id?: string | null;
                     metadata?: Json | null;
                     payment_id: string;
-                    payment_status?: boolean | null;
                     registration_id?: string | null;
                     team_id?: string | null;
                     updated_at?: string;
@@ -43,7 +41,6 @@ export type Database = {
                     event_id?: string | null;
                     metadata?: Json | null;
                     payment_id?: string;
-                    payment_status?: boolean | null;
                     registration_id?: string | null;
                     team_id?: string | null;
                     updated_at?: string;
@@ -101,18 +98,21 @@ export type Database = {
                 Row: {
                     created_at: string;
                     event_id: string | null;
+                    paid: boolean;
                     registration_id: string;
                     team_id: string | null;
                 };
                 Insert: {
                     created_at?: string;
                     event_id?: string | null;
+                    paid?: boolean;
                     registration_id?: string;
                     team_id?: string | null;
                 };
                 Update: {
                     created_at?: string;
                     event_id?: string | null;
+                    paid?: boolean;
                     registration_id?: string;
                     team_id?: string | null;
                 };

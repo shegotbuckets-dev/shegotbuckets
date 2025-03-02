@@ -54,9 +54,12 @@ export async function POST(req: Request) {
 
     if (event.type === "checkout.session.completed") {
         const session = event.data.object as Stripe.Checkout.Session;
-
         // Validate required metadata
-        if (!session.metadata?.event_id || !session.metadata?.registration_id) {
+        if (
+            !session.metadata?.event_id ||
+            !session.metadata?.registration_id ||
+            !session.metadata?.team_id
+        ) {
             return NextResponse.json(
                 { error: "Missing required payment metadata" },
                 { status: 400 }
@@ -66,35 +69,36 @@ export async function POST(req: Request) {
         try {
             const supabase = await createAdminClient();
 
-            const paymentData: PaymentData = {
-                payment_id: generateUUID(),
-                event_id: session.metadata.event_id,
-                registration_id: session.metadata.registration_id,
-                team_id: session.metadata.team_id,
-                user_email: session.customer_email,
-                amount: session.amount_total ?? 0,
-                currency: session.currency ?? "usd",
-                payment_status: true,
-                metadata: {
-                    ...session.metadata,
+            const rpcParams = {
+                p_payment_id: generateUUID(),
+                p_event_id: session.metadata.event_id,
+                p_registration_id: session.metadata.registration_id,
+                p_team_id: session.metadata.team_id,
+                p_amount: session.amount_total,
+                p_currency: session.currency,
+                p_metadata: {
                     stripe_session_id: session.id,
+                    ...session.metadata,
                 },
+                p_user_email: session.customer_email,
             };
 
-            const { data, error } = await supabase
-                .from("event_payments")
-                .insert(paymentData)
-                .select();
+            const { error } = await supabase.rpc(
+                "on_after_payment_succeed",
+                rpcParams
+            );
 
             if (error) {
+                console.error("RPC error:", error); // Log the specific error
                 throw error;
             }
 
             console.info(
                 `Payment recorded successfully for event: ${session.metadata.event_id}`
             );
-            return NextResponse.json({ status: "success", data });
+            return NextResponse.json({ status: "success" });
         } catch (error) {
+            console.error("Webhook error details:", error); // Log the full error
             return NextResponse.json(
                 {
                     error: "Failed to record payment",

@@ -10,27 +10,23 @@ export const useDashboardData = () => {
         teams: [],
         registrations: [],
         registrationPlayers: [],
-        payments: [],
     });
 
     const fetchData = useCallback(async () => {
         setLoading(true);
         try {
-            const [events, teams, registrations, players, payments] =
-                await Promise.all([
-                    fetchFromTable("events"),
-                    fetchFromTable("teams"),
-                    fetchFromTable("event_registrations"),
-                    fetchFromTable("event_players"),
-                    fetchFromTable("event_payments"),
-                ]);
+            const [events, teams, registrations, players] = await Promise.all([
+                fetchFromTable("events"),
+                fetchFromTable("teams"),
+                fetchFromTable("event_registrations"),
+                fetchFromTable("event_players"),
+            ]);
 
             setDashboardData({
                 events,
                 teams,
                 registrations,
                 registrationPlayers: players,
-                payments,
             });
         } catch (error) {
             console.error("Error fetching data:", error);

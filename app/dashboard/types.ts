@@ -15,7 +15,6 @@ export interface DashboardData {
     teams: Database["public"]["Tables"]["teams"]["Row"][];
     registrations: Database["public"]["Tables"]["event_registrations"]["Row"][];
     registrationPlayers: Database["public"]["Tables"]["event_players"]["Row"][];
-    payments: Database["public"]["Tables"]["event_payments"]["Row"][];
 }
 
 export interface EventTableData {
@@ -329,6 +328,7 @@ export type UserEventStatus = {
     isRegistered: boolean;
     registration_id: string | undefined;
     team: string | undefined;
+    team_id: string | undefined;
     waiverSigned: boolean;
     paymentStatus: boolean;
 };
@@ -361,7 +361,8 @@ export interface PaymentButtonProps {
 
 export interface PaymentRequestData {
     event_id: string;
-    registration_id?: string;
+    registration_id: string;
+    team_id: string;
     email: string;
     eventName: string;
     hasTeam2: boolean;

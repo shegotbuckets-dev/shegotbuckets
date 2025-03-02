@@ -48,9 +48,19 @@ export const PaymentCell = ({ event }: BaseCellProps) => {
                 return;
             }
 
+            if (!event.userStatus.registration_id) {
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "Registration ID not found",
+                });
+                return;
+            }
+
             const paymentData: PaymentRequestData = {
                 event_id: event.event_id,
                 registration_id: event.userStatus.registration_id,
+                team_id: event.userStatus.team_id!,
                 email,
                 eventName: `${event.title_short ?? event.title} - ${event.subtitle}`,
                 hasTeam2,
