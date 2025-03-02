@@ -61,7 +61,7 @@ export async function POST(req: Request) {
             },
             customer_email: email,
             mode: "payment",
-            success_url: `${baseUrl}${successUrl}?success=true&event_id=${event_id}&t=${Date.now()}`,
+            success_url: `${baseUrl}${successUrl}?success=true`,
             cancel_url: `${baseUrl}${cancelUrl}?canceled=true`,
             payment_method_types: ["card"],
             billing_address_collection: "auto",
