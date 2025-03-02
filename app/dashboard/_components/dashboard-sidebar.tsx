@@ -12,6 +12,7 @@ import {
 import * as React from "react";
 
 import { HomeIcon, User2Icon } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 // Menu items.
@@ -56,7 +57,7 @@ export function DashboardSidebar() {
                                         isActive={pathname === item.url}
                                         className="w-full"
                                     >
-                                        <a
+                                        <Link
                                             href={item.url}
                                             className="flex items-center gap-3"
                                         >
@@ -64,7 +65,7 @@ export function DashboardSidebar() {
                                             <span className="text-sm font-medium">
                                                 {item.title}
                                             </span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}

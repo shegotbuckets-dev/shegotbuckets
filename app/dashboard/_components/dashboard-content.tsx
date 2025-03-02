@@ -1,15 +1,13 @@
 "use client";
 
-import { useEventsData } from "@/app/dashboard/_hooks/useEventsData";
-import { usePaymentSuccess } from "@/app/dashboard/_hooks/usePaymentSuccess";
+import { useDashboardHomeData } from "@/app/dashboard/_hooks/useDashboardHomeData";
 
 import { useCallback } from "react";
 
 import { EventsTable } from "./table-section/events-table";
 
 export const DashboardContent = () => {
-    const { loading, eventsData, refresh } = useEventsData();
-    usePaymentSuccess();
+    const { loading, eventsData, refresh } = useDashboardHomeData();
 
     const handleTableAction = useCallback(() => {
         refresh();
@@ -24,8 +22,8 @@ export const DashboardContent = () => {
                 </div>
                 <div className="p-4">
                     <EventsTable
-                        events={eventsData.activeEvents}
-                        onButtonSuccess={handleTableAction}
+                        events={eventsData?.activeEvents ?? []}
+                        onButtonSuccess={refresh}
                         loading={loading}
                     />
                 </div>

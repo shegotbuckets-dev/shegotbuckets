@@ -8,6 +8,11 @@ const baseUrl =
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3000");
 
+const successUrl =
+    process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL || "/dashboard/home";
+const cancelUrl =
+    process.env.NEXT_PUBLIC_STRIPE_CANCEL_URL || "/dashboard/home";
+
 export async function POST(req: Request) {
     try {
         const {
@@ -56,8 +61,8 @@ export async function POST(req: Request) {
             },
             customer_email: email,
             mode: "payment",
-            success_url: `${baseUrl}/dashboard/home?success=true&event_id=${event_id}&t=${Date.now()}`,
-            cancel_url: `${baseUrl}/dashboard?canceled=true`,
+            success_url: `${baseUrl}${successUrl}?success=true&event_id=${event_id}&t=${Date.now()}`,
+            cancel_url: `${baseUrl}${cancelUrl}?canceled=true`,
             payment_method_types: ["card"],
             billing_address_collection: "auto",
             // Custom text for checkout page

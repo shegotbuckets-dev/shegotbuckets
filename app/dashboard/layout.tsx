@@ -12,22 +12,26 @@ import { usePathname, useRouter } from "next/navigation";
 import { DashboardSidebar } from "./_components/dashboard-sidebar";
 import { DashboardTopNav } from "./_components/dashboard-topnav";
 import { LandingPage } from "./_components/landing-page";
+import { usePaymentStatus } from "./_hooks/usePaymentStatus";
 import { useRegistrationStatus } from "./_hooks/useRegistrationStatus";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
     const { loading, status } = useRegistrationStatus();
+    usePaymentStatus();
 
     useEffect(() => {
-        if (!loading && status.userData) {
-            if (!status.isRegistered && pathname !== "/dashboard") {
-                router.push("/dashboard");
+        // Only redirect if explicitly not registered
+        // Don't redirect during loading or when status is uncertain
+        if (!loading && status.userData && !status.isRegistered) {
+            if (pathname !== "/dashboard") {
+                router.replace("/dashboard");
             }
         }
     }, [loading, status, pathname, router]);
 
-    // Show skeleton only while loading
+    // Keep current view during loading
     if (loading) {
         return (
             <div className="w-full flex flex-col min-h-screen">
@@ -38,8 +42,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         );
     }
 
-    // Show landing page for unregistered users (even if userData is null)
-    if (!status.isRegistered) {
+    // Show landing page only when explicitly not registered
+    if (status.userData && !status.isRegistered) {
         return (
             <div className="w-full flex flex-col min-h-screen">
                 <DashboardTopNav showSidebarTrigger={false} />
