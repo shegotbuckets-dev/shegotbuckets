@@ -121,7 +121,7 @@ export const playerRegistrationSchema = z.object({
     instagramAccount: z
         .string()
         .regex(/^@?[a-zA-Z0-9._]*$/, "Please enter a valid Instagram handle")
-        .optional(),
+        .min(1, "Instagram account is required"),
     playerIntroduction: z
         .string()
         .max(500, "Introduction must be less than 500 characters")

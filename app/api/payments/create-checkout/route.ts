@@ -18,20 +18,49 @@ export async function POST(req: Request) {
             email,
             eventName,
             hasTeam2,
+            stripe_price_ids,
         } = await req.json();
 
-        const line_items = [
-            {
-                price: "price_1QrTB3KcXW8i0WF4S1Pv94uW",
-                quantity: 1,
-            },
-        ];
+        console.log(
+            "event_id",
+            event_id,
+            "registration_id",
+            registration_id,
+            "team_id",
+            team_id,
+            "user_email",
+            user_email,
+            "email",
+            email,
+            "eventName",
+            eventName,
+            "hasTeam2",
+            hasTeam2,
+            "stripe_price_ids",
+            stripe_price_ids
+        );
 
-        // Add team 2 fee if selected
-        if (hasTeam2) {
-            line_items.push({
-                price: "price_1QrTCIKcXW8i0WF4aVmz6zmd",
-                quantity: 1,
+        // Validate price IDs
+        if (!stripe_price_ids?.required?.length) {
+            return NextResponse.json(
+                { error: "Invalid price configuration" },
+                { status: 400 }
+            );
+        }
+
+        // Create line items from required prices
+        const line_items = stripe_price_ids.required.map((priceId: string) => ({
+            price: priceId,
+            quantity: 1,
+        }));
+
+        // Add optional prices if hasTeam2 is true
+        if (hasTeam2 && stripe_price_ids.optional?.length) {
+            stripe_price_ids.optional.forEach((priceId: string) => {
+                line_items.push({
+                    price: priceId,
+                    quantity: 1,
+                });
             });
         }
 

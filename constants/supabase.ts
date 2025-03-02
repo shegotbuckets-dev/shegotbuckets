@@ -129,6 +129,7 @@ export type Database = {
                     location: string | null;
                     price: string | null;
                     reg_ddl: string;
+                    stripe_price_ids: Json | null;
                     subtitle: string | null;
                     title: string;
                     title_short: string | null;
@@ -143,6 +144,7 @@ export type Database = {
                     location?: string | null;
                     price?: string | null;
                     reg_ddl: string;
+                    stripe_price_ids?: Json | null;
                     subtitle?: string | null;
                     title: string;
                     title_short?: string | null;
@@ -157,6 +159,7 @@ export type Database = {
                     location?: string | null;
                     price?: string | null;
                     reg_ddl?: string;
+                    stripe_price_ids?: Json | null;
                     subtitle?: string | null;
                     title?: string;
                     title_short?: string | null;

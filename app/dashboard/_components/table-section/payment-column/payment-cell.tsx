@@ -39,12 +39,22 @@ export const PaymentCell = ({ event }: BaseCellProps) => {
                 return;
             }
 
+            if (!event.stripe_price_ids) {
+                toast({
+                    variant: "destructive",
+                    title: "Error",
+                    description: "Event pricing information not found",
+                });
+                return;
+            }
+
             const paymentData: PaymentRequestData = {
                 event_id: event.event_id,
                 registration_id: event.userStatus.registration_id,
                 email,
                 eventName: `${event.title_short ?? event.title} - ${event.subtitle}`,
                 hasTeam2,
+                stripe_price_ids: event.stripe_price_ids,
             };
 
             const response = await fetch("/api/payments/create-checkout", {

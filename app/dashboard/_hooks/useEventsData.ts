@@ -1,15 +1,9 @@
-import { EventBasicInfo, EventsData } from "@/app/dashboard/types";
-import { Database } from "@/constants/supabase";
+import { EventsData, StripePriceIds } from "@/app/dashboard/types";
 import { fetchFromTable } from "@/utils/actions/supabase";
 
 import { useCallback, useEffect, useState } from "react";
 
 import { useUser } from "@clerk/nextjs";
-
-type EventRegistration =
-    Database["public"]["Tables"]["event_registrations"]["Row"];
-type EventPlayer = Database["public"]["Tables"]["event_players"]["Row"];
-type Team = Database["public"]["Tables"]["teams"]["Row"];
 
 export const useEventsData = () => {
     const { user } = useUser();
@@ -71,6 +65,30 @@ export const useEventsData = () => {
                             p.payment_status === true
                     );
 
+                // Transform stripe_price_ids from Json to StripePriceIds
+                let parsedPriceIds: StripePriceIds | null = null;
+                if (event.stripe_price_ids) {
+                    try {
+                        const priceIds =
+                            typeof event.stripe_price_ids === "string"
+                                ? JSON.parse(event.stripe_price_ids)
+                                : event.stripe_price_ids;
+
+                        if (priceIds.required || priceIds.optional) {
+                            parsedPriceIds = {
+                                required: Array.isArray(priceIds.required)
+                                    ? priceIds.required
+                                    : [],
+                                optional: Array.isArray(priceIds.optional)
+                                    ? priceIds.optional
+                                    : [],
+                            };
+                        }
+                    } catch (e) {
+                        console.error("Error parsing stripe_price_ids:", e);
+                    }
+                }
+
                 return {
                     ...event,
                     userStatus: {
@@ -82,6 +100,7 @@ export const useEventsData = () => {
                         waiverSigned: !!userPlayer?.waiver_signed,
                         paymentStatus: paymentStatus,
                     },
+                    stripe_price_ids: parsedPriceIds,
                 };
             });
 
