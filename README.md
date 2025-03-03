@@ -54,7 +54,7 @@ The commit message type must be one of the following:
 -   Accounts and API keys for:
     -   Supabase
     -   Clerk
-    -   Stripe (if using payments)
+    -   Stripe
 
 ## Setup
 

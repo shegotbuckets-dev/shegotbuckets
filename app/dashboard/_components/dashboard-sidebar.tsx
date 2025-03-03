@@ -7,79 +7,67 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarSeparator,
 } from "@/components/ui/sidebar";
 
 import * as React from "react";
 
-// import { basketball } from "@lucide/lab";
-import {
-    // CircleDollarSign,
-    HomeIcon,
-    Icon,
-    User2Icon,
-} from "lucide-react";
-import type { IconNode } from "lucide-react";
+import { HomeIcon, User2Icon } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Menu items.
 const items: SidebarNav[] = [
     {
-        title: "Dashboard",
+        title: "Home",
         url: "/dashboard/home",
         icon: HomeIcon,
     },
+    {
+        title: "Profile",
+        url: "/dashboard/profile",
+        icon: User2Icon,
+    },
+    // Add future menu items here
     // {
     //     title: "Events",
     //     url: "/dashboard/events",
     //     icon: basketball,
     //     isLab: true,
     // },
-    // {
-    //     title: "Payments",
-    //     url: "/dashboard/payments",
-    //     icon: CircleDollarSign,
-    // },
-    // {
-    //     title: "Team Roster",
-    //     url: "/dashboard/roster",
-    //     icon: Users,
-    // },
-    {
-        title: "Profile",
-        url: "/dashboard/profile",
-        icon: User2Icon,
-        separator: true,
-    },
 ];
 
-export const DashboardSidebar = () => {
+export function DashboardSidebar() {
+    const pathname = usePathname();
+
     return (
-        <Sidebar variant="sidebar" className="top-[3.5rem] lg:top-16">
+        <Sidebar className="top-[3.5rem] lg:top-16">
             <SidebarContent>
                 <SidebarGroup>
+                    <div className="px-3 py-2">
+                        <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                            Dashboard
+                        </h2>
+                    </div>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item, index) => (
-                                <React.Fragment key={item.title}>
-                                    {item.separator && <SidebarSeparator />}
-                                    <SidebarMenuItem>
-                                        <SidebarMenuButton asChild>
-                                            <a href={item.url}>
-                                                {item.isLab ? (
-                                                    <Icon
-                                                        iconNode={
-                                                            item.icon as IconNode
-                                                        }
-                                                        className="h-3 w-3"
-                                                    />
-                                                ) : (
-                                                    <item.icon className="h-3 w-3" />
-                                                )}
-                                                <span>{item.title}</span>
-                                            </a>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                </React.Fragment>
+                            {items.map((item) => (
+                                <SidebarMenuItem key={item.url}>
+                                    <SidebarMenuButton
+                                        asChild
+                                        isActive={pathname === item.url}
+                                        className="w-full"
+                                    >
+                                        <Link
+                                            href={item.url}
+                                            className="flex items-center gap-3"
+                                        >
+                                            <item.icon className="h-4 w-4" />
+                                            <span className="text-sm font-medium">
+                                                {item.title}
+                                            </span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
                             ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
@@ -87,4 +75,4 @@ export const DashboardSidebar = () => {
             </SidebarContent>
         </Sidebar>
     );
-};
+}

@@ -5,7 +5,7 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || "fake-api-key");
 
 // Add this to your environment variables or configuration
 const ADMIN_EMAIL = "waivers@shegotbuckets.org";
@@ -78,18 +78,16 @@ export async function POST(request: NextRequest) {
         });
 
         if (error) {
-            console.error("Resend API error:", error);
             return NextResponse.json(
-                { error: "Failed to send email" },
+                { error: "Failed to send email" + error },
                 { status: 500 }
             );
         }
 
         return NextResponse.json({ data });
     } catch (error) {
-        console.error("Unexpected error:", error);
         return NextResponse.json(
-            { error: "Internal server error" },
+            { error: "Internal server error" + error },
             { status: 500 }
         );
     }

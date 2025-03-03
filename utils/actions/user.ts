@@ -107,7 +107,6 @@ export async function submitRegistration(formData: FormData) {
             });
 
         if (uploadError) {
-            console.error("Upload error:", uploadError);
             throw new Error(`Failed to upload file: ${uploadError.message}`);
         }
 
@@ -134,7 +133,6 @@ export async function submitRegistration(formData: FormData) {
             .eq("user_id", userId);
 
         if (updateError) {
-            console.error("Update error:", updateError);
             throw new Error(
                 `Failed to update user data: ${updateError.message}`
             );
@@ -142,7 +140,6 @@ export async function submitRegistration(formData: FormData) {
 
         return { success: true };
     } catch (error) {
-        console.error("Registration error:", error);
         throw error;
     }
 }

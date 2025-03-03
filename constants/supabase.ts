@@ -9,6 +9,115 @@ export type Json =
 export type Database = {
     public: {
         Tables: {
+            event_payments: {
+                Row: {
+                    amount: number | null;
+                    created_at: string;
+                    currency: string | null;
+                    event_id: string | null;
+                    metadata: Json | null;
+                    payment_id: string;
+                    registration_id: string | null;
+                    team_id: string | null;
+                    updated_at: string;
+                    user_email: string | null;
+                };
+                Insert: {
+                    amount?: number | null;
+                    created_at?: string;
+                    currency?: string | null;
+                    event_id?: string | null;
+                    metadata?: Json | null;
+                    payment_id: string;
+                    registration_id?: string | null;
+                    team_id?: string | null;
+                    updated_at?: string;
+                    user_email?: string | null;
+                };
+                Update: {
+                    amount?: number | null;
+                    created_at?: string;
+                    currency?: string | null;
+                    event_id?: string | null;
+                    metadata?: Json | null;
+                    payment_id?: string;
+                    registration_id?: string | null;
+                    team_id?: string | null;
+                    updated_at?: string;
+                    user_email?: string | null;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "event_payments_registration_id_fkey";
+                        columns: ["registration_id"];
+                        isOneToOne: false;
+                        referencedRelation: "event_registrations";
+                        referencedColumns: ["registration_id"];
+                    },
+                ];
+            };
+            event_players: {
+                Row: {
+                    first_name: string | null;
+                    jersey_number: number | null;
+                    last_name: string | null;
+                    player_id: string;
+                    registration_id: string | null;
+                    user_email: string | null;
+                    waiver_signed: boolean | null;
+                };
+                Insert: {
+                    first_name?: string | null;
+                    jersey_number?: number | null;
+                    last_name?: string | null;
+                    player_id?: string;
+                    registration_id?: string | null;
+                    user_email?: string | null;
+                    waiver_signed?: boolean | null;
+                };
+                Update: {
+                    first_name?: string | null;
+                    jersey_number?: number | null;
+                    last_name?: string | null;
+                    player_id?: string;
+                    registration_id?: string | null;
+                    user_email?: string | null;
+                    waiver_signed?: boolean | null;
+                };
+                Relationships: [
+                    {
+                        foreignKeyName: "event_players_registration_id_fkey";
+                        columns: ["registration_id"];
+                        isOneToOne: false;
+                        referencedRelation: "event_registrations";
+                        referencedColumns: ["registration_id"];
+                    },
+                ];
+            };
+            event_registrations: {
+                Row: {
+                    created_at: string;
+                    event_id: string | null;
+                    paid: boolean;
+                    registration_id: string;
+                    team_id: string | null;
+                };
+                Insert: {
+                    created_at?: string;
+                    event_id?: string | null;
+                    paid?: boolean;
+                    registration_id?: string;
+                    team_id?: string | null;
+                };
+                Update: {
+                    created_at?: string;
+                    event_id?: string | null;
+                    paid?: boolean;
+                    registration_id?: string;
+                    team_id?: string | null;
+                };
+                Relationships: [];
+            };
             events: {
                 Row: {
                     active: boolean;
@@ -20,6 +129,7 @@ export type Database = {
                     location: string | null;
                     price: string | null;
                     reg_ddl: string;
+                    stripe_price_ids: Json | null;
                     subtitle: string | null;
                     title: string;
                     title_short: string | null;
@@ -34,6 +144,7 @@ export type Database = {
                     location?: string | null;
                     price?: string | null;
                     reg_ddl: string;
+                    stripe_price_ids?: Json | null;
                     subtitle?: string | null;
                     title: string;
                     title_short?: string | null;
@@ -48,6 +159,7 @@ export type Database = {
                     location?: string | null;
                     price?: string | null;
                     reg_ddl?: string;
+                    stripe_price_ids?: Json | null;
                     subtitle?: string | null;
                     title?: string;
                     title_short?: string | null;
@@ -276,6 +388,14 @@ export type Database = {
             execute_sql: {
                 Args: {
                     sql: string;
+                };
+                Returns: undefined;
+            };
+            register_event_and_update_event_players_table: {
+                Args: {
+                    event_id: string;
+                    team_id: string;
+                    players: Json;
                 };
                 Returns: undefined;
             };

@@ -1,4 +1,4 @@
-import { RegisterButtonProps, RosterData } from "@/app/dashboard/types";
+import { RosterData, UseRegisterFormProps } from "@/app/dashboard/types";
 import { useToast } from "@/components/ui/use-toast";
 import { isValidEmail } from "@/lib/utils";
 
@@ -11,7 +11,7 @@ export const useRegisterForm = ({
     teams,
     registrations,
     onButtonSuccess,
-}: RegisterButtonProps) => {
+}: UseRegisterFormProps) => {
     const { toast } = useToast();
     const [selectedTeam, setSelectedTeam] = useState<string>("");
     const [isRegistering, setIsRegistering] = useState(false);
@@ -43,10 +43,33 @@ export const useRegisterForm = ({
     );
 
     const verifyRosterData = (parsedData: RosterData[]): boolean => {
+        // Validate required columns exist
+        const requiredColumns = [
+            "legal_first_name",
+            "legal_last_name",
+            "email",
+            "jersey_number",
+        ];
+
+        const missingColumns = requiredColumns.filter(
+            (column) => !Object.keys(parsedData[0] || {}).includes(column)
+        );
+
+        if (missingColumns.length > 0) {
+            toast({
+                variant: "destructive",
+                title: "Invalid CSV Format",
+                description: `Missing required columns: ${missingColumns.join(", ")}. Please use the template provided.`,
+            });
+            return false;
+        }
+
+        // Convert all emails to lowercase for consistent validation
         const emails = parsedData.map((player) => player.email.toLowerCase());
 
+        // Validate email format for all players
+        // Checks if each email follows a valid email pattern (e.g., user@domain.com)
         const invalidEmails = emails.filter((email) => !isValidEmail(email));
-
         if (invalidEmails.length > 0) {
             toast({
                 variant: "destructive",
@@ -56,10 +79,11 @@ export const useRegisterForm = ({
             return false;
         }
 
+        // Check for duplicate email addresses
+        // Ensures each player has a unique email address in the roster
         const duplicateEmails = emails.filter(
             (email, index) => emails.indexOf(email) !== index
         );
-
         if (duplicateEmails.length > 0) {
             toast({
                 variant: "destructive",
@@ -69,12 +93,15 @@ export const useRegisterForm = ({
             return false;
         }
 
+        // Extract jersey numbers for validation
         const jerseyNumbers = parsedData.map((player) => player.jersey_number);
+
+        // Check for duplicate jersey numbers within the team
+        // Ensures each player has a unique jersey number
         const duplicateJerseyNumbers = jerseyNumbers.filter(
             (jerseyNumber, index) =>
                 jerseyNumbers.indexOf(jerseyNumber) !== index
         );
-
         if (duplicateJerseyNumbers.length > 0) {
             toast({
                 variant: "destructive",
@@ -84,10 +111,11 @@ export const useRegisterForm = ({
             return false;
         }
 
+        // Validate that all jersey numbers are valid integers
+        // Ensures jersey numbers can be properly stored and displayed
         const invalidJerseyNumbers = parsedData.filter((player) =>
             isNaN(parseInt(player.jersey_number, 10))
         );
-
         if (invalidJerseyNumbers.length > 0) {
             toast({
                 variant: "destructive",
@@ -103,6 +131,9 @@ export const useRegisterForm = ({
     const handleConfirmRegistration = async () => {
         try {
             setIsRegistering(true);
+
+            // Validate basic form requirements
+            // Ensures team is selected and roster file is uploaded
             if (!selectedTeam || !uploadedFile) {
                 toast({
                     variant: "destructive",
@@ -113,6 +144,7 @@ export const useRegisterForm = ({
                 return;
             }
 
+            // Validate roster data format and content
             if (!verifyRosterData(parsedData)) {
                 setIsRegistering(false);
                 return;
@@ -121,10 +153,10 @@ export const useRegisterForm = ({
             const team = teams.find((t) => t.name === selectedTeam);
             if (!team?.team_id) return;
 
+            // Check if team is already registered for this event
+            // Prevents duplicate team registrations
             const isTeamRegistered = registrations.some(
-                (registration) =>
-                    registration.team_id === team.team_id &&
-                    registration.event_id === event.event_id
+                (registration) => registration.team_id === team.team_id
             );
 
             if (isTeamRegistered) {
@@ -137,6 +169,8 @@ export const useRegisterForm = ({
                 return;
             }
 
+            // Prepare registration data
+            // Normalize email addresses and convert jersey numbers to integers
             const data = {
                 event_id: event.event_id,
                 team_id: team.team_id,

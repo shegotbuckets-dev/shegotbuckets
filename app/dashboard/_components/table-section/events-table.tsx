@@ -1,11 +1,11 @@
 "use client";
 
 import {
-    EventTableData,
+    EventBasicInfo,
     EventsTableProps,
     HEADERS,
-    UserEventData,
 } from "@/app/dashboard/types";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
     Table,
     TableBody,
@@ -14,86 +14,21 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Database } from "@/constants/supabase";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useUser } from "@clerk/nextjs";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
+import { PaymentCell } from "./payment-column/payment-cell";
 import { RegisterOrParticipatedCell } from "./register-column/register-cell";
 import { RosterCell } from "./roster-column/roster-cell";
 import { TeamCell } from "./simple-cells";
 import { WaiverCell } from "./waiver-column/waiver-cell";
 
-function prepareTableData(
-    event: Database["public"]["Tables"]["events"]["Row"],
-    user_email: string | undefined,
-    registrations: Database["public"]["Tables"]["registrations"]["Row"][],
-    registrationPlayers: Database["public"]["Tables"]["registration_players"]["Row"][],
-    teams: Database["public"]["Tables"]["teams"]["Row"][]
-): EventTableData {
-    const eventRegistrations = registrations.filter(
-        (registration) => registration.event_id === event.event_id
+function prepareTableHeader(events: EventBasicInfo[]) {
+    const hasTeams = events.some(
+        (event) => event.userStatus.team !== undefined
     );
-
-    const userEventData = eventRegistrations.reduce<UserEventData>(
-        (acc, registration) => {
-            const userPlayerData = registrationPlayers.find(
-                (player) =>
-                    player.registration_id === registration.registration_id &&
-                    player.user_email?.toLocaleLowerCase() === user_email
-            );
-
-            if (userPlayerData) {
-                return {
-                    registered: true,
-                    teamId: registration.team_id,
-                    registration_id: userPlayerData.registration_id,
-                    waiverSigned: userPlayerData.waiver_signed,
-                };
-            }
-            return { ...acc };
-        },
-        {
-            registration_id: undefined,
-            registered: false,
-            teamId: undefined,
-            waiverSigned: false,
-        }
-    );
-
-    const team = userEventData.registered
-        ? (teams.find((team) => team.team_id === userEventData.teamId)?.name ??
-          "N/A")
-        : "N/A";
-
-    const roster = userEventData.registered
-        ? registrationPlayers.filter(
-              (player) =>
-                  player.registration_id === userEventData.registration_id
-          )
-        : [];
-
-    return {
-        event_id: event.event_id,
-        registration_id: userEventData.registration_id,
-        name: event.title_short ?? event.title,
-        subtitle: event.subtitle ?? "N/A",
-        date: event.date ?? "N/A",
-        location: event.location ?? "N/A",
-        price: event.price ?? "N/A",
-        active: event.active,
-        team,
-        registered: userEventData.registered,
-        rosterUploaded: roster.length > 0,
-        roster: roster,
-        waiverSigned: userEventData.waiverSigned,
-    };
-}
-
-function prepareTableHeader(events: EventTableData[]) {
-    const hasTeams = events.some((event) => event.team !== "N/A");
     const isActive = events[0]?.active ?? false;
 
     if (isActive) {
@@ -102,48 +37,39 @@ function prepareTableHeader(events: EventTableData[]) {
     return hasTeams ? HEADERS.previousWithTeam : HEADERS.previous;
 }
 
-export const EventsTable = ({
-    dashboardData,
+export function EventsTable({
+    events,
     onButtonSuccess,
-}: EventsTableProps) => {
-    const { user } = useUser();
-    const email = user?.emailAddresses[0].emailAddress;
-
-    const [isFlashing, setIsFlashing] = useState(false);
-
-    const { tableData, tableHeaders } = useMemo(() => {
-        const data = dashboardData.events.map((event) =>
-            prepareTableData(
-                event,
-                email?.toLocaleLowerCase(),
-                dashboardData.registrations,
-                dashboardData.registrationPlayers,
-                dashboardData.teams
-            )
-        );
-        return {
-            tableData: data,
-            tableHeaders: prepareTableHeader(data),
-        };
-    }, [dashboardData, email]);
-
-    const hasTeamColumn = tableData.some((event) => event.team !== "N/A");
-
+    loading,
+}: EventsTableProps & { loading: boolean }) {
     const searchParams = useSearchParams();
-
+    const router = useRouter();
+    const [isFlashing, setIsFlashing] = useState(false);
     const eventId = searchParams.get("eventId");
+
+    useEffect(() => {
+        const success = searchParams.get("success");
+        const eventId = searchParams.get("event_id");
+        if (success === "true" && eventId) {
+            onButtonSuccess();
+            router.replace("/dashboard");
+        }
+    }, [searchParams, onButtonSuccess, router]);
 
     useEffect(() => {
         if (eventId) {
             setIsFlashing(true);
-
             const timer = setTimeout(() => {
                 setIsFlashing(false);
             }, 3000);
-
             return () => clearTimeout(timer);
         }
     }, [eventId]);
+
+    const tableHeaders = prepareTableHeader(events);
+    const hasTeamColumn = events.some(
+        (event) => event.userStatus.team !== undefined
+    );
 
     return (
         <div className="overflow-x-auto">
@@ -156,50 +82,66 @@ export const EventsTable = ({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {tableData.map((event) => (
-                        <TableRow
-                            key={event.event_id}
-                            className={
-                                isFlashing &&
-                                searchParams &&
-                                event.event_id === eventId
-                                    ? "animate-pulse bg-yellow-100 dark:bg-yellow-800 transition-colors duration-770 ease-in-out"
-                                    : ""
-                            }
-                        >
-                            <TableCell className="font-medium">
-                                {event.name}
-                            </TableCell>
-                            <TableCell>{event.subtitle}</TableCell>
-                            <TableCell>{event.date}</TableCell>
-                            <TableCell>{event.location}</TableCell>
-                            {hasTeamColumn && (
-                                <TableCell>
-                                    <TeamCell event={event} />
-                                </TableCell>
-                            )}
-                            <TableCell>
-                                <RegisterOrParticipatedCell
-                                    event={event}
-                                    dashboardData={dashboardData}
-                                    onButtonSuccess={onButtonSuccess}
-                                />
-                            </TableCell>
-                            <TableCell>
-                                <RosterCell event={event} />
-                            </TableCell>
-                            {event.active && (
-                                <TableCell>
-                                    <WaiverCell
-                                        event={event}
-                                        onButtonSuccess={onButtonSuccess}
-                                    />
-                                </TableCell>
-                            )}
-                        </TableRow>
-                    ))}
+                    {loading
+                        ? // Show skeleton rows while loading
+                          Array.from({ length: 3 }).map((_, rowIndex) => (
+                              <TableRow key={`skeleton-${rowIndex}`}>
+                                  {Array.from({
+                                      length: tableHeaders.length,
+                                  }).map((_, cellIndex) => (
+                                      <TableCell key={`cell-${cellIndex}`}>
+                                          <Skeleton className="h-4 w-full" />
+                                      </TableCell>
+                                  ))}
+                              </TableRow>
+                          ))
+                        : // Show actual data when loaded
+                          events.map((event) => (
+                              <TableRow
+                                  key={event.event_id}
+                                  className={
+                                      isFlashing && event.event_id === eventId
+                                          ? "animate-pulse bg-yellow-100 dark:bg-yellow-800 transition-colors duration-770 ease-in-out"
+                                          : ""
+                                  }
+                              >
+                                  <TableCell className="font-medium">
+                                      {event.title_short ?? event.title}
+                                  </TableCell>
+                                  <TableCell>{event.subtitle}</TableCell>
+                                  <TableCell>{event.date}</TableCell>
+                                  <TableCell>{event.location}</TableCell>
+                                  {hasTeamColumn && (
+                                      <TableCell>
+                                          <TeamCell event={event} />
+                                      </TableCell>
+                                  )}
+                                  <TableCell>
+                                      <RegisterOrParticipatedCell
+                                          event={event}
+                                          onButtonSuccess={onButtonSuccess}
+                                      />
+                                  </TableCell>
+                                  <TableCell>
+                                      <RosterCell event={event} />
+                                  </TableCell>
+                                  {event.active && (
+                                      <TableCell>
+                                          <WaiverCell
+                                              event={event}
+                                              onButtonSuccess={onButtonSuccess}
+                                          />
+                                      </TableCell>
+                                  )}
+                                  {event.active && (
+                                      <TableCell>
+                                          <PaymentCell event={event} />
+                                      </TableCell>
+                                  )}
+                              </TableRow>
+                          ))}
                 </TableBody>
             </Table>
         </div>
     );
-};
+}

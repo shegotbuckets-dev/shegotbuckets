@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
         // Update the waiver_signed field
         const { data, error } = await supabase
-            .from("registration_players") // Replace with your actual table name
+            .from("event_players") // Replace with your actual table name
             .update({ waiver_signed: status }) // Set waiver_signed to true
             .eq("registration_id", registration_id) // Match the row by registration_id
             .eq("user_email", user_email); // Match the row by user_email

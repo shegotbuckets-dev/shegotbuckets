@@ -13,30 +13,33 @@ export interface SidebarNav {
 export interface DashboardData {
     events: Database["public"]["Tables"]["events"]["Row"][];
     teams: Database["public"]["Tables"]["teams"]["Row"][];
-    registrations: Database["public"]["Tables"]["registrations"]["Row"][];
-    registrationPlayers: Database["public"]["Tables"]["registration_players"]["Row"][];
+    registrations: Database["public"]["Tables"]["event_registrations"]["Row"][];
+    registrationPlayers: Database["public"]["Tables"]["event_players"]["Row"][];
 }
 
 export interface EventTableData {
     event_id: string;
-    registration_id: string | undefined;
+    registration_id: string | undefined | null;
     name: string;
     subtitle: string;
     date: string;
     location: string;
     price: string;
+    user_email: string;
+    team_id: string;
     team: string;
     registered: boolean;
     rosterUploaded: boolean;
     waiverSigned: boolean;
     active: boolean;
-    roster: Database["public"]["Tables"]["registration_players"]["Row"][];
+    roster: Database["public"]["Tables"]["event_players"]["Row"][];
+    paymentStatus: boolean;
 }
 
 export interface UserEventData {
-    registration_id: string | undefined;
+    registration_id: string | undefined | null;
     registered: boolean;
-    teamId: string | undefined;
+    teamId: string | undefined | null;
     waiverSigned: boolean;
 }
 
@@ -56,6 +59,7 @@ export const HEADERS: TableHeaders = {
         "Register",
         "Roster",
         "Waiver",
+        "Payment",
     ],
     activeWithTeam: [
         "Event",
@@ -66,6 +70,7 @@ export const HEADERS: TableHeaders = {
         "Register",
         "Roster",
         "Waiver",
+        "Payment",
     ],
     previous: ["Event", "Season", "Date", "Location", "Participated", "Roster"],
     previousWithTeam: [
@@ -80,7 +85,13 @@ export const HEADERS: TableHeaders = {
 };
 
 export interface EventsTableProps {
-    dashboardData: DashboardData;
+    events: EventBasicInfo[];
+    onButtonSuccess: () => void;
+}
+
+export interface EventsTableContainerProps {
+    loading: boolean;
+    events: EventBasicInfo[];
     onButtonSuccess: () => void;
 }
 
@@ -94,7 +105,7 @@ export const WAIVER_BADGE_CLASSNAME =
     "w-24 h-6 truncate text-center justify-center cursor-default";
 
 export interface BaseCellProps {
-    event: EventTableData;
+    event: EventBasicInfo;
 }
 
 export interface WaiverCellProps extends BaseCellProps {
@@ -102,7 +113,6 @@ export interface WaiverCellProps extends BaseCellProps {
 }
 
 export interface RegisterOrParticipatedCellProps extends BaseCellProps {
-    dashboardData: DashboardData;
     onButtonSuccess: () => void;
 }
 
@@ -115,32 +125,54 @@ export const BADGE_TEXT = {
 };
 
 export interface RegisterButtonProps {
-    event: EventTableData;
-    teams: Database["public"]["Tables"]["teams"]["Row"][];
-    registrations: Database["public"]["Tables"]["registrations"]["Row"][];
+    event: EventBasicInfo;
     onButtonSuccess: () => void;
+}
+
+export interface UseRegisterFormProps {
+    event: EventBasicInfo;
+    teams: TeamOption[];
+    registrations: Database["public"]["Tables"]["event_registrations"]["Row"][];
+    onButtonSuccess: () => void;
+}
+
+export interface TeamOption {
+    team_id: string;
+    name: string;
 }
 
 export interface EventDetailsProps {
     date: string;
     location: string;
-    price: string;
+    price: string | number;
 }
 
 export interface RosterData {
+    email: string;
     legal_first_name: string;
     legal_last_name: string;
-    email: string;
     jersey_number: string;
-    [key: string]: string;
+}
+
+export interface PlayerRegistrationData {
+    user_email: string;
+    first_name: string;
+    last_name: string;
+    jersey_number: number;
+}
+
+export interface RegistrationData {
+    event_id: string;
+    team_id: string;
+    players: PlayerRegistrationData[];
 }
 
 export interface RosterButtonProps {
-    event: EventTableData;
+    event: EventBasicInfo;
 }
 
 export interface RosterTableProps {
-    roster: Database["public"]["Tables"]["registration_players"]["Row"][];
+    roster: Database["public"]["Tables"]["event_players"]["Row"][];
 }
 
 export const ROSTER_HEADERS = [
@@ -282,3 +314,57 @@ export const playerRegistrationSchema = z.object({
 });
 
 export type PlayerRegistration = z.infer<typeof playerRegistrationSchema>;
+
+export interface UserRegistrationStatus {
+    isRegistered: boolean;
+    userData: {
+        user_id: string;
+        data_collected: boolean;
+        // ... other fields
+    } | null;
+}
+
+export type UserEventStatus = {
+    isRegistered: boolean;
+    registration_id: string | undefined;
+    team: string | undefined;
+    team_id: string | undefined;
+    waiverSigned: boolean;
+    paymentStatus: boolean;
+};
+
+export interface StripePriceIds {
+    [key: string]: string[] | undefined;
+    required: string[];
+    optional: string[];
+}
+
+export type EventBasicInfo = Omit<
+    Database["public"]["Tables"]["events"]["Row"],
+    "stripe_price_ids"
+> & {
+    userStatus: UserEventStatus;
+    stripe_price_ids: StripePriceIds | null;
+};
+
+export interface EventsData {
+    activeEvents: EventBasicInfo[];
+    previousEvents: EventBasicInfo[];
+}
+
+export interface PaymentButtonProps {
+    event: EventBasicInfo;
+    paymentStatus: boolean | undefined;
+    onPaymentClick: (hasTeam2: boolean) => void;
+    isLoading: boolean;
+}
+
+export interface PaymentRequestData {
+    event_id: string;
+    registration_id: string;
+    team_id: string;
+    email: string;
+    eventName: string;
+    hasTeam2: boolean;
+    stripe_price_ids: StripePriceIds;
+}

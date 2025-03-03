@@ -51,7 +51,6 @@ export async function POST(req: Request) {
                     result,
                 });
             } catch (error: any) {
-                console.error("User creation error:", error);
                 return NextResponse.json({
                     status: 400,
                     message: error.message,
@@ -71,7 +70,6 @@ export async function POST(req: Request) {
                     message: "User info updated",
                 });
             } catch (error: any) {
-                console.error("User update error:", error);
                 return NextResponse.json({
                     status: 400,
                     message: error.message,

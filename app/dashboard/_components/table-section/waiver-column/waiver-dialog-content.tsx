@@ -55,17 +55,14 @@ export const WaiverDialogContent = ({
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        registration_id: event.registration_id,
+                        registration_id: event.userStatus.registration_id,
                         user_email: userEmail,
                         status,
                     }),
                 });
 
-                const result = await response.json();
                 if (!response.ok) {
-                    throw new Error(
-                        `Failed to update waiver record: ${result.error}`
-                    );
+                    throw new Error("Failed to update waiver status");
                 }
             } catch (error) {
                 throw new Error(
@@ -73,7 +70,7 @@ export const WaiverDialogContent = ({
                 );
             }
         },
-        [event.registration_id, userEmail]
+        [event.userStatus.registration_id, userEmail]
     );
 
     const handleSignWaiver = useCallback(async () => {
@@ -94,9 +91,9 @@ export const WaiverDialogContent = ({
                     timestamp: new Date().toISOString(),
                     firstName: firstName!,
                     lastName: lastName!,
-                    tournamentName: event?.name,
-                    location: event?.name,
-                    eventDate: event.date,
+                    tournamentName: event.title_short ?? event.title ?? "Event",
+                    location: event.location ?? "TBD",
+                    eventDate: event.date ?? "TBD",
                 },
             });
 
