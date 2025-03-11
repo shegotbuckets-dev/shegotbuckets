@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { PaymentCell } from "./payment-column/payment-cell";
+// import { PaymentCell } from "./payment-column/payment-cell";
 import { RegisterOrParticipatedCell } from "./register-column/register-cell";
 import { RosterCell } from "./roster-column/roster-cell";
 import { TeamCell } from "./simple-cells";
@@ -52,7 +52,7 @@ export function EventsTable({
         const eventId = searchParams.get("event_id");
         if (success === "true" && eventId) {
             onButtonSuccess();
-            router.replace("/dashboard");
+            router.replace("/dashboard/home");
         }
     }, [searchParams, onButtonSuccess, router]);
 

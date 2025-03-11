@@ -146,7 +146,7 @@ export default function NavBar() {
                     <ModeToggle />
                 </div>
                 {!userId && (
-                    <Link href="/dashboard">
+                    <Link href="/dashboard/home">
                         <Button
                             variant="default"
                             className="animate-buttonheartbeat bg-orange-600 hover:bg-orange-500 text-white px-4 py-1"
