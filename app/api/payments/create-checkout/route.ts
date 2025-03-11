@@ -63,7 +63,7 @@ export async function POST(req: Request) {
             mode: "payment",
             success_url: `${baseUrl}${successUrl}?success=true`,
             cancel_url: `${baseUrl}${cancelUrl}?canceled=true`,
-            payment_method_types: ["card"],
+            payment_method_types: ["card", "us_bank_account"],
             billing_address_collection: "auto",
             // Custom text for checkout page
             custom_text: {
@@ -72,9 +72,9 @@ export async function POST(req: Request) {
                 },
             },
             // Tax settings
-            // automatic_tax: {
-            //     enabled: true,
-            // },
+            automatic_tax: {
+                enabled: false,
+            },
             // Description that appears on receipts and invoices
             payment_intent_data: {
                 description: `SGB Tournament Registration - ${eventName}`,
