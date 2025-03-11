@@ -175,7 +175,7 @@ const EventCardActions = ({
         <div className="flex flex-row gap-4 mt-6">
             {event.active ? (
                 <>
-                    <Link href="/dashboard">
+                    <Link href="/dashboard/home">
                         <Button className="w-full">Register Now</Button>
                     </Link>
                     <div className="sm:w-[140px]">
