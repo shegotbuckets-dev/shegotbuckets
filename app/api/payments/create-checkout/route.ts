@@ -72,9 +72,9 @@ export async function POST(req: Request) {
                 },
             },
             // Tax settings
-            automatic_tax: {
-                enabled: true,
-            },
+            // automatic_tax: {
+            //     enabled: true,
+            // },
             // Description that appears on receipts and invoices
             payment_intent_data: {
                 description: `SGB Tournament Registration - ${eventName}`,

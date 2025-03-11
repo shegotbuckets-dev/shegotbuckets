@@ -133,11 +133,11 @@ export function EventsTable({
                                           />
                                       </TableCell>
                                   )}
-                                  {event.active && (
+                                  {/* {event.active && (
                                       <TableCell>
                                           <PaymentCell event={event} />
                                       </TableCell>
-                                  )}
+                                  )} */}
                               </TableRow>
                           ))}
                 </TableBody>
