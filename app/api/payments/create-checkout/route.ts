@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
         // Create line items from required prices
         const line_items = stripe_price_ids.required.map((priceId: string) => ({
-            price: priceId,
+            price: "price_1QrTCIKcXW8i0WF4aVmz6zmd",
             quantity: 1,
         }));
 
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
         if (hasTeam2 && stripe_price_ids.optional?.length) {
             stripe_price_ids.optional.forEach((priceId: string) => {
                 line_items.push({
-                    price: priceId,
+                    price: "price_1QrTCIKcXW8i0WF4aVmz6zmd",
                     quantity: 1,
                 });
             });
@@ -63,7 +63,8 @@ export async function POST(req: Request) {
             mode: "payment",
             success_url: `${baseUrl}${successUrl}?success=true`,
             cancel_url: `${baseUrl}${cancelUrl}?canceled=true`,
-            payment_method_types: ["card", "us_bank_account"],
+            // payment_method_types: ["card", "us_bank_account"],
+            payment_method_types: ["us_bank_account"],
             billing_address_collection: "auto",
             // Custom text for checkout page
             custom_text: {
