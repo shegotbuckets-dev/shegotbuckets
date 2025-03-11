@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
         // Create line items from required prices
         const line_items = stripe_price_ids.required.map((priceId: string) => ({
-            price: "price_1QrTCIKcXW8i0WF4aVmz6zmd",
+            price: priceId,
             quantity: 1,
         }));
 
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
         if (hasTeam2 && stripe_price_ids.optional?.length) {
             stripe_price_ids.optional.forEach((priceId: string) => {
                 line_items.push({
-                    price: "price_1QrTCIKcXW8i0WF4aVmz6zmd",
+                    price: priceId,
                     quantity: 1,
                 });
             });
