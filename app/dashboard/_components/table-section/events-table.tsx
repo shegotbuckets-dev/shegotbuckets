@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-// import { PaymentCell } from "./payment-column/payment-cell";
+import { PaymentCell } from "./payment-column/payment-cell";
 import { RegisterOrParticipatedCell } from "./register-column/register-cell";
 import { RosterCell } from "./roster-column/roster-cell";
 import { TeamCell } from "./simple-cells";
@@ -133,11 +133,11 @@ export function EventsTable({
                                           />
                                       </TableCell>
                                   )}
-                                  {/* {event.active && (
+                                  {event.active && (
                                       <TableCell>
                                           <PaymentCell event={event} />
                                       </TableCell>
-                                  )} */}
+                                  )}
                               </TableRow>
                           ))}
                 </TableBody>

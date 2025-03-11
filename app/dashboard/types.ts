@@ -59,7 +59,7 @@ export const HEADERS: TableHeaders = {
         "Register",
         "Roster",
         "Waiver",
-        // "Payment",
+        "Payment",
     ],
     activeWithTeam: [
         "Event",
@@ -70,7 +70,7 @@ export const HEADERS: TableHeaders = {
         "Register",
         "Roster",
         "Waiver",
-        // "Payment",
+        "Payment",
     ],
     previous: ["Event", "Season", "Date", "Location", "Participated", "Roster"],
     previousWithTeam: [
