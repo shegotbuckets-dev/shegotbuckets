@@ -10,23 +10,6 @@ export type ConferenceInfor = {
     gameTimes: string;
 };
 
-export interface RuleSection {
-    title: string;
-    detail: {
-        content: string;
-        subContent?: string[];
-    }[];
-    description?: string;
-}
-
-export interface RuleBookData {
-    title: string;
-    lastUpdateDate?: string;
-    eligibility?: string;
-    introduction: string;
-    sections: RuleSection[];
-}
-
 export const leagueData: ConferenceData = {
     "Southern Conference": {
         description:
@@ -67,44 +50,43 @@ export const ANCHORS: readonly Anchor[] = [
     { id: "registration-event", label: "Registration" },
 ] as const;
 
-export type ConferenceOption = {
-    id: string;
-    conference: string;
-};
+export interface LeagueInfoDetail {
+    content: string;
+    subContent?: string[];
+    isBold?: boolean;
+    hasUrl?: boolean;
+}
 
-export const CONFERENCE_OPTIOS: ConferenceOption[] = [
-    {
-        id: "2c780393-953c-46d0-a677-69ff052796ea",
-        conference: "Southern Conference",
-    },
-    {
-        id: "458ace00-d2dc-4227-a1e5-94ba42021cd0",
-        conference: "Northern Conference",
-    },
-    {
-        id: "79fe96c0-b10d-4ac5-a7fb-8afadcc29c97",
-        conference: "National Finals",
-    },
-];
-
-export interface EligibilitySection extends RuleSection {
+export interface LeagueInfoSection {
     title: string;
     description?: string;
-    detail: {
-        content: string;
-        subContent?: string[];
-    }[];
+    detail: LeagueInfoDetail[];
 }
 
-export interface EligibilityData {
+export interface TableColumn {
+    key: string;
+    header: string;
+    width?: string;
+    align?: "left" | "center" | "right";
+    format?: (value: any) => string;
+}
+
+export interface TableData {
+    title?: string;
+    columns: TableColumn[];
+    rows: Record<string, any>[];
+}
+
+export interface LeagueInfoDialogData {
     title: string;
-    lastUpdateDate: string;
+    lastUpdateDate?: string;
     introduction: string;
-    eligibility: string;
-    sections: EligibilitySection[];
+    eligibility?: string;
+    sections: LeagueInfoSection[];
+    tables?: TableData[];
 }
 
-export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
+export const ELIGIBILITY_DATA_ENGLISH: LeagueInfoDialogData = {
     title: "COLLEGE LEAGUE PARTICIPATION ELIGIBILITY RULES",
     lastUpdateDate: "Last Updated: March 1, 2025",
     introduction:
@@ -113,28 +95,23 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
     sections: [
         {
             title: "Team Requirements",
-            description: "",
             detail: [
                 {
                     content:
                         "Each participating team must represent one school. Each school can only have one official representative team, and each player can only represent one school's team in the competition for the entire season.",
-                    subContent: undefined,
                 },
             ],
         },
         {
             title: "Team Size Requirements",
-            description: "",
             detail: [
                 {
                     content:
                         "Each team must consist of at least 5 players and no more than 15 players (for Team 1).",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "Given that the women's basketball event is in its development stage, there are currently no limits on the number of players or the number of graduates on each team. Teams are encouraged to recruit as many qualified players as possible.",
-                    subContent: undefined,
                 },
             ],
         },
@@ -146,31 +123,27 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
                 {
                     content:
                         "The league is open to all players of direct Chinese descent.",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "Each player must be at least 25% of Chinese heritage (i.e., at least one grandparent must be 100% Chinese).",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "Players with eligibility concerns should contact us before the competition.",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "Eligibility is primarily based on self-verification by the player and their team; no pre-game verification will be conducted by SGB. However, if another team or player raises a challenge, the player must cooperate with SGB for verification. If ineligible, the team's results for that season will be annulled, and additional suspensions may be imposed on both the player and the team. Failure to cooperate will be considered ineligibility.",
-                    subContent: undefined,
                 },
             ],
         },
         {
             title: "Eligible Players Must Meet One of the Following Conditions",
-            description: "",
             detail: [
                 {
                     content: "Students",
+                    isBold: true,
                     subContent: [
                         "Definition: Students here means-full-time student, part-time student, in-person exchange student who spends the whole semester in and only in the school he/she wants to register with. To clarify, students here do not include summer school students, visiting students, course exchange students, online exchange students etc.",
                         "For full-time and part-time students, please provide the officer of SGB with your Student ID and the first page of your I-20/VISA page of your passport. For U.S. citizens, you only need to provide your Student ID. You do not need to provide the first page of your I-20/VISA page of your passport.",
@@ -183,6 +156,7 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
                 },
                 {
                     content: "Alumnus",
+                    isBold: true,
                     subContent: [
                         "For alumni, please provide the officer of SGB with your past Student ID and the first page of your past I-20/VISA page of your passport. For U.S. citizens, you only need to provide your past Student ID. You do not need to provide the past first page of your I-20/VISA page of your passport.",
                         "You may be the alumnus of several universities, for example, you may be an undergraduate from X university, receive your master degree from Y university, and pursue your PhD degree in Z university. You can register with X, Y, or Z university with your identity as either an alumnus or a student. However, in one game year, you are only allowed to register with one university. The registration status can only be changed after the game year ends.",
@@ -191,6 +165,7 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
                 },
                 {
                     content: "Faculty",
+                    isBold: true,
                     subContent: [
                         "Faculty here means permanent employee and postdoc. If your identity is a contractor, subcontractor, etc, you shall not register under faculty category.",
                         "Faculty will need to provide the Faculty ID and offer letters with an SGB officer.",
@@ -202,44 +177,34 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
         },
         {
             title: "Notes",
-            description: "",
             detail: [
                 {
                     content:
                         "If players have any questions regarding their eligibility, please contact us in advance to avoid disqualification on the competition day.",
-                    subContent: undefined,
                 },
                 {
                     content: "The following are ineligible:",
                     subContent: [
                         "Students in non-degree programs such as summer schools.",
                         "Staff in temporary, non-permanent positions, such as short-term interns.",
+                        "The organizers prioritize the privacy and protection of players' personal information, and all submitted documents will be securely managed and protected.",
                     ],
                 },
                 {
                     content:
-                        "The organizers prioritize the privacy and protection of players' personal information, and all submitted documents will be securely managed and protected.",
-                    subContent: undefined,
-                },
-                {
-                    content:
                         "If a player qualifies for multiple teams, they may choose one team to represent. However, they cannot represent multiple schools in the same academic year (season).",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "No wild card teams are allowed. For exceptional situations, refer to the special rules.",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "Second Team players should be ranked outside of the team's top 7 core players.",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "In case of disputes, She Got Buckets reserves the final interpretation of the competition rules.",
-                    subContent: undefined,
                 },
             ],
         },
@@ -250,6 +215,7 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
             detail: [
                 {
                     content: "Eligibility Conditions:",
+                    isBold: true,
                     subContent: [
                         "A joint team may be permitted if fewer than 5 teams register for a particular regional tournament, ensuring the tournament can proceed successfully.",
                         "Joint teams are only allowed in regional tournaments; they are not permitted in the national tournament.",
@@ -257,12 +223,14 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
                 },
                 {
                     content: "Participation Restrictions:",
+                    isBold: true,
                     subContent: [
                         "Results from the invitational do not contribute to regional points or rankings, and regardless of performance, joint teams are not eligible to advance to the national tournament.",
                     ],
                 },
                 {
                     content: "Team Composition:",
+                    isBold: true,
                     subContent: [
                         "Joint team players must come from no more than 3 different schools.",
                         "Each school may contribute no more than 4 players to the joint team.",
@@ -271,6 +239,7 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
                 },
                 {
                     content: "Registration Process:",
+                    isBold: true,
                     subContent: [
                         "Interested joint teams must submit a registration form and join the waitlist.",
                         "After the registration deadline, if the conditions for allowing a joint team are met, the first team on the waitlist will be granted eligibility to participate.",
@@ -281,7 +250,7 @@ export const ELIGIBILITY_DATA_ENGLISH: EligibilityData = {
     ],
 };
 
-export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
+export const ELIGIBILITY_DATA_CHINESE: LeagueInfoDialogData = {
     title: "SGB华裔高校联赛参赛资格说明",
     lastUpdateDate: "最后更新：2025年3月1日",
     introduction: "以下规则概述了SGB华裔高校联赛的参赛资格要求。",
@@ -289,27 +258,22 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
     sections: [
         {
             title: "参赛球队要求",
-            description: "",
             detail: [
                 {
                     content:
                         "参赛球队需以学校为单位，每个学校只能有且只有一支官方代表队，每名球员在当赛季也只能代表一个学校的球队参赛。",
-                    subContent: undefined,
                 },
             ],
         },
         {
             title: "参赛球队人数要求",
-            description: "",
             detail: [
                 {
                     content: "每队参赛人数不得少于5人，不得多于15人（一队）",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "鉴于女篮赛事处于发展阶段，目前暂不对每队人数以及毕业生人数设置上限，鼓励各球队尽可能努力招募符合条件的球员参赛",
-                    subContent: undefined,
                 },
             ],
         },
@@ -319,31 +283,27 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
             detail: [
                 {
                     content: "SGB华人高校联赛对所有直系华裔球员开放。",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "参赛球员必须至少有25%的华裔血统（至少一个祖父母必须是100%的华裔）。",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "参赛球员如对自己的参赛资格有疑问，请于赛前及时联系我们。",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "原则上以参赛球员及其球队自我认证为主，SGB不做赛前验证。但如有其他球队、球员提出质疑，该球员需配合SGB进行资格验证，如若验证为假，将取消该队在当届比赛的成绩，并保留对球员及其球队追加禁赛处罚的权利。如球队或球员拒绝配合调查，将按验证为假处理。",
-                    subContent: undefined,
                 },
             ],
         },
         {
             title: "参赛球员必须属于下列情况之一",
-            description: "",
             detail: [
                 {
                     content: "学生",
+                    isBold: true,
                     subContent: [
                         "定义：学生指全日制学生、非全日制学生以及整学期仅在所注册学校学习的交换生。此处不包括暑期学校学生、访问学生、课程交换学生、线上交换学生等。",
                         "对于全日制和非全日制学生，请向SGB工作人员提供您的学生证以及I-20/VISA首页。对于美国公民，需提供美国护照及学生证，无需I-20/VISA首页。",
@@ -356,6 +316,7 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
                 },
                 {
                     content: "校友",
+                    isBold: true,
                     subContent: [
                         "对于校友，请向SGB工作人员提供过往的学生证和I-20/VISA首页。对于美国公民，需提供美国护照及过往的学生证，无需过往的I-20/VISA首页。",
                         "您可能是多个大学的校友，例如本科就读于X大学，硕士在Y大学，博士在Z大学。您可以作为校友或学生身份注册X、Y或Z大学的队伍，但在一个比赛年度内只能注册一个大学。注册状态仅可在比赛年度结束后更改。",
@@ -364,6 +325,7 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
                 },
                 {
                     content: "教职工",
+                    isBold: true,
                     subContent: [
                         "教职工指正式雇员及博士后，合同工、外包人员等不属于教职工类别。",
                         "教职工需向SGB工作人员提供教职员工证及聘用信。",
@@ -374,41 +336,33 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
         },
         {
             title: "注意事项",
-            description: "",
             detail: [
                 {
                     content:
                         "暑校等 non-degree program 的学生不符合本次高校联赛的参赛资格",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "短期实习生等非 Permanent 职位的职工不符合本次高校联赛的参赛资格",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "主办方极其重视参赛球员的隐私和个人信息保护：所有提交的身份证明文件会被妥善管理和保护",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "当某位球员满足上述多个要求时，球员可选择其中一支球队参赛，且该学年（赛季）内不得代表多个学校参赛",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "高校赛事不设置外卡球队，如遇特殊情况，详情见特殊规则",
-                    subContent: undefined,
                 },
                 {
                     content: "二队参赛队员应当排在球队的前7名主力球员之外",
-                    subContent: undefined,
                 },
                 {
                     content:
                         "如遇到争议，She Got Buckets对赛事规则拥有最终解释权",
-                    subContent: undefined,
                 },
             ],
         },
@@ -419,6 +373,7 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
             detail: [
                 {
                     content: "开放条件：",
+                    isBold: true,
                     subContent: [
                         "仅当某一分区赛报名球队少于5支时，为确保比赛成功举办，我们会开放一支外卡球队参加邀请赛。",
                         "外卡队仅限分区赛，全国赛不设立外卡队。",
@@ -426,12 +381,14 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
                 },
                 {
                     content: "参赛限制：",
+                    isBold: true,
                     subContent: [
                         "邀请赛的成绩不参与分区赛的积分或排名，且不论赛绩如何，外卡队无资格参加全国赛。",
                     ],
                 },
                 {
                     content: "队伍构成：",
+                    isBold: true,
                     subContent: [
                         "外卡队的球员所属高校不得超过3所。",
                         "每所高校的球员人数不得超过4人。",
@@ -440,6 +397,7 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
                 },
                 {
                     content: "报名流程：",
+                    isBold: true,
                     subContent: [
                         "有意参赛的外卡队须先提交报名表，并加入waitlist。",
                         "报名截止后，如分区赛符合开放外卡的条件，waitlist上的第一支球队将成功获得参赛资格。",
@@ -450,13 +408,11 @@ export const ELIGIBILITY_DATA_CHINESE: EligibilityData = {
     ],
 };
 
-export const RULE_BOOK_DATA_ENGLISH: RuleBookData = {
+export const RULE_BOOK_DATA_ENGLISH: LeagueInfoDialogData = {
     title: "She Got Buckets Chinese Women's College Basketball League Official Rules and Guidelines",
-    lastUpdateDate: "Latest Update: November 10, 2024",
+    lastUpdateDate: "Latest Update: April 2, 2024 (Version 2.0)",
     introduction:
-        "To enhance everyone's participation experience, the 2023-24 SGB Tournament will introduce a new format!\n\nIf you have any additional questions after reading the regulations and guidelines below, please email info@shegotbuckets.org",
-    eligibility:
-        "Please refer to the player eligibility guideline on the event page.",
+        "Please read the following rules and guidelines carefully before participating in your first game. We have a unique set of rules and guidelines for how teams are managed in the SGB Chinese Women's College Basketball League. \n\nIf you have any additional questions after reading the regulations and guidelines below, please email info@shegotbuckets.org",
     sections: [
         {
             title: "Number of Players",
@@ -565,22 +521,19 @@ export const RULE_BOOK_DATA_ENGLISH: RuleBookData = {
                 },
                 {
                     content:
-                        "The remaining rules not listed will comply with the latest NCAA Women's basketball rules:",
-                },
-                {
-                    content:
-                        "https://www.ncaapublications.com/productdownloads/WBR24_20240826.pdf",
+                        "The remaining rules not listed will comply with the latest NCAA Women's basketball rules: https://www.ncaapublications.com/productdownloads/WBR24_20240826.pdf",
+                    hasUrl: true,
                 },
             ],
         },
     ],
 };
 
-export const RULE_BOOK_DATA_CHINESE: RuleBookData = {
+export const RULE_BOOK_DATA_CHINESE: LeagueInfoDialogData = {
     title: "She Got Buckets Official Rulebook [比赛通则]",
-    lastUpdateDate:
-        "April 2, 2024 (Version 2.0): 增加了体育运动精神，及英文版。",
-    introduction: "中文版（Chinese Version）",
+    lastUpdateDate: "最后更新： April 2, 2024 (Version 2.0)",
+    introduction:
+        "在阅读以下规则和指南后，如有任何其他问题，请发送邮件至 info@shegotbuckets.org",
     sections: [
         {
             title: "比赛人数:",
@@ -680,12 +633,163 @@ export const RULE_BOOK_DATA_CHINESE: RuleBookData = {
                         "根据不同的比赛性质，SGB会对某些点进行调整，我们会提前准备好队长须知和工作人员须知对部分规则进行强调。",
                 },
                 {
-                    content: "其余没有列明的规则将遵守最新NCAA女篮规则：",
+                    content:
+                        "其余没有列明的规则将遵守最新NCAA女篮规则：https://www.ncaapublications.com/productdownloads/WBR24_20240826.pdf",
+                    hasUrl: true,
+                },
+            ],
+        },
+    ],
+};
+
+export const SEEDING_DATA_ENGLISH: LeagueInfoDialogData = {
+    title: "NATIONAL FINALS SEEDING AND BRACKETING",
+    introduction: "",
+    sections: [
+        {
+            title: "Overview",
+            detail: [
+                {
+                    content:
+                        'She Got Buckets Chinese Women\'s College Basketball League ("SGB College League") includes two phases: conference tournaments and the national finals.',
                 },
                 {
                     content:
-                        "https://www.ncaapublications.com/productdownloads/WBR24_20240826.pdf",
+                        "At the national final, the seed teams will be selected based on the results from the conference tournaments and previous competitions. We aim to use a more reasonable group division method instead of past random draws to enhance the competition experience for all teams.",
                 },
+                {
+                    content:
+                        "Previous game results will only affect the seeding process on the first day of the finals and will not affect qualification for the competition! We welcome everyone to sign up for the divisional games/finals, start your team's first battle, and join in the joy of basketball!",
+                },
+                {
+                    content:
+                        "The number of seed teams will be determined based on the number of teams registered for the finals. For example, if 12 teams are registered, it is expected to be divided into 4 groups, with the 1st to 4th ranked in points as the first-tier seeds, the 5th to 8th as the second-tier seeds, and the 9th to 12th as the last-tier seeds.",
+                },
+                {
+                    content:
+                        'Seeds in the same group will be randomly drawn and assigned to groups. For instance, the four first-tier seed teams will be randomly assigned to four different groups through a draw, and the teams from the second and last tiers will also be drawn and assigned to groups respectively. The ultimate goal is for each group to consist of one team from the first, second, and last tiers, thereby avoiding the creation of "groups of death" and enhancing the competition experience!',
+                },
+            ],
+        },
+        {
+            title: "Current season ranking points (for bracketing only)",
+            detail: [
+                {
+                    content:
+                        "The SGB College League ranking points are calculated based on the team's single-event points, which consider the team's rank, the weight of the event, and the total number of participating teams.\n\nThe calculation method is as follows:",
+                    subContent: [
+                        "Single-event team points: These points consist of two parts, participation points (10 points regardless of rank) and ranking points. The ranking points are as follows: 50, 40, 30, 20, 15, 13, 9, 7, 5, 3, 1 points according to rank. For ranks 12th and beyond, the ranking points are 1 point each. If not participating, the event score for that edition is 0.",
+                        "Weighted event points: Weighted event points = Event weight * (1 + number of teams / 10) * Event points. The weighting factor represents the scale, overall strength/level of the event. The higher the event level, the higher the event weight. The more teams participating, the larger the scale of the event, and thus the higher the weighting factor. The weights for the scores from the past three events are fixed as follows: the finals before last (0.15), previous finals (0.3), current divisional game (0.55).",
+                        "The annual event points are the total of the weighted points from the three events.",
+                    ],
+                },
+            ],
+        },
+    ],
+    tables: [
+        {
+            title: "2024-2025 College Finals Standings (Pre-Competition)",
+            columns: [
+                { key: "team", header: "Team" },
+                { key: "points", header: "Points", align: "center" },
+                { key: "standing", header: "Standing", align: "center" },
+            ],
+            rows: [
+                { team: "UMich", points: 101.4, standing: 1 },
+                { team: "UNC", points: 80, standing: 2 },
+                { team: "NYU", points: 68.93, standing: 3 },
+                { team: "OSU", points: 68.34, standing: 4 },
+                { team: "Harvard", points: 59.7, standing: 5 },
+                { team: "NEU", points: 44.56, standing: 6 },
+                { team: "Duke", points: 38.5, standing: 7 },
+                { team: "Columbia", points: 37.75, standing: 8 },
+                { team: "UIUC", points: 33.92, standing: 9 },
+                { team: "NWU", points: 26.4, standing: 10 },
+                { team: "JHU", points: 22.71, standing: 11 },
+                { team: "USC", points: 21.6, standing: 12 },
+                { team: "Yale", points: 0, standing: 13 },
+                { team: "UCLA", points: 0, standing: 14 },
+            ],
+        },
+    ],
+};
+
+export const SEEDING_DATA_CHINESE: LeagueInfoDialogData = {
+    title: "全国总决赛种子排位和分组规则",
+    introduction: "",
+    sections: [
+        {
+            title: "概述",
+            detail: [
+                {
+                    content:
+                        '"She Got Buckets"华裔北美高校联赛包含两个赛段：秋季的分区赛和春季的总决赛。',
+                },
+                {
+                    content:
+                        "总决赛的种子球队将根据分区赛以及往届比赛的积分来排名选取，我们希望使用更合理的小组分组方式代替过往的随机抽签，增强各队伍的比赛体验。",
+                },
+                {
+                    content:
+                        "对于第一次参加SGB高校赛的球队们——往届比赛积分仅影响总决赛第一个比赛日的分组情况，不会影响比赛资格！欢迎大家报名参加分区赛/总决赛，开启球队的第一战，一起参与感受篮球的快乐！",
+                },
+            ],
+        },
+        {
+            title: "总决赛分组具体规则",
+            detail: [
+                {
+                    content:
+                        "根据总决赛的报名球队数量来确定种子球队的数量。例如，若报名球队数量为12支队伍，预计分为4组，那么积分排名的第1-4名为首轮种子，第5-8名为次轮种子，第9-12名为末轮种子。",
+                },
+                {
+                    content:
+                        "同组种子将进行随机抽签分配到各组。例如，首轮的4名种子队伍，将进行抽签随机分配到4个不同小组，次轮和末轮的球队也将分别进行抽签分配到各组，最终目标为每个小组分别由一支来自于首轮、次轮、和末轮的球队组成，从而避免产生死亡小组，增强比赛体验！",
+                },
+                {
+                    content:
+                        "SGB官网将根据报名情况，后续公布二队比赛规则以及小组赛过后的半决赛/决赛规则。",
+                },
+            ],
+        },
+        {
+            title: "积分规则",
+            detail: [
+                {
+                    content:
+                        "SGB北美高校赛排名积分是由球队单届赛事的积分由该球队所得的排名、参加赛事的比重、该赛事参赛球队的总数加权计算而成。具体计算方式如下：",
+                    subContent: [
+                        "球队单届赛事积分：该积分由两部分组成，参与分10分（不论名次）与排名分。排名分按照名次依次是：50、40、30、20、15、13、9、7、5、3、1分。单届排名在第12名及以后，排名分均为1分。未参赛则该届赛事积分为0。",
+                        "加权后的赛事积分：加权后的赛事积分=赛事比重*（1+球队数量/10）*赛事积分。加权系数代表了该赛事的规模、总体实力/级别等。赛事级别越高，赛事比重越高。参赛的球队数量越多，说明该赛事的规模越大，加权系数也就越高。往届三次赛事积分的比重分别固定为：上上届总决赛（0.15），上届总决赛（0.3），当届分区赛（0.55）。",
+                        "年度赛事积分为三届赛事的加权积分的总和。",
+                    ],
+                },
+            ],
+        },
+    ],
+    tables: [
+        {
+            title: "2024-2025 全国赛积分排名（赛前）",
+            columns: [
+                { key: "team", header: "球队" },
+                { key: "points", header: "积分", align: "center" },
+                { key: "standing", header: "排名", align: "center" },
+            ],
+            rows: [
+                { team: "UMich", points: 101.4, standing: 1 },
+                { team: "UNC", points: 80, standing: 2 },
+                { team: "NYU", points: 68.93, standing: 3 },
+                { team: "OSU", points: 68.34, standing: 4 },
+                { team: "Harvard", points: 59.7, standing: 5 },
+                { team: "NEU", points: 44.56, standing: 6 },
+                { team: "Duke", points: 38.5, standing: 7 },
+                { team: "Columbia", points: 37.75, standing: 8 },
+                { team: "UIUC", points: 33.92, standing: 9 },
+                { team: "NWU", points: 26.4, standing: 10 },
+                { team: "JHU", points: 22.71, standing: 11 },
+                { team: "USC", points: 21.6, standing: 12 },
+                { team: "Yale", points: 0, standing: 13 },
+                { team: "UCLA", points: 0, standing: 14 },
             ],
         },
     ],
