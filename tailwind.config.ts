@@ -17,6 +17,21 @@ const config: Config = {
     ],
     // Enabling dark mode
     darkMode: "class", // Assuming you want to enable dark mode based on the class strategy
+    // Add safelist for dynamic gradient colors
+    safelist: [
+        "from-blue-50",
+        "to-indigo-50",
+        "dark:from-blue-900/20",
+        "dark:to-indigo-900/20",
+        "from-orange-50",
+        "to-amber-50",
+        "dark:from-orange-900/20",
+        "dark:to-amber-900/20",
+        "from-green-50",
+        "to-emerald-50",
+        "dark:from-green-900/20",
+        "dark:to-emerald-900/20",
+    ],
     theme: {
         // Merging container configuration from the second file
         container: {
