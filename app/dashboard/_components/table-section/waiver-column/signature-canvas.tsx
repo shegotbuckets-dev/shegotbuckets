@@ -28,7 +28,7 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
             if (ctx) {
                 ctx.lineWidth = 2;
                 ctx.lineCap = "round";
-                ctx.strokeStyle = "#000";
+                ctx.strokeStyle = "var(--foreground)";
                 contextRef.current = ctx;
             }
         }
@@ -146,7 +146,7 @@ export const SignatureCanvas: React.FC<SignatureCanvasProps> = ({
                     ref={canvasRef}
                     width={canvasSize.width}
                     height={canvasSize.height}
-                    className="border-2 border-gray-300 rounded-lg touch-none w-[70vw] sm:w-[40rem]"
+                    className="border-2 border-gray-300 rounded-lg touch-none w-[70vw] sm:w-[40rem] bg-background dark:bg-foreground"
                     onMouseDown={startDrawing}
                     onMouseMove={draw}
                     onMouseUp={stopDrawing}
