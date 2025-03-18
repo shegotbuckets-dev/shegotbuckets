@@ -8,7 +8,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { CONFERENCE_OPTIOS, ConferenceOption } from "@/constants/events";
 import { Database } from "@/constants/supabase";
 
 import { useState } from "react";
