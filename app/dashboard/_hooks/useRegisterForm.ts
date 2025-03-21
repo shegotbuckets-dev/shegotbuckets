@@ -51,6 +51,16 @@ export const useRegisterForm = ({
             "jersey_number",
         ];
 
+        if (parsedData.length < 5) {
+            toast({
+                variant: "destructive",
+                title: "Invalid roster size",
+                description:
+                    "Please make sure all players in the roster. You should have at least 5 players for the team",
+            });
+            return false;
+        }
+
         const missingColumns = requiredColumns.filter(
             (column) => !Object.keys(parsedData[0] || {}).includes(column)
         );
@@ -65,7 +75,9 @@ export const useRegisterForm = ({
         }
 
         // Convert all emails to lowercase for consistent validation
-        const emails = parsedData.map((player) => player.email.toLowerCase());
+        const emails = parsedData.map((player) =>
+            player.email.trim().toLowerCase()
+        );
 
         // Validate email format for all players
         // Checks if each email follows a valid email pattern (e.g., user@domain.com)
