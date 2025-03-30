@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ReactNode } from "react";
 import { useEffect } from "react";
 
+import { Metadata } from "next";
 import { usePathname, useRouter } from "next/navigation";
 
 import { DashboardSidebar } from "./_components/dashboard-sidebar";
@@ -14,6 +15,13 @@ import { DashboardTopNav } from "./_components/dashboard-topnav";
 import { LandingPage } from "./_components/landing-page";
 import { usePaymentStatus } from "./_hooks/usePaymentStatus";
 import { useRegistrationStatus } from "./_hooks/useRegistrationStatus";
+
+// export const metadata: Metadata = {
+//     title: "Dashboard",
+//     description:
+//         "Access your She Got Buckets account, manage your profile, and view your event registrations.",
+//     // No OpenGraph/Twitter cards needed for authenticated pages
+// };
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();

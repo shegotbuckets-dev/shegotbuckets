@@ -6,6 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { DashboardContent } from "./_components/dashboard-content";
 
+// Note: Metadata must be in a Server Component, so we can't add it directly here
+// The title will be inherited from the layout or can be set in a parent layout
+
 export default function DashboardPage() {
     const router = useRouter();
     const searchParams = useSearchParams();

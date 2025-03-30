@@ -3,6 +3,17 @@ import { AboutJourney } from "./_components/about-journey";
 import { AboutMembers } from "./_components/about-members";
 import { AboutStory } from "./_components/about-story";
 
+export const metadata = {
+    title: "About Us",
+    description:
+        "Learn about She Got Buckets, our mission to empower women through basketball, our journey, and the dedicated team behind our organization.",
+    openGraph: {
+        title: "About She Got Buckets",
+        description:
+            "Learn about She Got Buckets, our mission to empower women through basketball, our journey, and the dedicated team behind our organization.",
+    },
+};
+
 export default function About() {
     return (
         <main className="min-h-screen">
