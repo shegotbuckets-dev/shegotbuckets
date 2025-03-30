@@ -33,7 +33,7 @@ export async function generateMetadata({
                 160
             ),
         openGraph: {
-            title: `${member.name} - She Got Buckets Team`,
+            title: `${member.name} - She Got Buckets Org Member`,
             description: `Learn about ${member.name}, ${member.title} at She Got Buckets.`,
             images:
                 member.image_url && member.image_url.length > 0

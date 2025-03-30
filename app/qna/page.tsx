@@ -2,7 +2,7 @@ import { QAStory } from "./_components/qa-story";
 import { ResourcesSection } from "./_components/resources-section";
 
 export const metadata = {
-    title: "Q&A and Resources",
+    title: "Q&A",
     description:
         "Find answers to frequently asked questions about She Got Buckets and access valuable resources for women's basketball and financial independence.",
     openGraph: {
