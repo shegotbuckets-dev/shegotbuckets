@@ -1,6 +1,17 @@
 import { QAStory } from "./_components/qa-story";
 import { ResourcesSection } from "./_components/resources-section";
 
+export const metadata = {
+    title: "Q&A and Resources",
+    description:
+        "Find answers to frequently asked questions about She Got Buckets and access valuable resources for women's basketball and financial independence.",
+    openGraph: {
+        title: "Q&A and Resources - She Got Buckets",
+        description:
+            "Find answers to frequently asked questions about She Got Buckets and access valuable resources for women's basketball and financial independence.",
+    },
+};
+
 export default function QnAPage() {
     return (
         <main className="min-h-screen pt-20">
