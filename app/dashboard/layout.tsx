@@ -16,12 +16,12 @@ import { LandingPage } from "./_components/landing-page";
 import { usePaymentStatus } from "./_hooks/usePaymentStatus";
 import { useRegistrationStatus } from "./_hooks/useRegistrationStatus";
 
-export const metadata: Metadata = {
-    title: "Dashboard",
-    description:
-        "Access your She Got Buckets account, manage your profile, and view your event registrations.",
-    // No OpenGraph/Twitter cards needed for authenticated pages
-};
+// export const metadata: Metadata = {
+//     title: "Dashboard",
+//     description:
+//         "Access your She Got Buckets account, manage your profile, and view your event registrations.",
+//     // No OpenGraph/Twitter cards needed for authenticated pages
+// };
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
