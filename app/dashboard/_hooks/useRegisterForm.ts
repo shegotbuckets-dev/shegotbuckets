@@ -187,7 +187,7 @@ export const useRegisterForm = ({
                 event_id: event.event_id,
                 team_id: team.team_id,
                 players: parsedData.map((player) => ({
-                    user_email: player.email.toLowerCase(),
+                    user_email: player.email.trim().toLowerCase(),
                     first_name: player.legal_first_name,
                     last_name: player.legal_last_name,
                     jersey_number: parseInt(player.jersey_number, 10),
