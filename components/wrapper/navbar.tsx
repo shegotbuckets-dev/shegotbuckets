@@ -58,6 +58,10 @@ const getNavItems = (eventChildren: NavItemChild[]): NavItem[] => {
             href: "/events",
             children: eventChildren,
         },
+        {
+            title: "Q&A",
+            href: "/qna",
+        },
         // {
         //    title: "Get Involved",
         //    href: "/get-involved",

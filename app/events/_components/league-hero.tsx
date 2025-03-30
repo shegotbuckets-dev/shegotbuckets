@@ -1,10 +1,13 @@
 import { HeartBeatButton } from "@/components/common/heartbeat-button";
 import RegistrationButton from "@/components/common/register-button";
+import { Button } from "@/components/ui/button";
 import { Database } from "@/constants/supabase";
 import { getMediaUrl } from "@/lib/utils";
 import { SupabaseStorageBucket } from "@/utils/types";
 
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export const LeagueHero = ({
     league,
@@ -42,9 +45,26 @@ export const LeagueHero = ({
                     2024 -2025 Season
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-8"></div>
-                <RegistrationButton options={events}>
-                    <HeartBeatButton>Register Now</HeartBeatButton>
-                </RegistrationButton>
+                <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm sm:max-w-none">
+                    <RegistrationButton options={events}>
+                        <HeartBeatButton>Register Now</HeartBeatButton>
+                    </RegistrationButton>
+                    <Link href="/qna" className="w-full sm:w-auto">
+                        <Button
+                            variant="expandIcon"
+                            className="flex gap-1 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 text-base py-3 px-6 border border-input bg-background hover:bg-accent hover:text-accent-foreground w-full sm:w-auto h-[48px]"
+                            Icon={() => (
+                                <ArrowRight
+                                    className="w-4 h-4"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            iconPlacement="right"
+                        >
+                            Registration Tutorial
+                        </Button>
+                    </Link>
+                </div>
             </div>
         </section>
     );
