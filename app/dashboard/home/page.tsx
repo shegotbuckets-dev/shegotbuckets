@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { DashboardContent } from "../_components/dashboard-content";
 
 export const metadata: Metadata = {
-    title: "Home",
+    title: "Dashboard",
     description:
         "Your She Got Buckets dashboard home page with upcoming events and important information.",
 };

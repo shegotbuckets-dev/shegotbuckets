@@ -7,7 +7,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Metadata } from "next";
 import { usePathname, useRouter } from "next/navigation";
 
 import { DashboardSidebar } from "./_components/dashboard-sidebar";
