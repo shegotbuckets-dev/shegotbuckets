@@ -19,10 +19,6 @@ function capitalizeFirstLetter(str: string) {
     return str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : str;
 }
 
-function Description({ children }: { children: React.ReactNode }) {
-    return <p className="text-sm text-muted-foreground">{children}</p>;
-}
-
 function ProfileField({
     label,
     value,
