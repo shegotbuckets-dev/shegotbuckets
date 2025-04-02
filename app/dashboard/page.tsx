@@ -27,6 +27,7 @@ export default function DashboardPage() {
 
     return (
         <main className="flex-1 overflow-y-auto">
+            <h1 className="sr-only">She Got Buckets Dashboard</h1>
             <DashboardContent />
         </main>
     );

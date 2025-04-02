@@ -32,6 +32,8 @@ export default async function EventPage({
 
     return (
         <div className="min-h-screen bg-background text-foreground pt-20">
+            {/* This ensures there's only one H1 on the page, which will be in the LeagueHero component */}
+            {/* The H1 in LeagueHero displays the league name */}
             {/* Hero Section */}
             <LeagueHero league={league} events={events} />
             {/* Team Marquee */}
