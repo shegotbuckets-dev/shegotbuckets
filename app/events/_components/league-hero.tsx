@@ -38,7 +38,10 @@ export const LeagueHero = ({
             </div>
             <div className="absolute inset-0 bg-black/60" />
             <div className="relative text-white px-4 sm:px-6 lg:px-8 w-full md:w-1/2">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-16 mb-4 leading-tight line-clamp-2">
+                <h1
+                    className="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-16 mb-4 leading-tight line-clamp-2"
+                    id="page-title"
+                >
                     {name}
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-200 mb-4">
