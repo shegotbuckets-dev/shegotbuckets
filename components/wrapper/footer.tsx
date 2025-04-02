@@ -6,7 +6,7 @@ import {
 import { getMediaUrl } from "@/lib/utils";
 import { SupabaseStorageBucket } from "@/utils/types";
 
-import { Instagram, Mail, Youtube } from "lucide-react";
+import { FileText, Instagram, Mail, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -152,17 +152,40 @@ export default function Footer() {
                         </ul>
                     </div>
                     <div>
-                        <p className="font-medium text-foreground mb-4">
-                            Contact Us
-                        </p>
-                        <div className="text-sm">
-                            <Link
-                                href="mailto:info@shegotbuckets.org"
-                                className="text-muted-foreground transition hover:text-foreground flex items-center gap-2"
-                            >
-                                <Mail className="h-5 w-5" />
-                                <span>info@shegotbuckets.org</span>
-                            </Link>
+                        <div className="mb-8">
+                            <p className="font-medium text-foreground mb-4">
+                                Contact Us
+                            </p>
+                            <ul className="space-y-4 text-sm">
+                                <li>
+                                    <Link
+                                        href="mailto:info@shegotbuckets.org"
+                                        className="text-muted-foreground transition hover:text-foreground flex items-center gap-2"
+                                    >
+                                        <Mail className="h-5 w-5" />
+                                        <span>info@shegotbuckets.org</span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <p className="font-medium text-foreground mb-4">
+                                Privacy & Legal
+                            </p>
+                            <ul className="space-y-4 text-sm">
+                                <li>
+                                    <Link
+                                        href="https://docs.google.com/document/d/1qP6d8sPomoQ9TFD3ScywOYqc1Kp-4OeLeS6MhaHrjMk/edit?tab=t.0"
+                                        className="text-muted-foreground transition hover:text-foreground flex items-center gap-2"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <FileText className="h-5 w-5" />
+                                        <span>Privacy & Terms of Service</span>
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
