@@ -15,6 +15,9 @@ export const metadata = {
 export default function QnAPage() {
     return (
         <main className="min-h-screen pt-20">
+            {/* Add an H1 that can be visually hidden if needed */}
+            <h1 className="sr-only">Q&A and Resources - She Got Buckets</h1>
+
             {/* Story section - white/transparent background */}
             <div className="flex w-full justify-center items-center bg-gray-50 dark:bg-gray-900/30">
                 <div className="w-full max-w-7xl">
