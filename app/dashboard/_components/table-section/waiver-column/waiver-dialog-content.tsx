@@ -258,50 +258,51 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
         <div className="space-y-4">
             <p className="font-semibold">Legal First Name: {`${firstName}`}</p>
             <p className="font-semibold">Legal Last Name: {`${lastName}`}</p>
-            <p>
-                She Got Buckets (&quot;SGB&ldquo;), a non-profit organization
-                with an office located in Long Island City, NY, desires to use
-                and publicize the name, likeness, and other personal
-                characteristics and private information of the individual named
-                below with a residence at the address set out below
-                (&quot;I&ldquo; or &quot;me&ldquo;) for advertising, promotion,
-                and other non-commercial purposes. I hereby acknowledge I give
-                SGB my permission for such use and publicity for such purposes,
-                according to the terms and conditions set forth in this
-                Publicity Waiver and Release (&quot;Agreement&ldquo;).
+            <p className="font-semibold">WAIVER AND RELEASE</p>
+            <p className="font-semibold">
+                PART I: PUBLICITY WAIVER AND RELEASE
             </p>
-            <p>Preamble</p>
+            <p>
+                She Got Buckets (&quot;SGB&quot;), a non-profit organization
+                with office located at Long Island City, NY, desires to use and
+                publicize the name, likeness, other personal characteristics and
+                private information of the individual named below (&quot;I&quot;
+                or &quot;me&quot;) for advertising, promotion, and other
+                non-commercial purposes. I hereby acknowledge, I give SGB my
+                permission for such use and publicity for such purposes,
+                according to the terms and conditions set forth in this
+                Publicity Waiver and Release (&quot;Agreement&quot;).
+            </p>
+            <p className="font-semibold">Preamble</p>
             <p>
                 I hereby irrevocably permit, authorize, grant, and license SGB
                 and its affiliates, successors, and assigns, and their
                 respective licensees, advertising agencies, promotion agencies,
                 and fulfillment agencies, and the employees, officers,
                 directors, and agents of each and all of them (&quot;Authorized
-                Persons&ldquo;), the rights to display, publicly perform,
+                Persons&quot;), the rights to display, publicly perform,
                 exhibit, transmit, broadcast, reproduce, record, photograph,
-                digitize, modify, alter, edit, adapt, create derivative works,
-                exploit, sell, rent, license, otherwise use, and permit others
-                to use, my name, image, likeness, appearance, voice,
-                professional and personal biographical information, signature,
-                other personal characteristics and private information, and all
-                materials created by or on behalf of SGB that incorporate any of
-                the foregoing (&quot;Materials&ldquo;) in perpetuity throughout
-                the universe in any medium or format whatsoever now existing or
-                hereafter created, including but not limited to, in and on
-                magazines, brochures, and other print publications, electronic,
-                magnetic, and optical media, motion pictures, television
-                broadcast, cablecast, and satellite, home video and video on
-                demand, radio broadcasts, display, point-of-sale, and other
-                advertising and promotional materials, press releases, the
-                internet and other digital transmission or delivery methods, and
-                mobile applications, on any platform and for any purpose,
-                including but not limited to advertising, public relations,
-                publicity, packaging, and promotion of SGB and its affiliates
-                and their businesses, products, and services, without further
-                consent from or royalty, payment, or other compensation to me
-                except as otherwise expressly provided in this Agreement.
+                digitize, modify, alter, edit, adapt, create derivative works
+                and otherwise use my name, image, likeness, appearance, voice
+                and all materials created by or on behalf of SGB that
+                incorporate any of the foregoing (&quot;Materials&quot;) in
+                perpetuity throughout the universe in any medium or format
+                whatsoever now existing or hereafter created, including but not
+                limited to, in and on magazines, brochures, and other print
+                publications, electronic, magnetic, and optical media, motion
+                pictures, television broadcast, cablecast, and satellite, home
+                video and video on demand, radio broadcasts, display,
+                point-of-sale, and other advertising and promotional materials,
+                press releases, the internet and other digital transmission or
+                delivery methods, and mobile applications, on any platform and
+                for any purpose, including but not limited to advertising,
+                public relations, publicity, packaging, and promotion of SGB and
+                its affiliates and their businesses, products, and services,
+                without further consent from or royalty, payment, or other
+                compensation to me except as otherwise expressly provided in
+                this Agreement.
             </p>
-            <p>Consent to Use Name and Likeness</p>
+            <p className="font-semibold">Consent to Use Name and Likeness</p>
             <p>
                 SGB shall be the exclusive owner of all rights, including
                 copyright, in the Materials. I hereby irrevocably transfer,
@@ -322,8 +323,8 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 use the Materials or to exercise any rights given by this
                 Agreement.
             </p>
-            <p>Ownership and Control of Materials</p>
-            <p className="font-bold">
+            <p className="font-semibold">Ownership and Control of Materials</p>
+            <p className="font-semibold">
                 To the fullest extent permitted by applicable law, I hereby
                 irrevocably waive all legal and equitable rights relating to all
                 liabilities, claims, demands, actions, suits, damages, and
@@ -335,8 +336,8 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 publicity, physical or emotional injury or distress, or any
                 similar claim or cause of action in tort, contract, or any other
                 legal theory, now known or hereafter known in any jurisdiction
-                throughout the world (collectively, &quot;Claims&rdquo;),
-                arising directly or indirectly from the Authorized Persons
+                throughout the world (collectively, &quot;Claims&quot;), arising
+                directly or indirectly from the Authorized Persons&apos;
                 exercise of their rights under this Agreement or the production,
                 exhibition, exploitation, advertising, promotion, or other use
                 of the Materials, and whether resulting in whole or in part from
@@ -349,27 +350,31 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 cannot be terminated, rescinded, or modified in whole or in
                 part.
             </p>
-            <p>Waiver of Rights and Release of Claims</p>
-            <p className="font-bold">
+            <p className="font-semibold">
+                Waiver of Rights and Release of Claims
+            </p>
+            <p className="font-semibold">
                 I represent and warrant to SGB that I am at least eighteen (18)
                 years of age, and I have full right, power, and authority to
                 enter into this Agreement and grant the rights granted
                 hereunder. I further represent and warrant to SGB that I will
                 provide only true and correct statements and other information
-                in connection with this Agreement, and the Authorized Persons
-                use of the Materials and the rights and license granted
-                hereunder do not, and will not, violate any right (including
-                without limitation copyright, trademark, trade secret, right to
-                privacy, or right of publicity) of, or conflict with or violate
-                any contract with or commitment made to, any person or entity,
-                and that no consent or authorization from, or any payment to,
-                any third party is required in connection herewith. I agree to
-                defend, indemnify, and hold harmless the Authorized Persons from
-                and against all Claims by third parties resulting from my breach
-                or alleged breach of this Agreement or any of the foregoing
-                representations and warranties.
+                in connection with this Agreement, and the Authorized
+                Persons&apos; use of the Materials and the rights and license
+                granted hereunder do not, and will not, violate any right
+                (including without limitation copyright, trademark, trade
+                secret, right to privacy, or right of publicity) of, or conflict
+                with or violate any contract with or commitment made to, any
+                person or entity, and that no consent or authorization from, or
+                any payment to, any third party is required in connection
+                herewith. I agree to defend, indemnify, and hold harmless the
+                Authorized Persons from and against all Claims by third parties
+                resulting from my breach or alleged breach of this Agreement or
+                any of the foregoing representations and warranties.
             </p>
-            <p>Representations and Warranties, Indemnification</p>
+            <p className="font-semibold">
+                Representations and Warranties, Indemnification
+            </p>
             <p>
                 This Agreement constitutes the sole and entire agreement of the
                 parties with respect to the subject matter contained herein and
@@ -398,31 +403,8 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 irrevocably consent to the exclusive jurisdiction of such
                 courts.
             </p>
-            <p>
-                THIS AGREEMENT PROVIDES SGB WITH YOUR ABSOLUTE AND UNCONDITIONAL
-                CONSENT, WAIVER, AND RELEASE OF LIABILITY, ALLOWING SGB TO
-                PUBLICIZE AND COMMERCIALLY EXPLOIT YOUR NAME, LIKENESS, AND
-                OTHER PERSONAL CHARACTERISTICS AND PRIVATE INFORMATION AS SET
-                OUT ABOVE. BY SIGNING, YOU ACKNOWLEDGE THAT YOU HAVE READ AND
-                UNDERSTOOD ALL OF THE TERMS OF THIS AGREEMENT AND THAT YOU ARE
-                GIVING UP SUBSTANTIAL LEGAL RIGHTS, INCLUDING THE RIGHT TO SUE
-                SGB.
-            </p>
+            <p className="font-semibold">PART II: WAIVER OF LIABILITY</p>
             <p className="font-semibold">
-                RELEASE OF LIABILITY AND ASSUMPTION OF RISK
-            </p>
-            <p>
-                The individual named below (referred to as “I” or “me”) desires
-                to participate in events (whether singular or plural,
-                hereinafter referred to as the “Activities”) provided by She Got
-                Buckets Inc, a New York not-for-profit organization with offices
-                located at Long Island City, New York, NY (“SGB”). In
-                consideration of being permitted by SGB to participate in the
-                Activity and in recognition of SGB’s reliance hereon, I agree to
-                all the terms and conditions set forth in this agreement
-                (“Release”).
-            </p>
-            <p className="font-bold">
                 I AM AWARE AND UNDERSTAND THAT THE ACTIVITY IS AN INHERENTLY
                 AND/OR POTENTIALLY DANGEROUS ACTIVITY AND INVOLVE THE RISK OF
                 SERIOUS INJURY, DISABILITY, DEATH, AND/OR PROPERTY DAMAGE. I
@@ -433,7 +415,7 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 WITH AN EXPRESS UNDERSTANDING OF THE DANGER INVOLVED AND HEREBY
                 AGREE TO ACCEPT AND ASSUME ANY AND ALL RISKS OF INJURY,
                 DISABILITY, DEATH, AND/OR PROPERTY DAMAGE ARISING FROM MY
-                PARTICIPATION IN] THE ACTIVITY, WHETHER CAUSED BY THE ORDINARY
+                PARTICIPATION IN THE ACTIVITY, WHETHER CAUSED BY THE ORDINARY
                 NEGLIGENCE OF SGB OR OTHERWISE, INCLUDING BUT NOT LIMITED TO ANY
                 RISKS THAT MAY ARISE FROM NEGLIGENCE OR CARELESSNESS ON THE PART
                 OF THE PERSONS OR ENTITIES BEING RELEASED, FROM DANGEROUS OR
@@ -444,14 +426,14 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 I hereby expressly waive and release any and all claims, now
                 known or hereafter known, against SGB, and its officers,
                 directors, manager(s), employees, agents, affiliates, members,
-                successors, and assigns (collectively, “Releasees”), on account
-                of injury, disability, death, or property damage arising out of
-                or attributable to my participation in the Activity, whether
-                arising out of the ordinary negligence of SGB or any Releasees
-                or otherwise. I covenant not to make or bring any such claim
-                against SGB or any other Releasee, and forever release and
-                discharge SGB and all other Releasees from liability under such
-                claims.
+                successors, and assigns (collectively, &quot;Releasees&quot;),
+                on account of injury, disability, death, or property damage
+                arising out of or attributable to my participation in the
+                Activity, whether arising out of the ordinary negligence of SGB
+                or any Releasees or otherwise. I covenant not to make or bring
+                any such claim against SGB or any other Releasee, and forever
+                release and discharge SGB and all other Releasees from liability
+                under such claims.
             </p>
             <p>
                 I certify that I am physically fit, have sufficiently prepared
@@ -459,21 +441,18 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 not been advised to not participate by a qualified medical
                 professional. I certify that there are no health-related reasons
                 or problems which preclude my participation in this activity or
-                event.
-            </p>
-            <p>
-                I shall defend, indemnify, and hold harmless SGB and all other
-                Releasees against any and all losses, damages, liabilities,
-                deficiencies, claims, actions, judgments, settlements, interest,
-                awards, penalties, fines, costs, or expenses of whatever kind,
-                including reasonable attorney fees, fees, the costs of enforcing
-                any right to indemnification under this Agreement, and the cost
-                of pursuing any insurance providers, incurred by/awarded against
-                SGB or any other Releasees in a final non-appealable judgment,
-                arising out of or resulting from any claim of a third party
-                related to my participation in the Activity , including any
-                claim related to my own negligence or the ordinary negligence of
-                SGB.
+                event. I shall defend, indemnify, and hold harmless SGB and all
+                other Releasees against any and all losses, damages,
+                liabilities, deficiencies, claims, actions, judgments,
+                settlements, interest, awards, penalties, fines, costs, or
+                expenses of whatever kind, including reasonable attorney fees,
+                fees, the costs of enforcing any right to indemnification under
+                this Agreement, and the cost of pursuing any insurance
+                providers, incurred by/awarded against SGB or any other
+                Releasees in a final non-appealable judgment, arising out of or
+                resulting from any claim of a third party related to my
+                participation in the Activity , including any claim related to
+                my own negligence or the ordinary negligence of SGB.
             </p>
             <p>
                 I hereby consent to receive medical treatment deemed necessary
@@ -501,7 +480,7 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 relating to the making or performance of this Release whether
                 sounding in contract, tort or statute shall be governed by and
                 construed in accordance with and enforced under the internal
-                laws of the State of New York (including [its statute of
+                laws of the State of New York (including its statute of
                 limitations and N.Y. Gen. Oblig. Law § 5-1401) without giving
                 effect to any choice or conflict of law provisions thereof to
                 the extent such principles or rules would require or permit the
@@ -511,52 +490,17 @@ function WaiverContent(props: { firstName: string; lastName: string }) {
                 courts located in New York County, New York and I hereby consent
                 to the exclusive jurisdiction of such courts.
             </p>
-            <p className="font-semibold">COVID-19 PREVENTION GUIDELINES</p>
-            <p>
-                I OBEY COVID-19 PREVENTION GUIDELINES REQUIRED BY THE New York
-                State of Health and adapted by including the following actions:
-                do not appear on the game site if sick, take temperature test,
-                and provide proof of vaccination upon each day.
+            <p className="font-semibold">
+                PART III: COVID-19 PREVENTION GUIDELINES
             </p>
             <p>
-                Guidelines from the New York State of Health may be found here:
-                https://nystateofhealth.ny.gov/
-            </p>
-            <p>
-                We hereby advise you that COVID‐19 is a highly contagious virus
-                and any offline interaction with other users or third parties
-                carries a risk of developing or contracting COVID‐19. As such,
-                by participating in the Activities, you expressly assume such
-                risk. In further consideration of being permitted to participate
-                in the games and as material inducement therefor, you agree to
-                the following waiver, release, covenant and indemnity: (i) On
-                your behalf and on behalf of all your invitees, you hereby
-                release, waive, discharge and covenant not to sue the entities
-                or persons mentioned in section (A) , its third party sports
-                facilities providers, its director, officers, employees,
-                volunteers, agents from all liability to the undersigned or your
-                invitees for any loss damage or any claim on account of injury
-                to or illness or death relating to COVID‐19, directly or
-                indirectly, from you whether caused by negligence, active or
-                passive, of the entities or persons mentioned in section (A), or
-                otherwise while the undersigned are participating in the Games,
-                and (ii) you shall indemnify, defend, and hold harmless the
-                entities or persons mentioned in section (A) , its third party
-                sports facilities providers, its directors, officers, employees,
-                volunteers, and agents and each of them, from any loss,
-                liability, damage or costs, whether caused by negligence of the
-                entities or persons mentioned in section (A) or otherwise, and
-                whether brought by you, your invitees, or unrelated third
-                parties, while you or any of your invitees are in, upon or about
-                the Space and shall indemnify, defend, and hold harmless the
-                entities or persons mentioned in section (A) .
-            </p>
-            <p>
-                You agree to adhere to all facility protocols related to
-                COVID-19 and other safety guidelines. These guidelines are
-                non‐negotiable. You understand that these guidelines and safety
-                protocols may change over time and you agree to adhere to any
-                changes to the guidelines and protocols.
+                I voluntarily assume all risks related to exposure to COVID-19.
+                I Understand that playing carries the risk of concussion and
+                have reviewed the information on concussions contained at
+                www.cdc.gov/concussion/HeadsUp/index.html. I agree to stop
+                playing if I suspect that I have had a concussion and not to
+                play again until I have been cleared to do so by a qualified
+                medical professional.
             </p>
         </div>
     );

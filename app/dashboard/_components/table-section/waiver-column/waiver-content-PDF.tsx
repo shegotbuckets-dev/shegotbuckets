@@ -92,23 +92,26 @@ export const WaiverContentPDF = ({
                 </Text>
                 <Text style={styles.boldText}>Legal Last Name: {lastName}</Text>
 
-                <Text style={styles.text}></Text>
+                <Text style={styles.text}>
+                    This document is a PDF version of the waiver that you signed
+                    on the She Got Buckets website.
+                </Text>
 
-                <Text style={styles.headline}>
-                    PUBLICITY WAIVER AND RELEASE
+                <Text style={styles.headline}>WAIVER AND RELEASE</Text>
+                <Text style={styles.title}>
+                    PART I: PUBLICITY WAIVER AND RELEASE
                 </Text>
                 <Text style={styles.text}>
-                    She Got Buckets (&quot;SGB&ldquo;), a non-profit
-                    organization with an office located in Long Island City, NY,
-                    desires to use and publicize the name, likeness, and other
-                    personal characteristics and private information of the
-                    individual named below with a residence at the address set
-                    out below (&quot;I&ldquo; or &quot;me&ldquo;) for
+                    She Got Buckets (&quot;SGB&quot;), a non-profit organization
+                    with office located at Long Island City, NY, desires to use
+                    and publicize the name, likeness, other personal
+                    characteristics and private information of the individual
+                    named below (&quot;I&quot; or &quot;me&quot;) for
                     advertising, promotion, and other non-commercial purposes. I
-                    hereby acknowledge I give SGB my permission for such use and
-                    publicity for such purposes, according to the terms and
+                    hereby acknowledge, I give SGB my permission for such use
+                    and publicity for such purposes, according to the terms and
                     conditions set forth in this Publicity Waiver and Release
-                    (&quot;Agreement&ldquo;).
+                    (&quot;Agreement&quot;).
                 </Text>
 
                 <Text style={styles.title}>Preamble</Text>
@@ -118,19 +121,16 @@ export const WaiverContentPDF = ({
                     respective licensees, advertising agencies, promotion
                     agencies, and fulfillment agencies, and the employees,
                     officers, directors, and agents of each and all of them
-                    (&quot;Authorized Persons&ldquo;), the rights to display,
+                    (&quot;Authorized Persons&quot;), the rights to display,
                     publicly perform, exhibit, transmit, broadcast, reproduce,
                     record, photograph, digitize, modify, alter, edit, adapt,
-                    create derivative works, exploit, sell, rent, license,
-                    otherwise use, and permit others to use, my name, image,
-                    likeness, appearance, voice, professional and personal
-                    biographical information, signature, other personal
-                    characteristics and private information, and all materials
-                    created by or on behalf of SGB that incorporate any of the
-                    foregoing (&quot;Materials&ldquo;) in perpetuity throughout
-                    the universe in any medium or format whatsoever now existing
-                    or hereafter created, including but not limited to, in and
-                    on magazines, brochures, and other print publications,
+                    create derivative works and otherwise use my name, image,
+                    likeness, appearance, voice and all materials created by or
+                    on behalf of SGB that incorporate any of the foregoing
+                    (&quot;Materials&quot;) in perpetuity throughout the
+                    universe in any medium or format whatsoever now existing or
+                    hereafter created, including but not limited to, in and on
+                    magazines, brochures, and other print publications,
                     electronic, magnetic, and optical media, motion pictures,
                     television broadcast, cablecast, and satellite, home video
                     and video on demand, radio broadcasts, display,
@@ -185,14 +185,14 @@ export const WaiverContentPDF = ({
                     injury or distress, or any similar claim or cause of action
                     in tort, contract, or any other legal theory, now known or
                     hereafter known in any jurisdiction throughout the world
-                    (collectively, &quot;Claims&rdquo;), arising directly or
-                    indirectly from the Authorized Persons exercise of their
-                    rights under this Agreement or the production, exhibition,
-                    exploitation, advertising, promotion, or other use of the
-                    Materials, and whether resulting in whole or in part from
-                    the negligence of SGB or any other person, and I hereby
-                    covenant not to make or bring any such Claim against any
-                    Authorized Persons and forever release and discharge the
+                    (collectively, &quot;Claims&quot;), arising directly or
+                    indirectly from the Authorized Persons&apos; exercise of
+                    their rights under this Agreement or the production,
+                    exhibition, exploitation, advertising, promotion, or other
+                    use of the Materials, and whether resulting in whole or in
+                    part from the negligence of SGB or any other person, and I
+                    hereby covenant not to make or bring any such Claim against
+                    any Authorized Persons and forever release and discharge the
                     Authorized Persons from liability under such Claims. I
                     understand that SGB is relying on this Agreement and will
                     incur significant expense in reliance on this Agreement, and
@@ -210,14 +210,14 @@ export const WaiverContentPDF = ({
                     granted hereunder. I further represent and warrant to SGB
                     that I will provide only true and correct statements and
                     other information in connection with this Agreement, and the
-                    Authorized Persons use of the Materials and the rights and
-                    license granted hereunder do not, and will not, violate any
-                    right (including without limitation copyright, trademark,
-                    trade secret, right to privacy, or right of publicity) of,
-                    or conflict with or violate any contract with or commitment
-                    made to, any person or entity, and that no consent or
-                    authorization from, or any payment to, any third party is
-                    required in connection herewith. I agree to defend,
+                    Authorized Persons&apos; use of the Materials and the rights
+                    and license granted hereunder do not, and will not, violate
+                    any right (including without limitation copyright,
+                    trademark, trade secret, right to privacy, or right of
+                    publicity) of, or conflict with or violate any contract with
+                    or commitment made to, any person or entity, and that no
+                    consent or authorization from, or any payment to, any third
+                    party is required in connection herewith. I agree to defend,
                     indemnify, and hold harmless the Authorized Persons from and
                     against all Claims by third parties resulting from my breach
                     or alleged breach of this Agreement or any of the foregoing
@@ -258,6 +258,7 @@ export const WaiverContentPDF = ({
                     such courts.
                 </Text>
 
+                <Text style={styles.title}>PART II: WAIVER OF LIABILITY</Text>
                 <Text style={styles.boldText}>
                     I AM AWARE AND UNDERSTAND THAT THE ACTIVITY IS AN INHERENTLY
                     AND/OR POTENTIALLY DANGEROUS ACTIVITY AND INVOLVE THE RISK
@@ -270,7 +271,7 @@ export const WaiverContentPDF = ({
                     UNDERSTANDING OF THE DANGER INVOLVED AND HEREBY AGREE TO
                     ACCEPT AND ASSUME ANY AND ALL RISKS OF INJURY, DISABILITY,
                     DEATH, AND/OR PROPERTY DAMAGE ARISING FROM MY PARTICIPATION
-                    IN] THE ACTIVITY, WHETHER CAUSED BY THE ORDINARY NEGLIGENCE
+                    IN THE ACTIVITY, WHETHER CAUSED BY THE ORDINARY NEGLIGENCE
                     OF SGB OR OTHERWISE, INCLUDING BUT NOT LIMITED TO ANY RISKS
                     THAT MAY ARISE FROM NEGLIGENCE OR CARELESSNESS ON THE PART
                     OF THE PERSONS OR ENTITIES BEING RELEASED, FROM DANGEROUS OR
@@ -284,9 +285,9 @@ export const WaiverContentPDF = ({
                     known or hereafter known, against SGB, and its officers,
                     directors, manager(s), employees, agents, affiliates,
                     members, successors, and assigns (collectively,
-                    “Releasees”), on account of injury, disability, death, or
-                    property damage arising out of or attributable to my
-                    participation in the Activity, whether arising out of the
+                    &quot;Releasees&quot;), on account of injury, disability,
+                    death, or property damage arising out of or attributable to
+                    my participation in the Activity, whether arising out of the
                     ordinary negligence of SGB or any Releasees or otherwise. I
                     covenant not to make or bring any such claim against SGB or
                     any other Releasee, and forever release and discharge SGB
@@ -298,22 +299,29 @@ export const WaiverContentPDF = ({
                     event, and have not been advised to not participate by a
                     qualified medical professional. I certify that there are no
                     health-related reasons or problems which preclude my
-                    participation in this activity or event.
+                    participation in this activity or event. I shall defend,
+                    indemnify, and hold harmless SGB and all other Releasees
+                    against any and all losses, damages, liabilities,
+                    deficiencies, claims, actions, judgments, settlements,
+                    interest, awards, penalties, fines, costs, or expenses of
+                    whatever kind, including reasonable attorney fees, fees, the
+                    costs of enforcing any right to indemnification under this
+                    Agreement, and the cost of pursuing any insurance providers,
+                    incurred by/awarded against SGB or any other Releasees in a
+                    final non-appealable judgment, arising out of or resulting
+                    from any claim of a third party related to my participation
+                    in the Activity , including any claim related to my own
+                    negligence or the ordinary negligence of SGB.
                 </Text>
                 <Text style={styles.text}>
-                    I shall defend, indemnify, and hold harmless SGB and all
-                    other Releasees against any and all losses, damages,
-                    liabilities, deficiencies, claims, actions, judgments,
-                    settlements, interest, awards, penalties, fines, costs, or
-                    expenses of whatever kind, including reasonable attorney
-                    fees, fees, the costs of enforcing any right to
-                    indemnification under this Agreement, and the cost of
-                    pursuing any insurance providers, incurred by/awarded
-                    against SGB or any other Releasees in a final non-appealable
-                    judgment, arising out of or resulting from any claim of a
-                    third party related to my participation in the Activity ,
-                    including any claim related to my own negligence or the
-                    ordinary negligence of SGB.
+                    I hereby consent to receive medical treatment deemed
+                    necessary if I am injured or require medical attention
+                    during my participation in the Activity. I understand and
+                    agree that I am solely responsible for all costs related to
+                    such medical treatment and any related medical
+                    transportation and/or evacuation. I hereby release, forever
+                    discharge, and hold harmless SGB from any claim based on
+                    such treatment or other medical services.
                 </Text>
                 <Text style={styles.text}>
                     I hereby consent to receive medical treatment deemed
@@ -342,7 +350,7 @@ export const WaiverContentPDF = ({
                     making or performance of this Release whether sounding in
                     contract, tort or statute shall be governed by and construed
                     in accordance with and enforced under the internal laws of
-                    the State of New York (including [its statute of limitations
+                    the State of New York (including its statute of limitations
                     and N.Y. Gen. Oblig. Law § 5-1401) without giving effect to
                     any choice or conflict of law provisions thereof to the
                     extent such principles or rules would require or permit the
@@ -354,55 +362,17 @@ export const WaiverContentPDF = ({
                     such courts.
                 </Text>
 
-                <Text style={styles.title}>COVID-19 PREVENTION GUIDELINES</Text>
-                <Text style={styles.text}>
-                    I OBEY COVID-19 PREVENTION GUIDELINES REQUIRED BY THE New
-                    York State of Health and adapted by including the following
-                    actions: do not appear on the game site if sick, take
-                    temperature test, and provide proof of vaccination upon each
-                    day.
+                <Text style={styles.title}>
+                    PART III: COVID-19 PREVENTION GUIDELINES
                 </Text>
                 <Text style={styles.text}>
-                    Guidelines from the New York State of Health may be found
-                    here: https://nystateofhealth.ny.gov/
-                </Text>
-                <Text style={styles.text}>
-                    We hereby advise you that COVID‐19 is a highly contagious
-                    virus and any offline interaction with other users or third
-                    parties carries a risk of developing or contracting
-                    COVID‐19. As such, by participating in the Activities, you
-                    expressly assume such risk. In further consideration of
-                    being permitted to participate in the games and as material
-                    inducement therefor, you agree to the following waiver,
-                    release, covenant and indemnity: (i) On your behalf and on
-                    behalf of all your invitees, you hereby release, waive,
-                    discharge and covenant not to sue the entities or persons
-                    mentioned in section (A) , its third party sports facilities
-                    providers, its director, officers, employees, volunteers,
-                    agents from all liability to the undersigned or your
-                    invitees for any loss damage or any claim on account of
-                    injury to or illness or death relating to COVID‐19, directly
-                    or indirectly, from you whether caused by negligence, active
-                    or passive, of the entities or persons mentioned in section
-                    (A), or otherwise while the undersigned are participating in
-                    the Games, and (ii) you shall indemnify, defend, and hold
-                    harmless the entities or persons mentioned in section (A) ,
-                    its third party sports facilities providers, its directors,
-                    officers, employees, volunteers, and agents and each of
-                    them, from any loss, liability, damage or costs, whether
-                    caused by negligence of the entities or persons mentioned in
-                    section (A) or otherwise, and whether brought by you, your
-                    invitees, or unrelated third parties, while you or any of
-                    your invitees are in, upon or about the Space and shall
-                    indemnify, defend, and hold harmless the entities or persons
-                    mentioned in section (A) .
-                </Text>
-                <Text style={styles.text}>
-                    You agree to adhere to all facility protocols related to
-                    COVID-19 and other safety guidelines. These guidelines are
-                    non‐negotiable. You understand that these guidelines and
-                    safety protocols may change over time and you agree to
-                    adhere to any changes to the guidelines and protocols.
+                    I voluntarily assume all risks related to exposure to
+                    COVID-19. I Understand that playing carries the risk of
+                    concussion and have reviewed the information on concussions
+                    contained at www.cdc.gov/concussion/HeadsUp/index.html. I
+                    agree to stop playing if I suspect that I have had a
+                    concussion and not to play again until I have been cleared
+                    to do so by a qualified medical professional.
                 </Text>
             </View>
 
