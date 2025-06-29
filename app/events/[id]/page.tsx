@@ -37,13 +37,13 @@ export default async function EventPage({
             {/* Hero Section */}
             <LeagueHero league={league} events={events} />
             {/* Team Marquee */}
-            <TeamMarquee />
+            {/* <TeamMarquee /> */}
             {/* About Infor Section */}
             <LeagueEvents league={league} events={events} />
             {/* League Information */}
             <LeagueInfo />
             {/* Hall of Record */}
-            <HallOfRecord />
+            {/* <HallOfRecord /> */}
             {/* Registration Section */}
             <EventRegistration league={league} events={events} />
             {/* Anchor Navbar */}

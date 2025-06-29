@@ -45,7 +45,7 @@ export const LeagueHero = ({
                     {name}
                 </h1>
                 <p className="text-lg sm:text-xl text-gray-200 mb-4">
-                    2024 -2025 Season
+                    2025 - 2026 Season
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-8"></div>
                 <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm sm:max-w-none">
