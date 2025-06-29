@@ -8,6 +8,7 @@ import { HallOfRecord } from "../_components/hall-of-record";
 import { LeagueEvents } from "../_components/league-events";
 import { LeagueHero } from "../_components/league-hero";
 import { LeagueInfo } from "../_components/league-info";
+import { RegistrationTimeline } from "../_components/registration-timeline";
 
 export const metadata = {
     title: "Events",
@@ -40,6 +41,8 @@ export default async function EventPage({
             {/* <TeamMarquee /> */}
             {/* About Infor Section */}
             <LeagueEvents league={league} events={events} />
+            {/* Registration Timeline */}
+            <RegistrationTimeline />
             {/* League Information */}
             <LeagueInfo />
             {/* Hall of Record */}
