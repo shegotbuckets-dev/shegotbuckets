@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export const ResourcesSection = () => {
     return (
-        <section className="py-12">
+        <section className="py-16">
             <div className="container max-w-7xl mx-auto px-4">
-                <h2 className="text-3xl font-bold mb-6">
+                <h2 className="text-3xl font-bold mb-6 text-foreground">
                     Additional Resources
                 </h2>
                 <p className="text-muted-foreground mb-8 max-w-3xl">
@@ -16,7 +16,7 @@ export const ResourcesSection = () => {
                 </p>
 
                 <Link
-                    href="https://drive.google.com/drive/folders/1w_d0ybIDeK-BuQEJ0KvkAas6Uq1XNd0p"
+                    href="https://drive.google.com/drive/u/5/folders/1w_d0ybIDeK-BuQEJ0KvkAas6Uq1XNd0p"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
