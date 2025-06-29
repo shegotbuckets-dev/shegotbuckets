@@ -16,7 +16,7 @@ export const ResourcesSection = () => {
                 </p>
 
                 <Link
-                    href="https://drive.google.com/drive/folders/1w_d0ybIDeK-BuQEJ0KvkAas6Uq1XNd0p"
+                    href="https://drive.google.com/drive/u/5/folders/1w_d0ybIDeK-BuQEJ0KvkAas6Uq1XNd0p"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
