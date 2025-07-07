@@ -44,9 +44,9 @@ export interface Anchor {
 
 export const ANCHORS: readonly Anchor[] = [
     { id: "heroCard-event", label: "HeroCard" },
-    { id: "aboutInfor-event", label: "AboutInfor" },
-    { id: "ruleBook-event", label: "RuleBook" },
-    { id: "hallRecord-event", label: "Record" },
+    { id: "about-event", label: "About" },
+    { id: "information-event", label: "Information" },
+    { id: "hallRecord-event", label: "Hall of Record" },
     { id: "registration-event", label: "Registration" },
 ] as const;
 
@@ -790,6 +790,377 @@ export const SEEDING_DATA_CHINESE: LeagueInfoDialogData = {
                 { team: "USC", points: 21.6, standing: 12 },
                 { team: "Yale", points: 0, standing: 13 },
                 { team: "UCLA", points: 0, standing: 14 },
+            ],
+        },
+    ],
+};
+
+export const REGIONAL_ELIGIBILITY_DATA_ENGLISH: LeagueInfoDialogData = {
+    title: "NAAWBT PARTICIPATION ELIGIBILITY",
+    lastUpdateDate: "Latest Revision: June 25th 2025",
+    introduction:
+        "SHE GOT BUCKETS North American Asian Women's Basketball Tournament",
+    sections: [
+        {
+            title: "1. Team Requirements",
+            detail: [
+                {
+                    content:
+                        "Each team must declare the division they are participating in the regional tournament, which can be the Elite Division (Competitive level) or the Rising Star Division (Recreational level).",
+                },
+                {
+                    content:
+                        "Each team must consist of at least 5 players and no more than 15 players.",
+                },
+                {
+                    content:
+                        "Each player can only join one team throughout the tournament.",
+                },
+            ],
+        },
+        {
+            title: "2. Player Eligibility Requirements",
+            detail: [
+                {
+                    content:
+                        'The She Got Buckets ("SGB") North American Asian Women\'s Basketball Tournament is exclusively open to players who meet the following criteria:',
+                    subContent: ["Are of Asian Heritage."],
+                },
+                {
+                    content:
+                        "Please see the detailed eligibility conditions below.",
+                },
+            ],
+        },
+        {
+            title: "2.1 Asian Heritage",
+            detail: [
+                {
+                    content: "To qualify based on Asian heritage:",
+                    isBold: true,
+                    subContent: [
+                        "Each player must be at least 25% Asian (i.e., at least one grandparent must be 100% Asian).",
+                        "Players with eligibility concerns should contact SGB before the competition begins.",
+                        "Eligibility is primarily based on self-verification by the player and their team. No pre-game verification will be conducted by SGB.",
+                        "However, if a challenge is raised by another team or player, the player must cooperate with SGB for verification.",
+                        "Failure to cooperate will result in the player being considered ineligible.",
+                    ],
+                },
+                {
+                    content: "If a player is found ineligible:",
+                    subContent: [
+                        "The team's results for the season will be annulled.",
+                        "Suspensions may be imposed on both the player and the team.",
+                    ],
+                },
+            ],
+        },
+        {
+            title: "3. Definition and Verification Process",
+            detail: [
+                {
+                    content:
+                        "As a nonprofit organization, She Got Buckets (SGB) places the highest importance on protecting personal information and preventing any risk of data leakage. We are committed to using only secure, authorized methods for verifying player eligibility and we ensure that all submitted documents are handled with care and confidentiality. If any document contains sensitive personal details, please redact (cover or block) those details before submission.",
+                },
+                {
+                    content:
+                        "If there are legal or privacy concerns about the use of your information for verification, please consider this as your authorization for SGB to request and process your enrollment information strictly for eligibility confirmation purposes related to league participation.",
+                },
+                {
+                    content:
+                        "If a challenge is raised regarding the authenticity of a player's verification documents, the player and team must fully cooperate with SGB during the verification process. Any refusal to cooperate or verify submitted documentation will result in the player being deemed ineligible.",
+                },
+            ],
+        },
+    ],
+};
+
+export const REGIONAL_ELIGIBILITY_DATA_CHINESE: LeagueInfoDialogData = {
+    title: "NAAWBT球员参赛资格",
+    lastUpdateDate: "最新修订：2025 年 6 月 25 日",
+    introduction: "SHE GOT BUCKETS 北美亚裔女子篮球锦标赛",
+    sections: [
+        {
+            title: "1. 参赛球队要求",
+            detail: [
+                {
+                    content:
+                        "参赛球队需明确参赛组别，是精英组（高级组别）或新星组（初级组别）。",
+                },
+                {
+                    content: "每支队伍必须由至少 5 名、至多 15 名球员组成。",
+                },
+                {
+                    content: "每名球员在整个赛事期间只能代表一支队伍参赛。",
+                },
+            ],
+        },
+        {
+            title: "2. 球员资格要求",
+            detail: [
+                {
+                    content:
+                        'SHE GOT BUCKETS（"SGB"）北美亚裔女子篮球锦标赛仅向符合以下条件的球员开放：',
+                    subContent: ["具有亚裔血统。（详细资格条件如下）"],
+                },
+            ],
+        },
+        {
+            title: "2.1 亚裔血统",
+            detail: [
+                {
+                    content:
+                        "每名球员必须至少 25% 亚裔血统（即至少有一位祖父母为 100% 亚裔）。",
+                },
+                {
+                    content: "若球员对自身资格有疑虑，请在比赛开始前联系 SGB。",
+                },
+                {
+                    content:
+                        "资格主要依赖球员及其队伍的自我核实，SGB 赛前不进行资格预审。但如有其他球队、球员提出质疑，该球员需配合SGB进行资格验证，如若验证为假，将取消该队在当届比赛的成绩，并保留对球员及其球队追加禁赛处罚的权利。如球队或球员拒绝配合调查，将按验证为假处理。",
+                },
+            ],
+        },
+        {
+            title: "3. 定义与核验流程",
+            detail: [
+                {
+                    content:
+                        "作为非营利组织，SGB 将个人信息保护置于首位，严防数据泄露风险。我们仅使用安全、授权的方式验证球员资格，并确保所有提交文件得到妥善保管与保密。若文件含有敏感信息，请在提交前对相关内容进行遮挡或删除。",
+                },
+                {
+                    content:
+                        "如您对为资格核验而使用您的信息存在法律或隐私顾虑，请视此为您授权 SGB 可仅为联赛参赛资格确认之目的，收取并处理您的注册信息。",
+                },
+                {
+                    content:
+                        "若对球员提交的核验文件真实性提出质疑，该球员及其队伍必须全力配合 SGB 的核验流程；任何拒绝配合或拒绝核实文件的行为将导致该球员被判定为不具备参赛资格。",
+                },
+            ],
+        },
+    ],
+};
+
+export const REGIONAL_RULE_BOOK_DATA_ENGLISH: LeagueInfoDialogData = {
+    title: "NAAWBT GAME RULEBOOK",
+    lastUpdateDate: "Latest Revision: June 25th 2025",
+    introduction:
+        "SHE GOT BUCKETS North American Asian Women's Basketball Tournament",
+    sections: [
+        {
+            title: "Player rules",
+            detail: [
+                {
+                    content: "1.1 Number of Players on the Court",
+                    isBold: true,
+                    subContent: [
+                        "Before the start of the game, when the number of players present for a team is equal to or greater than 4, the game will proceed according to the scheduled start time. If at the scheduled start time, a team is not present or has fewer than 4 players, the team with fewer players must wait until the fourth player arrives at the court before the game can proceed. During this period, the game time will still start counting down according to the original schedule. For every minute of delay, the opposing team earns 1 point. If by the end of the first half a team cannot reach 4 players, that team will be judged to have lost with a score of 0:20.",
+                        "During the game, if a team has fewer than 5 players ready to play on the court due to player injuries or other reasons, but still has 2 or more players, the game will continue. If there are fewer than 2 players, the team should forfeit the game due to insufficient players. If the team judged to be winning is leading, their score at the moment of interruption shall stand. If the team judged to be winning is not leading, the score shall be recorded as 2:0.",
+                        "Withdrawal: If a team withdraws from the game temporarily, their opponent will win with a score of 20:0.",
+                    ],
+                },
+                {
+                    content: "1.2 Player Eligibility",
+                    isBold: true,
+                    subContent: [
+                        "Players must meet the tournament's eligibility criteria, ensuring fair participation and adherence to sportsmanship guidelines.",
+                        "Players must adhere to in-game conduct rules, uniform guidelines, and fair play regulations.",
+                        "To see details of Player Eligibility, please refer to PARTICIPATION ELIGIBILITY RULES.",
+                    ],
+                },
+            ],
+        },
+        {
+            title: "Game Timing",
+            detail: [
+                {
+                    content: "2.1. Game Duration",
+                    isBold: true,
+                    subContent: [
+                        "All SGB Tournaments consists of two types of game timing:",
+                        "    Timing 1: 2x15 min games; with 3 min break on the half court.",
+                        "    Timing 2: 4x10 min games; with 3 min break on the half court and 1 min break after 1st and 3rd quarter.",
+                    ],
+                },
+                {
+                    content: "2.2 Clock Rule",
+                    isBold: true,
+                    subContent: [
+                        "The game has the running clock except the last 2 min of the second half (for 2x15 min games) or fourth quarter (for 4x10 min games).",
+                    ],
+                },
+                {
+                    content: "2.3 Time out Rule",
+                    isBold: true,
+                    subContent: [
+                        "ONE time-out per team for the 1st half, TWO time-outs per team for the 2nd half; 60 seconds for each time-out. No Carried over.",
+                    ],
+                },
+                {
+                    content: "2.4 Over-Time Rule",
+                    isBold: true,
+                    subContent: [
+                        "For all games, 2min OT is applied with a stop clock.",
+                        "Overtime is an extension of the 2nd Half. All fouls carry over.",
+                        "If a team is in the bonus at the end of regulation, it will remain so for overtime.",
+                        "Each team receives ONE additional 30-second timeout during the overtime period.",
+                    ],
+                },
+                {
+                    content: "2.5 Shot Clock",
+                    isBold: true,
+                    subContent: [
+                        'We will have a 30-second shot clock ("spirit of the game" unless noted) with a 10-second warning.',
+                        "After offensive rebound: 30 seconds.",
+                        "The offense has 10 seconds to advance the ball from the back court into the front court.",
+                        "We have the 5-second closely guarded rule, only for holding the ball.",
+                    ],
+                },
+            ],
+        },
+        {
+            title: "Fouls and Penalties:",
+            detail: [
+                {
+                    content: "3.1 Personal Fouls",
+                    isBold: true,
+                    subContent: [
+                        "A player accumulating 5 personal fouls in a single game, or 2 technical fouls, or 2 flagrant fouls, or 1 technical foul and 1 flagrant foul, shall be ejected from the game.",
+                    ],
+                },
+                {
+                    content: "3.2 Team Fouls and Bonus Free Throws",
+                    isBold: true,
+                    subContent: [
+                        "Under the 2x15 min game:",
+                        "    From the 5th team foul onwards in each period, the fouled team shall be awarded 1-on-1 free throws",
+                        "    From the 7th team foul onwards in each period, the fouled team shall be awarded two free throws.",
+                        "Under the 4 x 10 min game:",
+                        "    From the 5th team foul onwards in each period, the fouled team shall be awarded two free throws.",
+                        "Common fouls, technical fouls, and flagrant fouls are counted as both personal and team fouls. Offensive fouls do not count as team fouls, only as personal fouls.",
+                    ],
+                },
+                {
+                    content: "3.3 Technical Fouls",
+                    isBold: true,
+                    subContent: [
+                        "Technical fouls result from unsportsmanlike conduct, improper behavior, or rule violations.",
+                        "The opposing team is awarded two free throws. The coach designates the shooter and possession remains unchanged after the free throw.",
+                    ],
+                },
+                {
+                    content: "3.4 Flagrant Fouls",
+                    isBold: true,
+                    subContent: [
+                        "Flagrant fouls involve excessive or violent contact.",
+                        "Level one flagrant foul: Two free throws, to be taken by the fouled player.",
+                        "Level two flagrant foul: The referee will review the game footage to confirm if it is a level two flagrant foul. If confirmed, the fouling player shall be immediately ejected from the game, and two free throws shall be awarded to the opposing team, to be taken by the fouled player.",
+                        "To maximize player safety, SGB will impose additional penalties for flagrant fouls after the game, including point deductions and suspensions. The specific rules are as follows:",
+                        "    SGB adopts a points system for flagrant fouls. A player receiving a level one flagrant foul will be awarded 1 flagrant point, and a level two flagrant foul will result in 2 flagrant points.",
+                        "    After the end of a single game, if the flagrant points fall within the range of 0-1, there will be no automatic suspension;",
+                        "        When the flagrant points reach 2, an automatic one-game suspension will be imposed;",
+                        "        When the flagrant points reach 3, a two-game suspension will be imposed automatically;",
+                        "        When the flagrant points reach 4, the team will forfeit the remaining games of the league;",
+                        "        When the flagrant points reach 5 or more, the team will be permanently disqualified from participating in all SGB leagues.",
+                        "    If the referee does not make an immediate ruling, teams may appeal to SGB after the game. If at least two referees confirm the flagrant foul through video review, the offending player will be subject to additional flagrant foul penalties and corresponding point deductions. However, the results of the game, score, and individual points remain unchanged.",
+                        "    Flagrant foul points are permanent and will not be reset.",
+                        "During free throws, a maximum of 6 players (4 defending, 2 attacking) are allowed to contest for rebounds on either side of the restricted area. Free throws must be completed within 10 seconds.",
+                    ],
+                },
+                {
+                    content: "3.5 Three-Seconds Rules",
+                    isBold: true,
+                    subContent: [
+                        "An Offensive player may not remain in the key (painted area) for more than 3 seconds while their team is in possession of the ball.",
+                        "A violation results in a turnover, awarding possession to the opposing team.",
+                        "No defensive 3 second restriction.",
+                    ],
+                },
+                {
+                    content: "3.6 Offensive Fouls and Team Control Fouls",
+                    isBold: true,
+                    subContent: [
+                        "Offensive fouls (charging, illegal screens) are classified as team control fouls.",
+                        "Offensive fouls do not result in free throws, even if a team is in the bonus.",
+                        "Only defensive and loose-ball fouls count toward a team's limit for the team foul penalty.",
+                        "Offensive fouls do not count toward the team foul penalty unless a player is in the player foul penalty situation.",
+                        "The opposing team gains possession of the ball after an offensive foul.",
+                    ],
+                },
+                {
+                    content: "3.7 Closely Guarded Rule",
+                    isBold: true,
+                    subContent: [
+                        "A player holding the ball in the frontcourt is considered closely guarded when a defender is within six feet.",
+                        "The offensive player must pass, shoot, or dribble within five seconds to avoid a violation.",
+                    ],
+                },
+                {
+                    content: "3.8 Jump Ball Rule",
+                    isBold: true,
+                    subContent: [
+                        "A jump ball is conducted to start the game and is conducted at center court.",
+                        "During the game, if a held-ball situation occurs, possession is determined by the possession arrow, alternating possession between teams thereafter.",
+                    ],
+                },
+                {
+                    content: "3.9 Starting Ball Possession for Each Quarter",
+                    isBold: true,
+                    subContent: [
+                        "The team that loses the opening jump ball is awarded possession to start the second and fourth quarters.",
+                        "The team that wins the opening jump ball starts the third quarter with possession.",
+                    ],
+                },
+            ],
+        },
+        {
+            title: "Sportsmanship",
+            detail: [
+                {
+                    content:
+                        "To promote a positive atmosphere and foster respect and cooperation among participants, as of April 1st, 2024, SGB has introduced regulations pertaining to sportsmanship. Sports is not just about competition; it's also about culture and values. By implementing these regulations, we aim to educate and guide participants to demonstrate sportsmanship during games, including respecting opponents, referees, and spectators, cooperating with teammates, and accepting victory and defeat. This not only helps maintain fairness and order in games but also cultivates participants' teamwork, self-discipline, and moral values, making sports a positive, healthy, and enjoyable experience.",
+                },
+                {
+                    content:
+                        "Following each game, referees will assess the sportsmanship of teams, and these ratings will be recorded in the technical report. If a team's average sportsmanship rating falls below a certain threshold (< 3 points), they will receive a warning. Continued low ratings may result in the team facing suspension.",
+                },
+                {
+                    content:
+                        "In the regional tournament on October 4-5, 2025, if a team's score is below 3 points, the team will be prohibited from participating in subsequent elimination/placement games.",
+                    subContent: [
+                        "5 - Excellent Conduct and Sportsmanship: Participants cooperate fully with the officials and opposing team members. If necessary, the team captain converses calmly with officials about rule interpretations, fouls, violations and game control. Team captains maintain full control of teammates and spectators.",
+                        "4 - Good Conduct and Sportsmanship: Participants generally display good sportsmanship towards officials and opposing team members, with no blatant displays of poor sportsmanship. Participants verbally complain about a few decisions and calls by officials which may warrant a warning from the Intramural Staff. Team captain maintains control of teammates and spectators.",
+                        "3 - Average Conduct and Sportsmanship: Participants display some actions of poor sportsmanship towards officials and opposing team members. Participants persist in questioning officials about rule interpretations and judgment calls. Team has been warned and may or may not have received a foul for an unsporting act. Team captain maintains some control of teammates and spectators.",
+                        "2- Below Average Conduct and Sportsmanship: Participants continually display actions of poor sportsmanship towards officials and opposing team members. Participants constantly complain about rule interpretations and judgment calls. Team has been warned multiple times and has received multiple fouls for unsporting acts. Team captain exhibits little control of teammates, spectators or themselves.",
+                        "1- Poor Conduct and Sportsmanship: Participants' behavior is completely uncooperative and shows no respect for officials and opposing team members. Multiple fouls are given to a player or players for unsportsmanlike acts. Team captain displays no control over the actions of team members. Team behavior warrants discontinuance of the game for any reason. Participants and spectators clearly related to the team engage in disorderly conduct that violates the university code of conduct.",
+                    ],
+                },
+            ],
+        },
+        {
+            title: "Enforcement",
+            detail: [
+                {
+                    content:
+                        "Other rules will refer to NCAA Women's Basketball Rule for the rest of rules",
+                },
+                {
+                    content:
+                        "All decisions made by the referee on-site are final.",
+                },
+                {
+                    content:
+                        "The tournament committee may review infractions post-game and issue additional penalties if necessary.",
+                },
+            ],
+        },
+        {
+            title: "General",
+            detail: [
+                {
+                    content:
+                        "This rulebook provides a comprehensive framework for SGB Women’s Basketball Tournament. If there is any question, please contact shegotbuckets@info.org.",
+                },
             ],
         },
     ],

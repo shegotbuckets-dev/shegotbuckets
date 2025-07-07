@@ -24,12 +24,13 @@ interface LeagueInfoDialogProps {
     title: string;
     description: string;
     buttonText: string;
-    englishData: LeagueInfoDialogData;
-    chineseData: LeagueInfoDialogData;
-    infoComponent: React.FC<{
+    englishData?: LeagueInfoDialogData;
+    chineseData?: LeagueInfoDialogData;
+    infoComponent?: React.FC<{
         language: "en" | "zh";
         data: LeagueInfoDialogData;
     }>;
+    infoComponentRegional?: React.ComponentType;
 }
 
 // Update the InfoTable component to center text and integrate the title with the table
@@ -95,7 +96,14 @@ const ContentWithUrls = ({ content }: { content: string }) => {
         <>
             {segments.map((segment, index) => {
                 if (segment.type === "text") {
-                    return <span key={`text-${index}`}>{segment.content}</span>;
+                    return (
+                        <span
+                            key={`text-${index}`}
+                            className="whitespace-pre-wrap"
+                        >
+                            {segment.content}
+                        </span>
+                    );
                 } else if (segment.type === "url") {
                     if (segment.isExternal) {
                         return (
@@ -137,6 +145,7 @@ export const LeagueInfoDialog = ({
     englishData,
     chineseData,
     infoComponent: InfoComponent,
+    infoComponentRegional: InfoComponentRegional,
 }: LeagueInfoDialogProps) => {
     const [language, setLanguage] = useState<"en" | "zh">("en");
     const [isHovered, setIsHovered] = useState(false);
@@ -192,25 +201,40 @@ export const LeagueInfoDialog = ({
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[900px] max-h-[90%] overflow-auto">
                     <div className="relative">
-                        <div className="absolute top-4 right-4 z-10">
-                            <Button
-                                onClick={() =>
-                                    setLanguage(language === "en" ? "zh" : "en")
-                                }
-                                variant="outline"
-                                size="sm"
-                                className="bg-primary/10 text-primary hover:bg-primary/20"
-                            >
-                                {language === "en" ? "中文" : "EN"}
-                            </Button>
-                        </div>
+                        {englishData && chineseData && (
+                            <div className="absolute top-4 right-4 z-10">
+                                <Button
+                                    onClick={() =>
+                                        setLanguage(
+                                            language === "en" ? "zh" : "en"
+                                        )
+                                    }
+                                    variant="outline"
+                                    size="sm"
+                                    className="bg-primary/10 text-primary hover:bg-primary/20"
+                                >
+                                    {language === "en" ? "中文" : "EN"}
+                                </Button>
+                            </div>
+                        )}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
                             className="mt-2"
                         >
-                            <InfoComponent language={language} data={data} />
+                            {InfoComponentRegional ? (
+                                <InfoComponentRegional />
+                            ) : InfoComponent && data ? (
+                                <InfoComponent
+                                    language={language}
+                                    data={data}
+                                />
+                            ) : (
+                                <div className="text-center text-gray-500 py-8">
+                                    No content available
+                                </div>
+                            )}
                         </motion.div>
                     </div>
                 </DialogContent>
@@ -277,22 +301,94 @@ export const LeagueInfoContent = ({
                                             />
                                         </span>
                                         {paragraph.subContent && (
-                                            <ul className="list-disc pl-6 space-y-4 mt-6">
+                                            <div className="pl-6 space-y-4 mt-6">
                                                 {paragraph.subContent.map(
-                                                    (subContent, index) => (
-                                                        <li
-                                                            key={index}
-                                                            className="mb-4"
-                                                        >
-                                                            <ContentWithUrls
-                                                                content={
-                                                                    subContent
-                                                                }
-                                                            />
-                                                        </li>
-                                                    )
+                                                    (subContent, index) => {
+                                                        // Detect indentation level based on leading whitespace
+                                                        const trimmedContent =
+                                                            subContent.trimStart();
+                                                        const leadingSpaces =
+                                                            subContent.length -
+                                                            trimmedContent.length;
+
+                                                        if (
+                                                            leadingSpaces === 0
+                                                        ) {
+                                                            // First layer - with bullet point
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="mb-4 flex items-start"
+                                                                >
+                                                                    <span className="mr-2 list-disc">
+                                                                        •
+                                                                    </span>
+                                                                    <ContentWithUrls
+                                                                        content={
+                                                                            trimmedContent
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        } else if (
+                                                            leadingSpaces === 4
+                                                        ) {
+                                                            // Second layer - indented with bullet
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="mb-4 pl-4 flex items-start"
+                                                                >
+                                                                    <span className="mr-2 list-disc">
+                                                                        •
+                                                                    </span>
+                                                                    <ContentWithUrls
+                                                                        content={
+                                                                            trimmedContent
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        } else if (
+                                                            leadingSpaces === 8
+                                                        ) {
+                                                            // Third layer - extra indented with bullet
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="mb-4 pl-8 flex items-start"
+                                                                >
+                                                                    <span className="mr-2 list-disc">
+                                                                        •
+                                                                    </span>
+                                                                    <ContentWithUrls
+                                                                        content={
+                                                                            trimmedContent
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        } else {
+                                                            // Fallback - treat as first layer
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="mb-4 flex items-start"
+                                                                >
+                                                                    <span className="text-gray-500 mr-2 mt-1 list-disc">
+                                                                        •
+                                                                    </span>
+                                                                    <ContentWithUrls
+                                                                        content={
+                                                                            trimmedContent
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        }
+                                                    }
                                                 )}
-                                            </ul>
+                                            </div>
                                         )}
                                     </li>
                                 ))}

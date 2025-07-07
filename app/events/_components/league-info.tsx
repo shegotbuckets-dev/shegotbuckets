@@ -4,26 +4,42 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
     ELIGIBILITY_DATA_CHINESE,
     ELIGIBILITY_DATA_ENGLISH,
+    REGIONAL_ELIGIBILITY_DATA_CHINESE,
+    REGIONAL_ELIGIBILITY_DATA_ENGLISH,
+    REGIONAL_RULE_BOOK_DATA_ENGLISH,
     RULE_BOOK_DATA_CHINESE,
     RULE_BOOK_DATA_ENGLISH,
     SEEDING_DATA_CHINESE,
     SEEDING_DATA_ENGLISH,
 } from "@/constants/events";
 
-import { Award, BookOpen, Flag, Shuffle, Trophy, Users } from "lucide-react";
+import {
+    Award,
+    BookOpen,
+    ChartGantt,
+    Flag,
+    Shuffle,
+    Trophy,
+    Users,
+} from "lucide-react";
 
 import { LeagueInfoContent, LeagueInfoDialog } from "./league-info-dialog";
+import { RegistrationTimeline } from "./registration-timeline";
 
-export const LeagueInfo = () => {
+export const LeagueInfo = ({
+    isRegional = false,
+}: {
+    isRegional?: boolean;
+}) => {
     return (
-        <section className="pt-20 pb-28 bg-white/10">
+        <section className="pt-20 pb-28 bg-white/10" id="information-event">
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold mb-8 text-center">
                     League Info
                 </h2>
-                <ParticipationEligibility />
-                <RuleBook />
-                <Seeding />
+                {isRegional ? <RegistrationGuide /> : <Seeding />}
+                <ParticipationEligibility isRegional={isRegional} />
+                <RuleBook isRegional={isRegional} />
                 <div className="grid md:grid-cols-3 gap-8 py-3">
                     <Card>
                         <CardContent className="flex flex-col items-center p-6">
@@ -64,7 +80,7 @@ export const LeagueInfo = () => {
     );
 };
 
-const RuleBook = () => {
+const RuleBook = ({ isRegional }: { isRegional: boolean }) => {
     return (
         <LeagueInfoDialog
             id="ruleBook-event"
@@ -78,14 +94,18 @@ const RuleBook = () => {
             title="Rule Book"
             description="Essential guidelines for all players"
             buttonText="View Rules"
-            englishData={RULE_BOOK_DATA_ENGLISH}
-            chineseData={RULE_BOOK_DATA_CHINESE}
+            englishData={
+                isRegional
+                    ? REGIONAL_RULE_BOOK_DATA_ENGLISH
+                    : RULE_BOOK_DATA_ENGLISH
+            }
+            chineseData={isRegional ? undefined : RULE_BOOK_DATA_CHINESE}
             infoComponent={LeagueInfoContent}
         />
     );
 };
 
-const ParticipationEligibility = () => {
+const ParticipationEligibility = ({ isRegional }: { isRegional: boolean }) => {
     return (
         <LeagueInfoDialog
             id="participation-eligibility"
@@ -99,8 +119,16 @@ const ParticipationEligibility = () => {
             title="Participation Eligibility"
             description="Requirements for league participation"
             buttonText="View Eligibility"
-            englishData={ELIGIBILITY_DATA_ENGLISH}
-            chineseData={ELIGIBILITY_DATA_CHINESE}
+            englishData={
+                isRegional
+                    ? REGIONAL_ELIGIBILITY_DATA_ENGLISH
+                    : ELIGIBILITY_DATA_ENGLISH
+            }
+            chineseData={
+                isRegional
+                    ? REGIONAL_ELIGIBILITY_DATA_CHINESE
+                    : ELIGIBILITY_DATA_CHINESE
+            }
             infoComponent={LeagueInfoContent}
         />
     );
@@ -123,6 +151,25 @@ const Seeding = () => {
             englishData={SEEDING_DATA_ENGLISH}
             chineseData={SEEDING_DATA_CHINESE}
             infoComponent={LeagueInfoContent}
+        />
+    );
+};
+
+const RegistrationGuide = () => {
+    return (
+        <LeagueInfoDialog
+            id="registration-guide"
+            icon={ChartGantt}
+            gradientColors={{
+                from: "green-50",
+                to: "emerald-50",
+                darkFrom: "green-900/20",
+                darkTo: "emerald-900/20",
+            }}
+            title="Registration Guide"
+            description="Guidelines for league registration"
+            buttonText="View Important Dates"
+            infoComponentRegional={RegistrationTimeline}
         />
     );
 };
