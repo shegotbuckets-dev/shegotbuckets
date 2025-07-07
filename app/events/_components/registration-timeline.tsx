@@ -17,173 +17,182 @@ type RegistrationStepType = {
 const registrationData: RegistrationStepType[] = [
     {
         id: 1,
-        title: "Official Registration Opens!",
+        title: "Pre-Registration Opens!",
         description: (
-            <>
-                Welcome all Asian women basketball enthusiasts in North America
-                to register and participate in this tournament.
-                <br />
-                <br />
-                The tournament is open to all age groups of Asian women residing
-                in North America and welcomes players of all skill levels to
-                form teams. All players must be of at least{" "}
-                <span className="font-semibold text-primary">
-                    25% Asian descent (Asian descent ≥ 25%)
-                </span>{" "}
-                to be considered eligible.
-                <br />
-                <br />
-                Teams must submit a complete roster during the registration
-                phase. SGB reserves the final right to approve tournament
-                participation.
-            </>
+            <div className="space-y-4">
+                <p>To begin, all teams must:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                    <li>
+                        Fill out the{" "}
+                        <a
+                            href="https://forms.gle/Wwun7YqybpHiw52p8"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:underline font-semibold"
+                        >
+                            Pre-Registration Form
+                        </a>
+                    </li>
+                    <li>
+                        Submit a $100 deposit via Zelle to{" "}
+                        <span className="font-semibold text-primary">
+                            admin@shegotbuckets.org
+                        </span>
+                        . Please include your Team Name in the payment note
+                        (e.g., Bay Area Warriors)
+                    </li>
+                </ul>
+                <p>
+                    This deposit will be fully refunded after the tournament,
+                    provided the team has no rule violations or misconduct.
+                </p>
+                <p>
+                    Once both the form and deposit are received, your team will
+                    get a confirmation email along with the Official
+                    Registration Guide.
+                </p>
+            </div>
         ),
         time: "July 1st",
     },
     {
         id: 2,
-        title: "Early Bird Registration",
+        title: "Early Bird Pre-Registration Deadline",
         description: (
-            <div className="space-y-4">
-                <div>
-                    <span className="font-semibold text-primary">
-                        📍 July 15 – Early Bird Pre-Registration Deadline
-                    </span>
-                    <ul className="list-disc pl-5 mt-2 space-y-1">
-                        <li>Submit: Pre-Registration Form</li>
-                        <li>Pay: $100 registration deposit</li>
-                    </ul>
-                    <p className="mt-2 text-sm">
-                        Note: Early bird teams must submit the form and deposit
-                        to receive a discount code for official registration.
-                        The code is used on the official website during
-                        registration. The official registration link and details
-                        will be provided later via email.
-                    </p>
-                </div>
-                <div>
-                    <span className="font-semibold text-primary">
-                        📍 August 10 – Early Bird Official Registration Deadline
-                    </span>
-                    <ul className="list-disc pl-5 mt-2 space-y-1">
-                        <li>Submit: Team Roster</li>
-                        <li>Sign: Waiver Form (all players)</li>
-                        <li>Fee: $720/team</li>
-                    </ul>
-                    <p className="mt-2 text-sm">
-                        Teams must complete registration via the website by
-                        submitting the roster, paying the registration fee, and
-                        signing the waiver.
-                    </p>
-                </div>
-            </div>
+            <p>
+                Submit both the Pre-Registration Form and $100 deposit by this
+                date to receive a{" "}
+                <span className="font-semibold text-primary">
+                    $30 discount code
+                </span>{" "}
+                for official registration.
+            </p>
         ),
-        time: "July 1 - 15",
+        time: "July 15",
     },
     {
         id: 3,
-        title: "Regular Registration",
+        title: "Early Bird Official Registration Deadline",
         description: (
             <div className="space-y-4">
-                <div>
-                    <span className="font-semibold text-primary">
-                        📍 August 15 – Regular Pre-Registration Deadline
-                    </span>
-                    <ul className="list-disc pl-5 mt-2 space-y-1">
-                        <li>Submit: Pre-Registration Form</li>
-                        <li>Pay: $100 deposit</li>
-                    </ul>
-                    <p className="mt-2 text-sm">
-                        Only teams with the Pre-Registration done can officially
-                        register for the game. Once the pre-registration form
-                        and deposit are received, we will send a confirmation
-                        email for successful pre-registration along with the
-                        official registration guide.
-                    </p>
-                </div>
-                <div>
-                    <span className="font-semibold text-primary">
-                        📍 August 30 – Regular Final Registration Deadline
-                    </span>
-                    <ul className="list-disc pl-5 mt-2 space-y-1">
-                        <li>Submit: Team Roster</li>
-                        <li>Sign: Waiver Form (all players)</li>
-                        <li>Fee: $750/team</li>
-                    </ul>
-                    <p className="mt-2 text-sm">
-                        Teams must complete registration online by submitting
-                        the roster, paying the registration fee, and signing the
-                        waiver.
-                    </p>
-                </div>
+                <p>To complete Official Registration, teams must:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                    <li>Register the team on our website</li>
+                    <li>Upload Team Roster</li>
+                    <li>
+                        Pay the Early Bird Fee:{" "}
+                        <span className="font-semibold text-primary">$720</span>
+                    </li>
+                    <li>Each player must individually sign the Waiver Form</li>
+                </ul>
+                <p>
+                    Only one player (typically the captain) can register the
+                    team and track team status. Team managers or non-players may
+                    not register the team.
+                </p>
             </div>
         ),
-        time: "July 15 - August 15",
+        time: "August 10",
     },
     {
         id: 4,
-        title: "Roster Revision Deadline",
+        title: "Regular Pre-Registration Deadline",
         description: (
-            <>
-                <span className="font-semibold text-primary">
-                    📍 August 30 – Roster Revision Deadline
-                </span>
-                <br />
-                <br />
-                Each team has one free revision opportunity before August 30.
-                <br />
-                <br />
-                For any additional or late changes, a fee of{" "}
-                <span className="font-semibold text-primary">
-                    $15/player
-                </span>{" "}
-                will apply.
-                <br />
-                <br />
-                No changes will be accepted after the deadline. Team captains
-                should confirm all player info in advance.
-            </>
+            <p>
+                Submit Pre-Registration Form and $100 deposit if you missed the
+                early bird period. No discount code will be provided after this
+                deadline.
+            </p>
+        ),
+        time: "August 15",
+    },
+    {
+        id: 5,
+        title: "Regular Official Registration Deadline",
+        description: (
+            <ul className="list-disc pl-5 space-y-2">
+                <li>Register your team & upload roster</li>
+                <li>
+                    Pay the Regular Fee:{" "}
+                    <span className="font-semibold text-primary">$750</span>
+                </li>
+                <li>Ensure all players sign the Waiver Form individually</li>
+            </ul>
         ),
         time: "August 30",
     },
     {
-        id: 5,
+        id: 6,
+        title: "Roster Revision Deadline",
+        description: (
+            <div className="space-y-4">
+                <ul className="list-disc pl-5 space-y-2">
+                    <li>
+                        Each team gets one free roster change before this date
+                    </li>
+                    <li>
+                        After that:{" "}
+                        <span className="font-semibold text-primary">
+                            $15 per change request
+                        </span>
+                    </li>
+                    <li>No changes accepted after August 30</li>
+                </ul>
+                <p>
+                    Team captains are responsible for confirming all player
+                    information before submission.
+                </p>
+            </div>
+        ),
+        time: "August 30",
+    },
+    {
+        id: 7,
         title: "Schedule Announcement",
         description: (
-            <>
-                <span className="font-semibold text-primary">
-                    September 1–2:
-                </span>{" "}
-                Group draw
-                <br />
-                <br />
-                <span className="font-semibold text-primary">
-                    September 5:
-                </span>{" "}
-                Schedule confirmation and release
-            </>
+            <div className="space-y-3">
+                <p>
+                    <span className="font-semibold text-primary">
+                        September 1–2:
+                    </span>{" "}
+                    Group draw
+                </p>
+                <p>
+                    <span className="font-semibold text-primary">
+                        September 5:
+                    </span>{" "}
+                    Schedule finalized and released
+                </p>
+            </div>
         ),
         time: "September 1–2",
     },
     {
-        id: 6,
+        id: 8,
         title: "Official Tournament Dates",
         description: (
-            <>
-                <span className="font-semibold text-primary">
-                    📅 Date: October 4–5, 2025
-                </span>
-                <br />
-                <br />
-                <span className="font-semibold text-primary">
-                    Saturday:
-                </span>{" "}
-                9:30 AM – 5:30 PM
-                <br />
-                <br />
-                <span className="font-semibold text-primary">Sunday:</span> 9:00
-                AM – 3:00 PM
-            </>
+            <div className="space-y-3">
+                <p>
+                    <span className="font-semibold text-primary">
+                        📍 Location: 115 Torne Valley Rd, Hillburn, NY 10931
+                    </span>
+                </p>
+                <p>
+                    <span className="font-semibold text-primary">
+                        📅 Date: October 4–5, 2025
+                    </span>
+                </p>
+                <p>
+                    <span className="font-semibold text-primary">
+                        Saturday:
+                    </span>{" "}
+                    9:30 AM – 5:30 PM
+                </p>
+                <p>
+                    <span className="font-semibold text-primary">Sunday:</span>{" "}
+                    9:00 AM – 3:00 PM
+                </p>
+            </div>
         ),
         time: "October 4–5",
     },
@@ -191,25 +200,23 @@ const registrationData: RegistrationStepType[] = [
 
 export const RegistrationTimeline = () => {
     return (
-        <section className="py-16">
-            <div className="container max-w-7xl mx-auto px-4">
-                <div className="flex flex-col md:flex-row items-start gap-12">
-                    {/* Content Side - 30% */}
-                    <div className="w-full md:w-[30%]">
-                        <div className="sticky top-8">
-                            <h2 className="text-4xl font-bold mb-6">
-                                Registration Timeline
-                            </h2>
-                            <p className="text-muted-foreground">
-                                Follow the registration timeline to ensure your
-                                team is properly registered for the tournament.
-                                Early bird registration offers discounted rates.
-                            </p>
-                        </div>
-                    </div>
+        <div>
+            <div className="max-w-4xl mx-auto p-6 space-y-8">
+                <h2 className="text-2xl font-bold">REGISTRATION TIMELINE</h2>
 
-                    {/* Timeline Side - 70% */}
-                    <div className="w-full md:w-[70%]">
+                <div className="prose prose-blue max-w-none space-y-6">
+                    <p>
+                        <span className="font-medium text-orange-500">
+                            All teams must complete both Pre-Registration and
+                            Official Registration to secure a spot in the
+                            tournament.
+                        </span>
+                    </p>
+
+                    <div className="border-2"></div>
+
+                    {/* Timeline */}
+                    <div className="w-full">
                         <Timeline>
                             {registrationData.map((item) => (
                                 <TimelineItem key={item.id}>
@@ -228,6 +235,6 @@ export const RegistrationTimeline = () => {
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     );
 };

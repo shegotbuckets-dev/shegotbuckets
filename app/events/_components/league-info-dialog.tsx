@@ -24,12 +24,13 @@ interface LeagueInfoDialogProps {
     title: string;
     description: string;
     buttonText: string;
-    englishData: LeagueInfoDialogData;
-    chineseData: LeagueInfoDialogData;
-    infoComponent: React.FC<{
+    englishData?: LeagueInfoDialogData;
+    chineseData?: LeagueInfoDialogData;
+    infoComponent?: React.FC<{
         language: "en" | "zh";
         data: LeagueInfoDialogData;
     }>;
+    infoComponentRegional?: React.ComponentType;
 }
 
 // Update the InfoTable component to center text and integrate the title with the table
@@ -137,6 +138,7 @@ export const LeagueInfoDialog = ({
     englishData,
     chineseData,
     infoComponent: InfoComponent,
+    infoComponentRegional: InfoComponentRegional,
 }: LeagueInfoDialogProps) => {
     const [language, setLanguage] = useState<"en" | "zh">("en");
     const [isHovered, setIsHovered] = useState(false);
@@ -192,25 +194,40 @@ export const LeagueInfoDialog = ({
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[900px] max-h-[90%] overflow-auto">
                     <div className="relative">
-                        <div className="absolute top-4 right-4 z-10">
-                            <Button
-                                onClick={() =>
-                                    setLanguage(language === "en" ? "zh" : "en")
-                                }
-                                variant="outline"
-                                size="sm"
-                                className="bg-primary/10 text-primary hover:bg-primary/20"
-                            >
-                                {language === "en" ? "中文" : "EN"}
-                            </Button>
-                        </div>
+                        {!InfoComponentRegional && (
+                            <div className="absolute top-4 right-4 z-10">
+                                <Button
+                                    onClick={() =>
+                                        setLanguage(
+                                            language === "en" ? "zh" : "en"
+                                        )
+                                    }
+                                    variant="outline"
+                                    size="sm"
+                                    className="bg-primary/10 text-primary hover:bg-primary/20"
+                                >
+                                    {language === "en" ? "中文" : "EN"}
+                                </Button>
+                            </div>
+                        )}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
                             className="mt-2"
                         >
-                            <InfoComponent language={language} data={data} />
+                            {InfoComponentRegional ? (
+                                <InfoComponentRegional />
+                            ) : InfoComponent && data ? (
+                                <InfoComponent
+                                    language={language}
+                                    data={data}
+                                />
+                            ) : (
+                                <div className="text-center text-gray-500 py-8">
+                                    No content available
+                                </div>
+                            )}
                         </motion.div>
                     </div>
                 </DialogContent>

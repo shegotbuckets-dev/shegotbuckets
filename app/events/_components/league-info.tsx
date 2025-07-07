@@ -13,17 +13,22 @@ import {
 import { Award, BookOpen, Flag, Shuffle, Trophy, Users } from "lucide-react";
 
 import { LeagueInfoContent, LeagueInfoDialog } from "./league-info-dialog";
+import { RegistrationTimeline } from "./registration-timeline";
 
-export const LeagueInfo = () => {
+export const LeagueInfo = ({
+    isRegional = false,
+}: {
+    isRegional?: boolean;
+}) => {
     return (
         <section className="pt-20 pb-28 bg-white/10">
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold mb-8 text-center">
                     League Info
                 </h2>
+                {isRegional ? <RegistrationGuide /> : <Seeding />}
                 <ParticipationEligibility />
                 <RuleBook />
-                <Seeding />
                 <div className="grid md:grid-cols-3 gap-8 py-3">
                     <Card>
                         <CardContent className="flex flex-col items-center p-6">
@@ -123,6 +128,25 @@ const Seeding = () => {
             englishData={SEEDING_DATA_ENGLISH}
             chineseData={SEEDING_DATA_CHINESE}
             infoComponent={LeagueInfoContent}
+        />
+    );
+};
+
+const RegistrationGuide = () => {
+    return (
+        <LeagueInfoDialog
+            id="registration-guide"
+            icon={BookOpen}
+            gradientColors={{
+                from: "green-50",
+                to: "emerald-50",
+                darkFrom: "green-900/20",
+                darkTo: "emerald-900/20",
+            }}
+            title="Registration Guide"
+            description="Guidelines for league registration"
+            buttonText="View Important Dates"
+            infoComponentRegional={RegistrationTimeline}
         />
     );
 };
