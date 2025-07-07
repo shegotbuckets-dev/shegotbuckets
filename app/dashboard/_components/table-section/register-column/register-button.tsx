@@ -61,7 +61,12 @@ export const RegisterButton = ({
             setLoading(true);
             try {
                 const [teamsData, registrationsData] = await Promise.all([
-                    fetchFromTable("teams"),
+                    fetchFromTable("teams", {
+                        eq: {
+                            column: "league_id",
+                            value: event.league_id ?? "",
+                        },
+                    }),
                     fetchFromTable("event_registrations", {
                         eq: {
                             column: "event_id",

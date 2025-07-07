@@ -228,20 +228,31 @@ export type Database = {
             teams: {
                 Row: {
                     created_at: string | null;
+                    league_id: string | null;
                     name: string;
                     team_id: string;
                 };
                 Insert: {
                     created_at?: string | null;
+                    league_id?: string | null;
                     name: string;
                     team_id?: string;
                 };
                 Update: {
                     created_at?: string | null;
+                    league_id?: string | null;
                     name?: string;
                     team_id?: string;
                 };
-                Relationships: [];
+                Relationships: [
+                    {
+                        foreignKeyName: "teams_league_id_fkey";
+                        columns: ["league_id"];
+                        isOneToOne: false;
+                        referencedRelation: "leagues";
+                        referencedColumns: ["league_id"];
+                    },
+                ];
             };
             users: {
                 Row: {
