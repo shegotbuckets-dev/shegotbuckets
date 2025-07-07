@@ -11,9 +11,11 @@ import { Calendar, CircleDollarSign, MapPin, Users } from "lucide-react";
 export const LeagueEvents = ({
     league,
     events,
+    isRegional = false,
 }: {
     league: Database["public"]["Tables"]["leagues"]["Row"];
     events: Database["public"]["Tables"]["events"]["Row"][];
+    isRegional?: boolean;
 }) => {
     const [selectedEvent, setSelectedEvent] = useState<string>(
         events.filter((event) => event.active === true)[0]?.title ??
@@ -31,7 +33,7 @@ export const LeagueEvents = ({
 
     return (
         <>
-            <section id="aboutInfor-event" className="py-20">
+            <section id="about-event" className="py-20">
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold mb-8 text-center">
                         About the League
@@ -43,7 +45,7 @@ export const LeagueEvents = ({
             </section>
             <section className="py-20 bg-gray-200/25">
                 <h2 className="text-3xl font-bold mb-8 text-center">
-                    Upcoming Tournament
+                    {isRegional ? "Upcoming Tournament" : "Our Conferences"}
                 </h2>
                 <div className="flex justify-center space-x-4 mb-">
                     <div className="flex justify-center space-x-4 mb-12">

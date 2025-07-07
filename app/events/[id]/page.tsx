@@ -38,9 +38,15 @@ export default async function EventPage({
                     {/* Hero Section */}
                     <LeagueHero league={league} events={events} />
                     {/* About Infor Section */}
-                    <LeagueEvents league={league} events={events} />
+                    <LeagueEvents
+                        league={league}
+                        events={events}
+                        isRegional={isRegional}
+                    />
                     {/* League Information */}
                     <LeagueInfo isRegional={isRegional} />
+                    {/* Hall of Record */}
+                    <HallOfRecord isRegional={isRegional} />
                     {/* Registration Section */}
                     <EventRegistration league={league} events={events} />
                     {/* Anchor Navbar */}

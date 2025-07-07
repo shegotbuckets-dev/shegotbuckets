@@ -96,7 +96,14 @@ const ContentWithUrls = ({ content }: { content: string }) => {
         <>
             {segments.map((segment, index) => {
                 if (segment.type === "text") {
-                    return <span key={`text-${index}`}>{segment.content}</span>;
+                    return (
+                        <span
+                            key={`text-${index}`}
+                            className="whitespace-pre-wrap"
+                        >
+                            {segment.content}
+                        </span>
+                    );
                 } else if (segment.type === "url") {
                     if (segment.isExternal) {
                         return (
@@ -194,7 +201,7 @@ export const LeagueInfoDialog = ({
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[900px] max-h-[90%] overflow-auto">
                     <div className="relative">
-                        {!InfoComponentRegional && (
+                        {englishData && chineseData && (
                             <div className="absolute top-4 right-4 z-10">
                                 <Button
                                     onClick={() =>
@@ -294,22 +301,94 @@ export const LeagueInfoContent = ({
                                             />
                                         </span>
                                         {paragraph.subContent && (
-                                            <ul className="list-disc pl-6 space-y-4 mt-6">
+                                            <div className="pl-6 space-y-4 mt-6">
                                                 {paragraph.subContent.map(
-                                                    (subContent, index) => (
-                                                        <li
-                                                            key={index}
-                                                            className="mb-4"
-                                                        >
-                                                            <ContentWithUrls
-                                                                content={
-                                                                    subContent
-                                                                }
-                                                            />
-                                                        </li>
-                                                    )
+                                                    (subContent, index) => {
+                                                        // Detect indentation level based on leading whitespace
+                                                        const trimmedContent =
+                                                            subContent.trimStart();
+                                                        const leadingSpaces =
+                                                            subContent.length -
+                                                            trimmedContent.length;
+
+                                                        if (
+                                                            leadingSpaces === 0
+                                                        ) {
+                                                            // First layer - with bullet point
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="mb-4 flex items-start"
+                                                                >
+                                                                    <span className="mr-2 list-disc">
+                                                                        •
+                                                                    </span>
+                                                                    <ContentWithUrls
+                                                                        content={
+                                                                            trimmedContent
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        } else if (
+                                                            leadingSpaces === 4
+                                                        ) {
+                                                            // Second layer - indented with bullet
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="mb-4 pl-4 flex items-start"
+                                                                >
+                                                                    <span className="mr-2 list-disc">
+                                                                        •
+                                                                    </span>
+                                                                    <ContentWithUrls
+                                                                        content={
+                                                                            trimmedContent
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        } else if (
+                                                            leadingSpaces === 8
+                                                        ) {
+                                                            // Third layer - extra indented with bullet
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="mb-4 pl-8 flex items-start"
+                                                                >
+                                                                    <span className="mr-2 list-disc">
+                                                                        •
+                                                                    </span>
+                                                                    <ContentWithUrls
+                                                                        content={
+                                                                            trimmedContent
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        } else {
+                                                            // Fallback - treat as first layer
+                                                            return (
+                                                                <div
+                                                                    key={index}
+                                                                    className="mb-4 flex items-start"
+                                                                >
+                                                                    <span className="text-gray-500 mr-2 mt-1 list-disc">
+                                                                        •
+                                                                    </span>
+                                                                    <ContentWithUrls
+                                                                        content={
+                                                                            trimmedContent
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        }
+                                                    }
                                                 )}
-                                            </ul>
+                                            </div>
                                         )}
                                     </li>
                                 ))}
