@@ -2,7 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { LeagueInfoDialogData, TableData } from "@/constants/events";
 import { parseContentWithUrls } from "@/utils/helper";
 
@@ -200,6 +205,9 @@ export const LeagueInfoDialog = ({
                     </motion.div>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[900px] max-h-[90%] overflow-auto">
+                    <DialogDescription className="sr-only">
+                        League information and details
+                    </DialogDescription>
                     <div className="relative">
                         {englishData && chineseData && (
                             <div className="absolute top-4 right-4 z-10">

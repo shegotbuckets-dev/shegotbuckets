@@ -2,43 +2,9 @@
 
 import { useDashboardHomeData } from "@/app/dashboard/_hooks/useDashboardHomeData";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
 import { EventsTable } from "./table-section/events-table";
-
-// Performance testing component - only loaded in development
-const PerformanceTestingSection = () => {
-    const [PerformanceComparisonTest, setPerformanceComparisonTest] =
-        useState<React.ComponentType | null>(null);
-
-    useEffect(() => {
-        if (process.env.NODE_ENV === "development") {
-            import("./performance-comparison")
-                .then((module) => {
-                    setPerformanceComparisonTest(
-                        () => module.PerformanceComparisonTest
-                    );
-                })
-                .catch(() => {
-                    // Silently fail if performance component can't be loaded
-                    console.warn("Performance testing component not available");
-                });
-        }
-    }, []);
-
-    if (!PerformanceComparisonTest) {
-        return null;
-    }
-
-    return (
-        <section className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-            <h2 className="text-lg font-semibold mb-4">Performance Testing</h2>
-            <div className="space-y-4">
-                <PerformanceComparisonTest />
-            </div>
-        </section>
-    );
-};
 
 export const DashboardContent = () => {
     const { loading, eventsData, refresh } = useDashboardHomeData();
@@ -49,11 +15,6 @@ export const DashboardContent = () => {
 
     return (
         <div className="space-y-6">
-            {/* Performance Testing Section - Only in development */}
-            {process.env.NODE_ENV === "development" && (
-                <PerformanceTestingSection />
-            )}
-
             {/* Available Events */}
             <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">

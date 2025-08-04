@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -36,6 +37,10 @@ export const CertifiedDialog = ({
                     <DialogTitle className="text-2xl font-bold text-primary">
                         Certification
                     </DialogTitle>
+                    <DialogDescription>
+                        Please read and certify the waiver document before
+                        signing.
+                    </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <motion.div

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -44,6 +45,10 @@ export default function RegistrationButton({
                     <DialogTitle className="text-3xl font-bold mb-6">
                         Choose Your Event
                     </DialogTitle>
+                    <DialogDescription>
+                        Select an event to register for from the available
+                        options below.
+                    </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-6 py-6">
                     {options?.map((option, index) => (

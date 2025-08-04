@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -56,6 +57,9 @@ export function PaymentButton({
                             {event.title_short ?? event.title}
                         </span>
                     </DialogTitle>
+                    <DialogDescription>
+                        Complete your payment for this event registration.
+                    </DialogDescription>
                 </DialogHeader>
 
                 {/* Payment Details */}
