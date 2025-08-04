@@ -363,6 +363,7 @@ export interface PaymentRequestData {
     event_id: string;
     registration_id: string;
     team_id: string;
+    team_name?: string;
     email: string;
     eventName: string;
     hasTeam2: boolean;

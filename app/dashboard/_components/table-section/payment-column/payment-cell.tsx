@@ -61,6 +61,7 @@ export const PaymentCell = ({ event }: BaseCellProps) => {
                 event_id: event.event_id,
                 registration_id: event.userStatus.registration_id,
                 team_id: event.userStatus.team_id!,
+                team_name: event.userStatus.team,
                 email,
                 eventName: `${event.title_short ?? event.title} - ${event.subtitle}`,
                 hasTeam2,

@@ -77,16 +77,20 @@ export function PaymentButton({
                 <Separator className="my-4" />
 
                 {/* Team 2 Checkbox */}
-                <div className="flex items-center space-x-2">
-                    <Checkbox
-                        id="team2"
-                        checked={hasTeam2}
-                        onCheckedChange={(checked) => setHasTeam2(!!checked)}
-                    />
-                    <label htmlFor="team2" className="text-sm">
-                        I have a team 2 to participate
-                    </label>
-                </div>
+                {event.league_id !== "b4c3c012-ad36-48ac-a60c-8c1264f707b9" && (
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="team2"
+                            checked={hasTeam2}
+                            onCheckedChange={(checked) =>
+                                setHasTeam2(!!checked)
+                            }
+                        />
+                        <label htmlFor="team2" className="text-sm">
+                            I have a team 2 to participate
+                        </label>
+                    </div>
+                )}
 
                 <DialogFooter className="mt-4">
                     <Button
