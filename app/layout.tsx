@@ -1,4 +1,5 @@
 import Provider from "@/app/provider";
+import { PerformanceWidgetWrapper } from "@/components/common/performance-widget-wrapper";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import AuthWrapper from "@/components/wrapper/auth-wrapper";
@@ -70,9 +71,10 @@ export default function RootLayout({
                         >
                             {children}
                             <Toaster />
+                            <PerformanceWidgetWrapper />
                         </ThemeProvider>
                     </Provider>
-                    <SpeedInsights sampleRate={0.5} />
+                    <SpeedInsights sampleRate={1} />
                 </body>
             </html>
         </AuthWrapper>

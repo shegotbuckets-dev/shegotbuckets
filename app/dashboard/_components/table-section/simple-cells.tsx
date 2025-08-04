@@ -6,7 +6,9 @@ import {
 } from "@/app/dashboard/types";
 import { Badge } from "@/components/ui/badge";
 
-export const TeamCell = ({ event }: BaseCellProps) => {
+import { memo } from "react";
+
+const TeamCellComponent = ({ event }: BaseCellProps) => {
     return (
         <Badge variant="secondary" className={TEAM_BADGE_CLASSNAME}>
             {event.userStatus.team ?? BADGE_TEXT.NA}
@@ -14,7 +16,12 @@ export const TeamCell = ({ event }: BaseCellProps) => {
     );
 };
 
-export const WaiverCellInRoster = ({ value }: { value: string }) => {
+// Export memoized component
+export const TeamCell = memo(TeamCellComponent);
+
+TeamCell.displayName = "TeamCell";
+
+const WaiverCellInRosterComponent = ({ value }: { value: string }) => {
     return (
         <Badge
             variant={value === "Signed" ? "green" : "pending"}
@@ -24,3 +31,8 @@ export const WaiverCellInRoster = ({ value }: { value: string }) => {
         </Badge>
     );
 };
+
+// Export memoized component
+export const WaiverCellInRoster = memo(WaiverCellInRosterComponent);
+
+WaiverCellInRoster.displayName = "WaiverCellInRoster";

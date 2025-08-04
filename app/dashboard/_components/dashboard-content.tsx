@@ -27,7 +27,7 @@ export const DashboardContent = () => {
                 <div className="p-4">
                     <EventsTable
                         events={eventsData?.activeEvents ?? []}
-                        onButtonSuccess={refresh}
+                        onButtonSuccess={handleTableAction}
                         loading={loading}
                     />
                 </div>

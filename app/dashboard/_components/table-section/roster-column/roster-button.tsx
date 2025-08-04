@@ -2,6 +2,7 @@ import { ROSTER_HEADERS, RosterButtonProps } from "@/app/dashboard/types";
 import {
     Dialog,
     DialogContent,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -67,6 +68,10 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
                             {event.title_short ?? event.title}
                         </span>
                     </DialogTitle>
+                    <DialogDescription>
+                        View the current roster of players registered for this
+                        event.
+                    </DialogDescription>
                 </DialogHeader>
                 <div className="flex-1 min-h-0 mt-4">
                     {loading ? (

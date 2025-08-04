@@ -1,5 +1,7 @@
 import { EventsData } from "@/app/dashboard/types";
 
+import { useCallback } from "react";
+
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 
@@ -29,9 +31,14 @@ export const useDashboardHomeData = () => {
         staleTime: 5 * 60 * 1000, // 5 minutes
     });
 
+    // Memoize the refresh function to prevent unnecessary re-renders
+    const memoizedRefresh = useCallback(() => {
+        query.refetch();
+    }, [query.refetch]);
+
     return {
         loading: query.isLoading,
         eventsData: query.data ?? { activeEvents: [], previousEvents: [] },
-        refresh: query.refetch,
+        refresh: memoizedRefresh,
     };
 };

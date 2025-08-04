@@ -1,5 +1,10 @@
 import { WaiverCellProps } from "@/app/dashboard/types";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { useState } from "react";
 
@@ -19,6 +24,9 @@ export const WaiverButton = ({ event, onButtonSuccess }: WaiverCellProps) => {
                 <span>Sign Waiver</span>
             </DialogTrigger>
             <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
+                <DialogDescription className="sr-only">
+                    Waiver signing interface
+                </DialogDescription>
                 <WaiverDialogContent
                     event={event}
                     onButtonSuccess={handleWaiverSigned}
