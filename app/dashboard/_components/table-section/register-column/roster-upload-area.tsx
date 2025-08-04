@@ -35,7 +35,8 @@ const EmptyUploadState = () => (
     <div className="flex flex-col items-center justify-center text-lg text-muted-foreground h-full">
         Put your roster in CSV format here.
         <br />
-        CSV must have these columns: first_name, last_name, email.
+        CSV must have these columns: first_name, last_name, email,
+        jersey_number.
     </div>
 );
 
