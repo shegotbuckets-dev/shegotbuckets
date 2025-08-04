@@ -57,7 +57,7 @@ const nationalChampions: Champion[] = [
 const regionalChampions: Champion[] = [
     {
         id: 1,
-        name: "UCLA Xiaolongbao",
+        name: "New York Lady Rockits",
         year: 2024,
         level: "Elite",
         imageUrl: getMediaUrl(
@@ -68,7 +68,7 @@ const regionalChampions: Champion[] = [
     },
     {
         id: 2,
-        name: "New York Lady Rockits",
+        name: "UCLA Xiaolongbao",
         year: 2024,
         level: "Rising Star",
         imageUrl: getMediaUrl(
