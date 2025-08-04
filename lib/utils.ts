@@ -12,7 +12,7 @@ export function getMediaUrl(
     image: string,
     path?: string
 ) {
-    if (!image) return "/images/sgb-homevideo-placeholder.png";
+    if (!image) return "/images/sgb-homevideo-placeholder.jpg";
 
     return path
         ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucket}/${path}/${image}`

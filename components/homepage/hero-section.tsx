@@ -1,39 +1,30 @@
+"use client";
+
 import { HeartBeatButton } from "@/components/common/heartbeat-button";
 import { Button } from "@/components/ui/button";
-import { getMediaUrl } from "@/lib/utils";
-import { SupabaseStorageBucket } from "@/utils/types";
 
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-function BackgroundVideo() {
-    return (
-        <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute top-1/2 left-1/2 h-[56.25vw] min-h-full min-w-full w-[177.77777778vh] -translate-x-1/2 -translate-y-1/2 object-cover"
-        >
-            <source
-                src={getMediaUrl(SupabaseStorageBucket.HOME, "sgb-trailer.mp4")}
-                type="video/mp4"
-            />
-        </video>
-    );
-}
+// Lazy load the video component with proper error handling
+const BackgroundVideo = lazy(() =>
+    import("./background-video")
+        .then((mod) => ({ default: mod.BackgroundVideo }))
+        .catch(() => ({ default: () => null }))
+);
 
 function VideoPlaceholder() {
     return (
         <Image
-            src="/images/sgb-homevideo-placeholder.png"
+            src="/images/sgb-homevideo-placeholder.jpg"
             alt="She Got Buckets background"
             fill
             className="object-cover"
             priority
+            sizes="100vw"
         />
     );
 }

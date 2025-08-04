@@ -72,7 +72,7 @@ export default function RootLayout({
                             <Toaster />
                         </ThemeProvider>
                     </Provider>
-                    <SpeedInsights sampleRate={0.5} />
+                    <SpeedInsights sampleRate={1} />
                 </body>
             </html>
         </AuthWrapper>
