@@ -19,6 +19,7 @@ export async function POST(req: Request) {
             event_id,
             registration_id,
             team_id,
+            team_name,
             user_email,
             email,
             eventName,
@@ -57,6 +58,7 @@ export async function POST(req: Request) {
                 event_id,
                 registration_id,
                 team_id,
+                team_name: team_name || "Unknown Team",
                 user_email,
             },
             customer_email: email,
@@ -69,7 +71,7 @@ export async function POST(req: Request) {
             // Custom text for checkout page
             custom_text: {
                 submit: {
-                    message: `Registration fee for SGB ${eventName}. You will receive a confirmation email after payment.`,
+                    message: `Registration fee for SGB ${eventName} for team: ${team_name || "Unknown Team"}. Please enter your team name in the 'Full name' field. You will receive a confirmation email after payment.`,
                 },
             },
             // Tax settings
@@ -78,7 +80,7 @@ export async function POST(req: Request) {
             },
             // Description that appears on receipts and invoices
             payment_intent_data: {
-                description: `SGB Tournament Registration - ${eventName}`,
+                description: `SGB Tournament Registration - ${eventName} - Team: ${team_name || "Unknown Team"}`,
                 statement_descriptor: "SGB TOURNAMENT",
             },
         });
