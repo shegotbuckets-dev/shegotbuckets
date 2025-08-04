@@ -6,9 +6,11 @@ import {
 } from "@/app/dashboard/types";
 import { Badge } from "@/components/ui/badge";
 
+import { memo } from "react";
+
 import { RegisterButton } from "./register-button";
 
-export const RegisterOrParticipatedCell = ({
+const RegisterOrParticipatedCellComponent = ({
     event,
     onButtonSuccess,
 }: RegisterOrParticipatedCellProps) => {
@@ -33,3 +35,10 @@ export const RegisterOrParticipatedCell = ({
         </Badge>
     );
 };
+
+// Export memoized component
+export const RegisterOrParticipatedCell = memo(
+    RegisterOrParticipatedCellComponent
+);
+
+RegisterOrParticipatedCell.displayName = "RegisterOrParticipatedCell";
