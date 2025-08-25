@@ -94,6 +94,7 @@ export const WaiverDialogContent = ({
                     tournamentName: event.title_short ?? event.title ?? "Event",
                     location: event.location ?? "TBD",
                     eventDate: event.date ?? "TBD",
+                    teamName: event.userStatus.team ?? "No Team Assigned",
                 },
             });
 

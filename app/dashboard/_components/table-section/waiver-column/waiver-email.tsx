@@ -16,6 +16,7 @@ interface WaiverSignedEmailProps {
     tournamentName?: string;
     location?: string;
     eventDate?: string;
+    teamName?: string;
 }
 
 export const WaiverSignedEmail = ({
@@ -24,6 +25,7 @@ export const WaiverSignedEmail = ({
     tournamentName = "",
     location = "",
     eventDate = "",
+    teamName = "",
 }: WaiverSignedEmailProps) => {
     return (
         <Html>
@@ -54,6 +56,12 @@ export const WaiverSignedEmail = ({
                                 <Text className="text-gray-600 text-sm mb-2">
                                     Tournament Name: {` ${tournamentName}`}
                                 </Text>
+                                {teamName &&
+                                    teamName !== "No Team Assigned" && (
+                                        <Text className="text-gray-600 text-sm mb-2">
+                                            Team: {` ${teamName}`}
+                                        </Text>
+                                    )}
                                 <Text className="text-gray-600 text-sm">
                                     Date: {` ${eventDate}`}
                                 </Text>

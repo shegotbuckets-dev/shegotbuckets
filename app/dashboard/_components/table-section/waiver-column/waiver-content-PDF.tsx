@@ -76,6 +76,7 @@ interface WaiverContentPDFProps {
     lastName: string;
     signatureDataUrl: string;
     timestamp: string;
+    teamName: string;
 }
 
 export const WaiverContentPDF = ({
@@ -83,6 +84,7 @@ export const WaiverContentPDF = ({
     lastName,
     signatureDataUrl,
     timestamp,
+    teamName,
 }: WaiverContentPDFProps) => (
     <Document>
         <Page size="A4" style={styles.page}>
@@ -91,6 +93,9 @@ export const WaiverContentPDF = ({
                     Legal First Name: {firstName}
                 </Text>
                 <Text style={styles.boldText}>Legal Last Name: {lastName}</Text>
+                {teamName && teamName !== "No Team Assigned" && (
+                    <Text style={styles.boldText}>Team: {teamName}</Text>
+                )}
 
                 <Text style={styles.text}>
                     This document is a PDF version of the waiver that you signed
