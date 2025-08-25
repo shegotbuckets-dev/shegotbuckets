@@ -1,6 +1,8 @@
 import { WaiverContentPDF } from "@/app/dashboard/_components/table-section/waiver-column/waiver-content-PDF";
 import { WaiverSignedEmail } from "@/app/dashboard/_components/table-section/waiver-column/waiver-email";
 
+import React from "react";
+
 import { renderToBuffer } from "@react-pdf/renderer";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -20,6 +22,7 @@ interface RequestBody {
     tournamentName: string;
     location: string;
     eventDate: string;
+    teamName: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -50,24 +53,26 @@ export async function POST(request: NextRequest) {
         const signatureBuffer = Buffer.from(signatureData[1], "base64");
         const signatureDataUrl = `data:image/png;base64,${signatureBuffer.toString("base64")}`;
 
-        const pdfBuffer = await renderToBuffer(
-            WaiverContentPDF({
-                firstName: body.firstName,
-                lastName: body.lastName,
-                signatureDataUrl: signatureDataUrl,
-                timestamp: body.timestamp,
-            })
-        );
+        const WaiverDocument = WaiverContentPDF({
+            firstName: body.firstName,
+            lastName: body.lastName,
+            signatureDataUrl: signatureDataUrl,
+            timestamp: body.timestamp,
+            teamName: body.teamName,
+        });
+
+        const pdfBuffer = await renderToBuffer(WaiverDocument);
 
         const { data, error } = await resend.emails.send({
             from: "SHE GOT BUCKETS OFFICIAL: DO NOT REPLY <noreply@shegotbuckets.org>",
             to: [body.email, ADMIN_EMAIL],
             subject: `SGB Waiver - ${body.tournamentName}`,
-            react: WaiverSignedEmail({
+            react: React.createElement(WaiverSignedEmail, {
                 name: body.name,
                 tournamentName: body.tournamentName,
                 location: body.location,
                 eventDate: body.eventDate,
+                teamName: body.teamName,
             }),
             attachments: [
                 {

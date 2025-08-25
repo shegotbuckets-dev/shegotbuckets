@@ -8,6 +8,7 @@ type emailData = {
     tournamentName: string;
     location: string;
     eventDate: string;
+    teamName: string;
 };
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
