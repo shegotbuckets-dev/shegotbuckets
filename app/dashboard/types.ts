@@ -345,6 +345,7 @@ export type EventBasicInfo = Omit<
 > & {
     userStatus: UserEventStatus;
     stripe_price_ids: StripePriceIds | null;
+    original_event_id?: string; // For multi-team support
 };
 
 export interface EventsData {
