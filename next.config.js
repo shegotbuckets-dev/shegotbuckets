@@ -81,11 +81,8 @@ const nextConfig = {
     compress: true,
     poweredByHeader: false,
     experimental: {
-        optimizePackageImports: [
-            "framer-motion",
-            "@react-pdf/renderer",
-            "lodash",
-        ],
+        optimizePackageImports: ["framer-motion", "lodash"],
+        serverComponentsExternalPackages: ["@react-pdf/renderer"],
     },
 };
 module.exports = nextConfig;
