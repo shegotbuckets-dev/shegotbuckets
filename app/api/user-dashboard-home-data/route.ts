@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { StripePriceIds } from "@/app/dashboard/types";
 import { fetchFromTable } from "@/utils/actions/supabase";
 
@@ -29,12 +30,13 @@ export async function GET(req: Request) {
 
         const teamMap = new Map(teams.map((team) => [team.team_id, team.name]));
 
-        const processedEvents = events.map((event) => {
+        const processedEvents = events.flatMap((event) => {
             const eventRegistrations = registrations.filter(
                 (r) => r.event_id === event.event_id
             );
 
-            const currentUserPlayerRecord = currentUserPlayerRecords.find(
+            // Find ALL player records for this user in this event (supports multi-team users)
+            const userPlayerRecordsForEvent = currentUserPlayerRecords.filter(
                 (playerRecord) =>
                     eventRegistrations.some(
                         (registration) =>
@@ -43,16 +45,7 @@ export async function GET(req: Request) {
                     )
             );
 
-            const userRegistration = currentUserPlayerRecord
-                ? eventRegistrations.find(
-                      (registration) =>
-                          registration.registration_id ===
-                          currentUserPlayerRecord.registration_id
-                  )
-                : undefined;
-
-            const team_id = userRegistration?.team_id || undefined;
-
+            // Parse price IDs once for this event
             let parsedPriceIds: StripePriceIds | null = null;
             if (event.stripe_price_ids) {
                 try {
@@ -76,20 +69,51 @@ export async function GET(req: Request) {
                 }
             }
 
-            return {
-                ...event,
-                userStatus: {
-                    isRegistered: !!currentUserPlayerRecord,
-                    registration_id: userRegistration?.registration_id,
-                    team: userRegistration?.team_id
-                        ? teamMap.get(userRegistration.team_id)
-                        : undefined,
-                    team_id,
-                    waiverSigned: !!currentUserPlayerRecord?.waiver_signed,
-                    paymentStatus: userRegistration?.paid ?? false,
-                },
-                stripe_price_ids: parsedPriceIds,
-            };
+            // If user has no registrations for this event, return single entry with no team
+            if (userPlayerRecordsForEvent.length === 0) {
+                return [
+                    {
+                        ...event,
+                        original_event_id: event.event_id,
+                        userStatus: {
+                            isRegistered: false,
+                            registration_id: undefined,
+                            team: undefined,
+                            team_id: undefined,
+                            waiverSigned: false,
+                            paymentStatus: false,
+                        },
+                        stripe_price_ids: parsedPriceIds,
+                    },
+                ];
+            }
+
+            // Create separate event entry for each team the user is registered with
+            return userPlayerRecordsForEvent.map((playerRecord) => {
+                const userRegistration = eventRegistrations.find(
+                    (registration) =>
+                        registration.registration_id ===
+                        playerRecord.registration_id
+                );
+
+                const team_id = userRegistration?.team_id || undefined;
+
+                return {
+                    ...event,
+                    // Add unique identifier for multi-team scenarios
+                    event_id: `${event.event_id}_${team_id || "no_team"}`,
+                    original_event_id: event.event_id,
+                    userStatus: {
+                        isRegistered: true,
+                        registration_id: userRegistration?.registration_id,
+                        team: team_id ? teamMap.get(team_id) : undefined,
+                        team_id,
+                        waiverSigned: !!playerRecord?.waiver_signed,
+                        paymentStatus: userRegistration?.paid ?? false,
+                    },
+                    stripe_price_ids: parsedPriceIds,
+                };
+            });
         });
 
         return NextResponse.json({
