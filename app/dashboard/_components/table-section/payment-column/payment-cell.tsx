@@ -59,7 +59,7 @@ const PaymentCellComponent = ({ event }: BaseCellProps) => {
                 }
 
                 const paymentData: PaymentRequestData = {
-                    event_id: event.event_id,
+                    event_id: event.original_event_id,
                     registration_id: event.userStatus.registration_id,
                     team_id: event.userStatus.team_id!,
                     team_name: event.userStatus.team,
