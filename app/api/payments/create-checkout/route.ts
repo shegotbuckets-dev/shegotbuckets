@@ -87,7 +87,6 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ sessionId: session.id });
     } catch (error) {
-        console.error("Checkout creation error:", error);
         return NextResponse.json(
             {
                 error: "Error creating checkout session",
