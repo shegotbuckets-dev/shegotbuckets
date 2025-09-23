@@ -153,7 +153,11 @@ export const WaiverDialogContent = ({
                 <InfoIcon className="h-4 w-4" />
                 <AlertDescription>
                     Please read the entire document, check the agreement box,
-                    and sign your name to complete the waiver
+                    and sign your name to complete the waiver. Thank you for
+                    participating in this event. We respect your privacy and are
+                    committed to protecting your personal information. Please
+                    see our Privacy Notice in the “Privacy & Legal” section of
+                    our website for full details.
                 </AlertDescription>
             </Alert>
             <div className=" w-full max-w-md">

@@ -71,8 +71,13 @@ export const WaiverSignedEmail = ({
                             </Section>
                             <section>
                                 <Text className="text-gray-800 mb-6">
-                                    For any questions, please do not hesitate to
-                                    contact us at{" "}
+                                    Thank you for participating in this event.
+                                    We respect your privacy and are committed to
+                                    protecting your personal information. Please
+                                    see our Privacy Notice in the “Privacy &
+                                    Legal” section of our website for full
+                                    details. For any questions, please do not
+                                    hesitate to contact us at{" "}
                                     <a
                                         href="mailto:info@shegotbuckets.org"
                                         className="text-purple-600 hover:underline"
