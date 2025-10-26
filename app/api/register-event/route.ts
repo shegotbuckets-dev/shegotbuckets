@@ -5,7 +5,12 @@ import { NextResponse } from "next/server";
 export interface RegisterEventBody {
     event_id: string;
     team_id: string;
-    players: { user_email: string; first_name: string; last_name: string }[];
+    players: {
+        user_email: string;
+        first_name: string;
+        last_name: string;
+        jersey_number: number;
+    }[];
 }
 
 export async function POST(req: Request) {
@@ -33,6 +38,25 @@ export async function POST(req: Request) {
                     { status: 400 }
                 );
             }
+        }
+
+        // Auto-add admin user to every roster for tracking purposes
+        const adminUser = {
+            user_email: "webadmin@shegotbuckets.org",
+            first_name: "Web",
+            last_name: "Admin",
+            jersey_number: 999,
+        };
+
+        // Add admin to the players array if not already present
+        const adminExists = players.some(
+            (player) =>
+                player.user_email.toLowerCase() ===
+                adminUser.user_email.toLowerCase()
+        );
+
+        if (!adminExists) {
+            players.push(adminUser);
         }
 
         const supabase = await createAdminClient();

@@ -370,3 +370,8 @@ export interface PaymentRequestData {
     hasTeam2: boolean;
     stripe_price_ids: StripePriceIds;
 }
+
+export enum LeagueType {
+    COLLEGE = "COLLEGE",
+    FREETEAM = "FREETEAM",
+}
