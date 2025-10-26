@@ -66,7 +66,7 @@ export async function POST(req: Request) {
             success_url: `${baseUrl}${successUrl}?success=true`,
             cancel_url: `${baseUrl}${cancelUrl}?canceled=true`,
             // payment_method_types: ["card", "us_bank_account"],
-            payment_method_types: ["us_bank_account"],
+            payment_method_types: ["us_bank_account", "card"],
             billing_address_collection: "auto",
             // Custom text for checkout page
             custom_text: {
