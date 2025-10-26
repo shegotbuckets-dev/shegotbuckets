@@ -27,9 +27,9 @@ import { LeagueInfoContent, LeagueInfoDialog } from "./league-info-dialog";
 import { RegistrationTimeline } from "./registration-timeline";
 
 export const LeagueInfo = ({
-    isRegional = false,
+    allowsMultipleTeams = false,
 }: {
-    isRegional?: boolean;
+    allowsMultipleTeams?: boolean;
 }) => {
     return (
         <section className="pt-20 pb-28 bg-white/10" id="information-event">
@@ -37,9 +37,11 @@ export const LeagueInfo = ({
                 <h2 className="text-3xl font-bold mb-8 text-center">
                     League Info
                 </h2>
-                {isRegional ? <RegistrationGuide /> : <Seeding />}
-                <ParticipationEligibility isRegional={isRegional} />
-                <RuleBook isRegional={isRegional} />
+                {allowsMultipleTeams ? <RegistrationGuide /> : <Seeding />}
+                <ParticipationEligibility
+                    allowsMultipleTeams={allowsMultipleTeams}
+                />
+                <RuleBook allowsMultipleTeams={allowsMultipleTeams} />
                 <div className="grid md:grid-cols-3 gap-8 py-3">
                     <Card>
                         <CardContent className="flex flex-col items-center p-6">
@@ -80,7 +82,11 @@ export const LeagueInfo = ({
     );
 };
 
-const RuleBook = ({ isRegional }: { isRegional: boolean }) => {
+const RuleBook = ({
+    allowsMultipleTeams,
+}: {
+    allowsMultipleTeams: boolean;
+}) => {
     return (
         <LeagueInfoDialog
             id="ruleBook-event"
@@ -95,17 +101,23 @@ const RuleBook = ({ isRegional }: { isRegional: boolean }) => {
             description="Essential guidelines for all players"
             buttonText="View Rules"
             englishData={
-                isRegional
+                allowsMultipleTeams
                     ? REGIONAL_RULE_BOOK_DATA_ENGLISH
                     : RULE_BOOK_DATA_ENGLISH
             }
-            chineseData={isRegional ? undefined : RULE_BOOK_DATA_CHINESE}
+            chineseData={
+                allowsMultipleTeams ? undefined : RULE_BOOK_DATA_CHINESE
+            }
             infoComponent={LeagueInfoContent}
         />
     );
 };
 
-const ParticipationEligibility = ({ isRegional }: { isRegional: boolean }) => {
+const ParticipationEligibility = ({
+    allowsMultipleTeams,
+}: {
+    allowsMultipleTeams: boolean;
+}) => {
     return (
         <LeagueInfoDialog
             id="participation-eligibility"
@@ -120,12 +132,12 @@ const ParticipationEligibility = ({ isRegional }: { isRegional: boolean }) => {
             description="Requirements for league participation"
             buttonText="View Eligibility"
             englishData={
-                isRegional
+                allowsMultipleTeams
                     ? REGIONAL_ELIGIBILITY_DATA_ENGLISH
                     : ELIGIBILITY_DATA_ENGLISH
             }
             chineseData={
-                isRegional
+                allowsMultipleTeams
                     ? REGIONAL_ELIGIBILITY_DATA_CHINESE
                     : ELIGIBILITY_DATA_CHINESE
             }

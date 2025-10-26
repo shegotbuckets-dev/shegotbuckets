@@ -79,8 +79,14 @@ const regionalChampions: Champion[] = [
     },
 ];
 
-export const HallOfRecord = ({ isRegional }: { isRegional?: boolean }) => {
-    const champions = isRegional ? regionalChampions : nationalChampions;
+export const HallOfRecord = ({
+    allowsMultipleTeams,
+}: {
+    allowsMultipleTeams?: boolean;
+}) => {
+    const champions = allowsMultipleTeams
+        ? regionalChampions
+        : nationalChampions;
 
     const maxSlides = {
         lg: Math.max(0, champions.length - 3),

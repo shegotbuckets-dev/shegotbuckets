@@ -184,6 +184,9 @@ export type Database = {
                     description: string | null;
                     image: string | null;
                     league_id: string;
+                    league_type:
+                        | Database["public"]["Enums"]["league_type"]
+                        | null;
                     name: string;
                     show: boolean;
                 };
@@ -191,6 +194,9 @@ export type Database = {
                     description?: string | null;
                     image?: string | null;
                     league_id?: string;
+                    league_type?:
+                        | Database["public"]["Enums"]["league_type"]
+                        | null;
                     name: string;
                     show?: boolean;
                 };
@@ -198,6 +204,9 @@ export type Database = {
                     description?: string | null;
                     image?: string | null;
                     league_id?: string;
+                    league_type?:
+                        | Database["public"]["Enums"]["league_type"]
+                        | null;
                     name?: string;
                     show?: boolean;
                 };
@@ -318,13 +327,10 @@ export type Database = {
             };
         };
         Views: {
-            [_key in never]: never;
+            [_ in never]: never;
         };
         Functions: {
-            execute_sql: {
-                Args: { sql: string };
-                Returns: undefined;
-            };
+            execute_sql: { Args: { sql: string }; Returns: undefined };
             on_after_payment_succeed: {
                 Args: {
                     p_amount: number;
@@ -348,10 +354,10 @@ export type Database = {
             };
         };
         Enums: {
-            [_key in never]: never;
+            league_type: "COLLEGE" | "FREETEAM";
         };
         CompositeTypes: {
-            [_key in never]: never;
+            [_ in never]: never;
         };
     };
 };
@@ -478,6 +484,8 @@ export type CompositeTypes<
 
 export const Constants = {
     public: {
-        Enums: {},
+        Enums: {
+            league_type: ["COLLEGE", "FREETEAM"],
+        },
     },
 } as const;

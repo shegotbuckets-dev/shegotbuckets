@@ -11,11 +11,11 @@ import { Calendar, CircleDollarSign, MapPin, Users } from "lucide-react";
 export const LeagueEvents = ({
     league,
     events,
-    isRegional = false,
+    allowsMultipleTeams = false,
 }: {
     league: Database["public"]["Tables"]["leagues"]["Row"];
     events: Database["public"]["Tables"]["events"]["Row"][];
-    isRegional?: boolean;
+    allowsMultipleTeams?: boolean;
 }) => {
     const [selectedEvent, setSelectedEvent] = useState<string>(
         events.filter((event) => event.active === true)[0]?.title ??
@@ -45,26 +45,31 @@ export const LeagueEvents = ({
             </section>
             <section className="py-20 bg-gray-200/25">
                 <h2 className="text-3xl font-bold mb-8 text-center">
-                    {isRegional ? "Upcoming Tournament" : "Our Conferences"}
+                    {allowsMultipleTeams
+                        ? "Previous Tournament"
+                        : "Our Conferences"}
                 </h2>
                 <div className="flex justify-center space-x-4 mb-">
                     <div className="flex justify-center space-x-4 mb-12">
-                        {events.map((event) => (
-                            <motion.button
-                                key={event.title}
-                                onClick={() => setSelectedEvent(event.title)}
-                                className={`px-6 py-3 rounded-md text-lg font-semibold transition-all duration-300 ease-in-out ${
-                                    selectedEvent === event.title
-                                        ? "bg-primary text-primary-foreground shadow-lg"
-                                        : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                                }`}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                disabled={event.active === false}
-                            >
-                                {event.title_short?.split(" - ")[0]}
-                            </motion.button>
-                        ))}
+                        {events
+                            .filter((event) => event.active)
+                            .map((event) => (
+                                <motion.button
+                                    key={event.title}
+                                    onClick={() =>
+                                        setSelectedEvent(event.title)
+                                    }
+                                    className={`px-6 py-3 rounded-md text-lg font-semibold transition-all duration-300 ease-in-out ${
+                                        selectedEvent === event.title
+                                            ? "bg-primary text-primary-foreground shadow-lg"
+                                            : "bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                                    }`}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    {event.title_short?.split(" - ")[0]}
+                                </motion.button>
+                            ))}
                     </div>
                 </div>
                 <motion.div
