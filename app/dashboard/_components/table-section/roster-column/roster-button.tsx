@@ -83,6 +83,7 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const emailSet = new Set<string>();
         const jerseySet = new Set<string>();
+        let nonAdminPlayerCount = 0;
 
         for (let i = 0; i < editedRoster.length; i++) {
             const player = editedRoster[i];
@@ -93,6 +94,8 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
 
             // Skip validation for admin account
             if (player.user_email === ADMIN_EMAIL) continue;
+
+            nonAdminPlayerCount++;
 
             // Validate required fields
             if (!player.first_name || player.first_name.trim() === "") {
@@ -119,20 +122,32 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
             }
             emailSet.add(emailLower);
 
-            // Validate jersey number
-            if (player.jersey_number && player.jersey_number.trim() !== "") {
-                const jerseyNum = parseInt(player.jersey_number);
-                if (isNaN(jerseyNum) || jerseyNum < 0) {
-                    return `Invalid jersey number for ${playerName}`;
-                }
-
-                // Check for duplicate jersey numbers
-                const jerseyStr = player.jersey_number.trim();
-                if (jerseySet.has(jerseyStr)) {
-                    return `Duplicate jersey number found: #${jerseyStr}`;
-                }
-                jerseySet.add(jerseyStr);
+            // Validate jersey number is required
+            if (!player.jersey_number || player.jersey_number.trim() === "") {
+                return `Jersey number is required for ${playerName}`;
             }
+
+            // Validate jersey number format and range
+            const jerseyNum = parseInt(player.jersey_number);
+            if (isNaN(jerseyNum) || jerseyNum < 0) {
+                return `Invalid jersey number for ${playerName}`;
+            }
+
+            if (jerseyNum >= 100) {
+                return `Jersey number must be less than 100 for ${playerName}`;
+            }
+
+            // Check for duplicate jersey numbers
+            const jerseyStr = player.jersey_number.trim();
+            if (jerseySet.has(jerseyStr)) {
+                return `Duplicate jersey number found: #${jerseyStr}`;
+            }
+            jerseySet.add(jerseyStr);
+        }
+
+        // Check minimum player count
+        if (nonAdminPlayerCount < 5) {
+            return `Roster must have at least 5 players (currently ${nonAdminPlayerCount})`;
         }
 
         return null;
