@@ -1,6 +1,5 @@
 import {
     BADGE_TEXT,
-    BaseCellProps,
     STATUS_BADGE_CLASSNAME,
     STATUS_BADGE_CLASSNAME_CLICKABLE,
 } from "@/app/dashboard/types";
@@ -10,11 +9,16 @@ import { memo } from "react";
 
 import { RosterButton } from "./roster-button";
 
-const RosterCellComponent = ({ event }: BaseCellProps) => {
+interface RosterCellProps {
+    event: any;
+    onButtonSuccess: () => void;
+}
+
+const RosterCellComponent = ({ event, onButtonSuccess }: RosterCellProps) => {
     if (event.userStatus.isRegistered) {
         return (
             <Badge variant="green" className={STATUS_BADGE_CLASSNAME_CLICKABLE}>
-                <RosterButton event={event} />
+                <RosterButton event={event} onButtonSuccess={onButtonSuccess} />
             </Badge>
         );
     }

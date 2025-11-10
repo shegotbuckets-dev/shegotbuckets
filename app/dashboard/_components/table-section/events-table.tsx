@@ -82,7 +82,7 @@ const TableRowMemo = memo(
                 />
             </TableCell>
             <TableCell>
-                <RosterCell event={event} />
+                <RosterCell event={event} onButtonSuccess={onButtonSuccess} />
             </TableCell>
             {event.active && (
                 <TableCell>

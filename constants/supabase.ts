@@ -68,6 +68,7 @@ export type Database = {
                     last_name: string | null;
                     player_id: string;
                     registration_id: string | null;
+                    updated_at: string | null;
                     user_email: string | null;
                     waiver_signed: boolean | null;
                 };
@@ -77,6 +78,7 @@ export type Database = {
                     last_name?: string | null;
                     player_id?: string;
                     registration_id?: string | null;
+                    updated_at?: string | null;
                     user_email?: string | null;
                     waiver_signed?: boolean | null;
                 };
@@ -86,6 +88,7 @@ export type Database = {
                     last_name?: string | null;
                     player_id?: string;
                     registration_id?: string | null;
+                    updated_at?: string | null;
                     user_email?: string | null;
                     waiver_signed?: boolean | null;
                 };
@@ -102,6 +105,7 @@ export type Database = {
             event_registrations: {
                 Row: {
                     created_at: string;
+                    edited_count: number | null;
                     event_id: string | null;
                     paid: boolean;
                     registration_id: string;
@@ -109,6 +113,7 @@ export type Database = {
                 };
                 Insert: {
                     created_at?: string;
+                    edited_count?: number | null;
                     event_id?: string | null;
                     paid?: boolean;
                     registration_id?: string;
@@ -116,6 +121,7 @@ export type Database = {
                 };
                 Update: {
                     created_at?: string;
+                    edited_count?: number | null;
                     event_id?: string | null;
                     paid?: boolean;
                     registration_id?: string;

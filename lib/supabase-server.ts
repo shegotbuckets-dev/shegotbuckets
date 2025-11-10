@@ -2,6 +2,7 @@ import {
     type CookieOptions,
     createServerClient as serverClient,
 } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 export const createServerClient = async () => {
@@ -24,6 +25,24 @@ export const createServerClient = async () => {
                         cookieStore.set({ name, value: "", ...options });
                     } catch (error) {}
                 },
+            },
+        }
+    );
+};
+
+// Service role client - bypasses RLS, use for admin operations only
+export const createServiceRoleClient = () => {
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        throw new Error("SUPABASE_SERVICE_ROLE_KEY is not set");
+    }
+
+    return createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY,
+        {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false,
             },
         }
     );

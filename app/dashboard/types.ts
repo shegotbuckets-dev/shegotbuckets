@@ -169,6 +169,7 @@ export interface RegistrationData {
 
 export interface RosterButtonProps {
     event: EventBasicInfo;
+    onButtonSuccess: () => void;
 }
 
 export interface RosterTableProps {
@@ -331,6 +332,7 @@ export type UserEventStatus = {
     team_id: string | undefined;
     waiverSigned: boolean;
     paymentStatus: boolean;
+    edited_count: number;
 };
 
 export interface StripePriceIds {

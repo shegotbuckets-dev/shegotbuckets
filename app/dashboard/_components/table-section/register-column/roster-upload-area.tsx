@@ -56,7 +56,7 @@ const UploadedFileState = ({
                 <TableInDialog
                     headers={Object.keys(parsedData[0])}
                     data={parsedData}
-                    renderRow={(row) => Object.values(row)}
+                    renderRow={(row, _index) => Object.values(row)}
                 />
             )}
         </div>

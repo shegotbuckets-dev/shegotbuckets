@@ -82,6 +82,7 @@ export async function GET(req: Request) {
                             team_id: undefined,
                             waiverSigned: false,
                             paymentStatus: false,
+                            edited_count: 0,
                         },
                         stripe_price_ids: parsedPriceIds,
                     },
@@ -110,6 +111,7 @@ export async function GET(req: Request) {
                         team_id,
                         waiverSigned: !!playerRecord?.waiver_signed,
                         paymentStatus: userRegistration?.paid ?? false,
+                        edited_count: userRegistration?.edited_count ?? 0,
                     },
                     stripe_price_ids: parsedPriceIds,
                 };
