@@ -1,7 +1,10 @@
 "use server";
 
 import { Database } from "@/constants/supabase";
-import { createServerClient } from "@/lib/supabase-server";
+import {
+    createServerClient,
+    createServiceRoleClient,
+} from "@/lib/supabase-server";
 
 type TableNames = keyof Database["public"]["Tables"];
 type TableRow<T extends TableNames> = Database["public"]["Tables"][T]["Row"];
@@ -124,4 +127,88 @@ export async function insertMultipleRowsToTable<T extends TableNames>(
     }
 
     return insertedRows || [];
+}
+
+interface RosterPlayerUpdate {
+    player_id: string;
+    first_name: string;
+    last_name: string;
+    user_email: string;
+    jersey_number: string;
+}
+
+interface RosterPlayerDelete {
+    player_id: string;
+    first_name: string;
+    last_name: string;
+}
+
+export async function updateRoster(
+    registrationId: string,
+    playersToUpdate: RosterPlayerUpdate[],
+    playersToInsert: RosterPlayerUpdate[],
+    playersToDelete: RosterPlayerDelete[]
+): Promise<void> {
+    // Use service role client to bypass RLS for roster management
+    const supabase = createServiceRoleClient();
+
+    // Update existing players by player_id
+    for (const player of playersToUpdate) {
+        const { error: updateError } = await supabase
+            .from("event_players")
+            .update({
+                first_name: player.first_name,
+                last_name: player.last_name,
+                user_email: player.user_email,
+                jersey_number: player.jersey_number
+                    ? parseInt(player.jersey_number)
+                    : null,
+            })
+            .eq("player_id", player.player_id);
+
+        if (updateError) {
+            throw new Error(
+                `Failed to update ${player.first_name} ${player.last_name}: ${updateError.message}`
+            );
+        }
+    }
+
+    // Insert new players
+    if (playersToInsert.length > 0) {
+        const playersData: Database["public"]["Tables"]["event_players"]["Insert"][] =
+            playersToInsert.map((player) => ({
+                registration_id: registrationId,
+                first_name: player.first_name,
+                last_name: player.last_name,
+                user_email: player.user_email,
+                jersey_number: player.jersey_number
+                    ? parseInt(player.jersey_number)
+                    : null,
+                waiver_signed: false,
+            }));
+
+        const { error: insertError } = await supabase
+            .from("event_players")
+            .insert(playersData);
+
+        if (insertError) {
+            throw new Error(
+                `Failed to insert new players: ${insertError.message}`
+            );
+        }
+    }
+
+    // Delete players by player_id
+    for (const player of playersToDelete) {
+        const { error: deleteError } = await supabase
+            .from("event_players")
+            .delete()
+            .eq("player_id", player.player_id);
+
+        if (deleteError) {
+            throw new Error(
+                `Failed to delete ${player.first_name} ${player.last_name}: ${deleteError.message}`
+            );
+        }
+    }
 }

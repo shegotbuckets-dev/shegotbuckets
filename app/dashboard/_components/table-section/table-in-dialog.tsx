@@ -10,7 +10,7 @@ import {
 interface TableInDialogProps<T> {
     headers: string[];
     data: T[];
-    renderRow: (item: T) => React.ReactNode[];
+    renderRow: (item: T, index: number) => React.ReactNode[];
 }
 
 export function TableInDialog<T>({
@@ -36,14 +36,16 @@ export function TableInDialog<T>({
                     <TableBody>
                         {data.map((item, index) => (
                             <TableRow key={index}>
-                                {renderRow(item).map((cell, cellIndex) => (
-                                    <TableCell
-                                        key={cellIndex}
-                                        className="text-center"
-                                    >
-                                        {cell}
-                                    </TableCell>
-                                ))}
+                                {renderRow(item, index).map(
+                                    (cell, cellIndex) => (
+                                        <TableCell
+                                            key={cellIndex}
+                                            className="text-center"
+                                        >
+                                            {cell}
+                                        </TableCell>
+                                    )
+                                )}
                             </TableRow>
                         ))}
                     </TableBody>
