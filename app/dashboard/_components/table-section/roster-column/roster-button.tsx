@@ -29,7 +29,7 @@ interface RosterPlayer {
 
 const ADMIN_EMAIL = "webadmin@shegotbuckets.org";
 
-export const RosterButton = ({ event }: RosterButtonProps) => {
+export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
     const [roster, setRoster] = useState<RosterPlayer[]>([]);
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -234,6 +234,9 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
             // Refresh roster from server
             await fetchRoster();
             setIsEditing(false);
+
+            // Trigger parent refresh to update edited_count
+            onButtonSuccess();
         } catch (err) {
             setError(
                 err instanceof Error
@@ -286,6 +289,10 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
     };
 
     const displayRoster = isEditing ? editedRoster : roster;
+    const canEdit =
+        !isEditing && event.active && event.userStatus.edited_count < 3;
+    const editLimitReached =
+        !isEditing && event.active && event.userStatus.edited_count >= 3;
 
     const handleDialogOpenChange = (open: boolean) => {
         if (open) {
@@ -323,14 +330,21 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
                             : "View the current roster of players registered for this event."}
                     </DialogDescription>
                     <div className="flex gap-2 pt-2">
-                        {!isEditing && event.active && (
+                        {canEdit && (
                             <Button
                                 onClick={handleEditClick}
                                 variant="outline"
                                 size="sm"
                             >
-                                Edit
+                                Edit ({3 - event.userStatus.edited_count}{" "}
+                                remaining)
                             </Button>
+                        )}
+                        {editLimitReached && (
+                            <div className="text-sm text-muted-foreground bg-yellow-50 p-2 rounded border border-yellow-200">
+                                Edit limit reached (3/3 edits used). Contact
+                                support if you need to make additional changes.
+                            </div>
                         )}
                         {isEditing && (
                             <>

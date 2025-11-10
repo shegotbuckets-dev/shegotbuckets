@@ -152,6 +152,16 @@ export async function updateRoster(
     // Use service role client to bypass RLS for roster management
     const supabase = createServiceRoleClient();
 
+    // Check if any actual changes are being made
+    const hasChanges =
+        playersToUpdate.length > 0 ||
+        playersToInsert.length > 0 ||
+        playersToDelete.length > 0;
+
+    if (!hasChanges) {
+        return; // No changes to save
+    }
+
     // Update existing players by player_id
     for (const player of playersToUpdate) {
         const { error: updateError } = await supabase
@@ -163,6 +173,7 @@ export async function updateRoster(
                 jersey_number: player.jersey_number
                     ? parseInt(player.jersey_number)
                     : null,
+                updated_at: new Date().toISOString(),
             })
             .eq("player_id", player.player_id);
 
@@ -185,6 +196,7 @@ export async function updateRoster(
                     ? parseInt(player.jersey_number)
                     : null,
                 waiver_signed: false,
+                updated_at: new Date().toISOString(),
             }));
 
         const { error: insertError } = await supabase
@@ -210,5 +222,33 @@ export async function updateRoster(
                 `Failed to delete ${player.first_name} ${player.last_name}: ${deleteError.message}`
             );
         }
+    }
+
+    // Increment edited_count in event_registrations after successful updates
+    // First fetch the current edited_count
+    const { data: currentRegistration, error: fetchError } = await supabase
+        .from("event_registrations")
+        .select("edited_count")
+        .eq("registration_id", registrationId)
+        .single();
+
+    if (fetchError) {
+        throw new Error(
+            `Failed to fetch registration data: ${fetchError.message}`
+        );
+    }
+
+    // Update with incremented value
+    const { error: incrementError } = await supabase
+        .from("event_registrations")
+        .update({
+            edited_count: (currentRegistration?.edited_count ?? 0) + 1,
+        })
+        .eq("registration_id", registrationId);
+
+    if (incrementError) {
+        throw new Error(
+            `Failed to increment edit count: ${incrementError.message}`
+        );
     }
 }
