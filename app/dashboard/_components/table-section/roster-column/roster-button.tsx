@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { fetchFromTable, updateRoster } from "@/utils/actions/supabase";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { Trash2 } from "lucide-react";
 
@@ -36,6 +36,7 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
     const [editedRoster, setEditedRoster] = useState<RosterPlayer[]>([]);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const tableContainerRef = useRef<HTMLDivElement>(null);
 
     const fetchRoster = useCallback(async () => {
         if (!event.userStatus.registration_id) return;
@@ -265,6 +266,14 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
             waiver_signed: false,
         };
         setEditedRoster([...editedRoster, newPlayer]);
+
+        // Scroll to bottom after adding player
+        setTimeout(() => {
+            if (tableContainerRef.current) {
+                tableContainerRef.current.scrollTop =
+                    tableContainerRef.current.scrollHeight;
+            }
+        }, 100);
     };
 
     const handleRemovePlayer = (index: number) => {
@@ -326,10 +335,19 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
                         {isEditing && (
                             <>
                                 <Button
+                                    onClick={handleAddPlayer}
+                                    variant="default"
+                                    size="sm"
+                                    className="bg-blue-600 hover:bg-blue-700"
+                                >
+                                    Add Player
+                                </Button>
+                                <Button
                                     onClick={handleCancelEdit}
-                                    variant="outline"
+                                    variant="default"
                                     size="sm"
                                     disabled={saving}
+                                    className="bg-yellow-500 hover:bg-yellow-600 text-white"
                                 >
                                     Cancel
                                 </Button>
@@ -337,6 +355,7 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
                                     onClick={handleSave}
                                     size="sm"
                                     disabled={saving}
+                                    className="bg-green-600 hover:bg-green-700"
                                 >
                                     {saving ? "Saving..." : "Save"}
                                 </Button>
@@ -355,143 +374,118 @@ export const RosterButton = ({ event }: RosterButtonProps) => {
                             Loading roster...
                         </div>
                     ) : displayRoster.length === 0 ? (
-                        <>
-                            <div className="text-center py-8 text-muted-foreground">
-                                No players have been added to the roster yet.
-                            </div>
-                            {isEditing && (
-                                <div className="flex justify-center pb-4">
-                                    <Button
-                                        onClick={handleAddPlayer}
-                                        variant="outline"
-                                        size="sm"
-                                    >
-                                        Add Player
-                                    </Button>
-                                </div>
-                            )}
-                        </>
+                        <div className="text-center py-8 text-muted-foreground">
+                            No players have been added to the roster yet.
+                        </div>
                     ) : (
-                        <>
-                            <TableInDialog
-                                headers={
-                                    isEditing
-                                        ? [...ROSTER_HEADERS, "Actions"]
-                                        : ROSTER_HEADERS
-                                }
-                                data={displayRoster}
-                                renderRow={(player, index) => {
-                                    const isAdmin =
-                                        player.user_email === ADMIN_EMAIL;
-                                    return isEditing
-                                        ? [
-                                              <Input
-                                                  key={`first-name-${index}`}
-                                                  value={player.first_name}
-                                                  onChange={(e) =>
-                                                      handleFieldChange(
-                                                          index,
-                                                          "first_name",
-                                                          e.target.value
-                                                      )
-                                                  }
-                                                  className="h-8"
-                                                  placeholder="First name"
-                                                  disabled={isAdmin}
-                                              />,
-                                              <Input
-                                                  key={`last-name-${index}`}
-                                                  value={player.last_name}
-                                                  onChange={(e) =>
-                                                      handleFieldChange(
-                                                          index,
-                                                          "last_name",
-                                                          e.target.value
-                                                      )
-                                                  }
-                                                  className="h-8"
-                                                  placeholder="Last name"
-                                                  disabled={isAdmin}
-                                              />,
-                                              <Input
-                                                  key={`email-${index}`}
-                                                  type="email"
-                                                  value={player.user_email}
-                                                  onChange={(e) =>
-                                                      handleFieldChange(
-                                                          index,
-                                                          "user_email",
-                                                          e.target.value
-                                                      )
-                                                  }
-                                                  className="h-8"
-                                                  placeholder="email@example.com"
-                                                  disabled={isAdmin}
-                                              />,
-                                              <Input
-                                                  key={`jersey-${index}`}
-                                                  type="number"
-                                                  value={player.jersey_number}
-                                                  onChange={(e) =>
-                                                      handleFieldChange(
-                                                          index,
-                                                          "jersey_number",
-                                                          e.target.value
-                                                      )
-                                                  }
-                                                  className="h-8"
-                                                  placeholder="#"
-                                                  disabled={isAdmin}
-                                              />,
-                                              <WaiverCellInRoster
-                                                  key={`waiver-cell-${index}`}
-                                                  value={
-                                                      player.waiver_signed
-                                                          ? "Signed"
-                                                          : "Pending"
-                                                  }
-                                              />,
-                                              <Button
-                                                  key={`delete-${index}`}
-                                                  onClick={() =>
-                                                      handleRemovePlayer(index)
-                                                  }
-                                                  variant="ghost"
-                                                  size="sm"
-                                                  className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                                                  disabled={isAdmin}
-                                              >
-                                                  <Trash2 className="h-4 w-4" />
-                                              </Button>,
-                                          ]
-                                        : [
-                                              player.first_name,
-                                              player.last_name,
-                                              player.user_email,
-                                              player.jersey_number,
-                                              <WaiverCellInRoster
-                                                  key={`waiver-cell-${player.player_id}`}
-                                                  value={
-                                                      player.waiver_signed
-                                                          ? "Signed"
-                                                          : "Pending"
-                                                  }
-                                              />,
-                                          ];
-                                }}
-                            />
-                            {isEditing && (
-                                <div className="flex justify-center pb-4">
-                                    <Button
-                                        onClick={handleAddPlayer}
-                                        variant="outline"
-                                        size="sm"
-                                    >
-                                        Add Player
-                                    </Button>
-                                </div>
-                            )}
-                        </>
+                        <TableInDialog
+                            ref={tableContainerRef}
+                            headers={
+                                isEditing
+                                    ? [...ROSTER_HEADERS, "Actions"]
+                                    : ROSTER_HEADERS
+                            }
+                            data={displayRoster}
+                            renderRow={(player, index) => {
+                                const isAdmin =
+                                    player.user_email === ADMIN_EMAIL;
+                                return isEditing
+                                    ? [
+                                          <Input
+                                              key={`first-name-${index}`}
+                                              value={player.first_name}
+                                              onChange={(e) =>
+                                                  handleFieldChange(
+                                                      index,
+                                                      "first_name",
+                                                      e.target.value
+                                                  )
+                                              }
+                                              className="h-8"
+                                              placeholder="First name"
+                                              disabled={isAdmin}
+                                          />,
+                                          <Input
+                                              key={`last-name-${index}`}
+                                              value={player.last_name}
+                                              onChange={(e) =>
+                                                  handleFieldChange(
+                                                      index,
+                                                      "last_name",
+                                                      e.target.value
+                                                  )
+                                              }
+                                              className="h-8"
+                                              placeholder="Last name"
+                                              disabled={isAdmin}
+                                          />,
+                                          <Input
+                                              key={`email-${index}`}
+                                              type="email"
+                                              value={player.user_email}
+                                              onChange={(e) =>
+                                                  handleFieldChange(
+                                                      index,
+                                                      "user_email",
+                                                      e.target.value
+                                                  )
+                                              }
+                                              className="h-8"
+                                              placeholder="email@example.com"
+                                              disabled={isAdmin}
+                                          />,
+                                          <Input
+                                              key={`jersey-${index}`}
+                                              type="number"
+                                              value={player.jersey_number}
+                                              onChange={(e) =>
+                                                  handleFieldChange(
+                                                      index,
+                                                      "jersey_number",
+                                                      e.target.value
+                                                  )
+                                              }
+                                              className="h-8"
+                                              placeholder="#"
+                                              disabled={isAdmin}
+                                          />,
+                                          <WaiverCellInRoster
+                                              key={`waiver-cell-${index}`}
+                                              value={
+                                                  player.waiver_signed
+                                                      ? "Signed"
+                                                      : "Pending"
+                                              }
+                                          />,
+                                          <Button
+                                              key={`delete-${index}`}
+                                              onClick={() =>
+                                                  handleRemovePlayer(index)
+                                              }
+                                              variant="ghost"
+                                              size="sm"
+                                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                              disabled={isAdmin}
+                                          >
+                                              <Trash2 className="h-4 w-4" />
+                                          </Button>,
+                                      ]
+                                    : [
+                                          player.first_name,
+                                          player.last_name,
+                                          player.user_email,
+                                          player.jersey_number,
+                                          <WaiverCellInRoster
+                                              key={`waiver-cell-${player.player_id}`}
+                                              value={
+                                                  player.waiver_signed
+                                                      ? "Signed"
+                                                      : "Pending"
+                                              }
+                                          />,
+                                      ];
+                            }}
+                        />
                     )}
                 </div>
             </DialogContent>

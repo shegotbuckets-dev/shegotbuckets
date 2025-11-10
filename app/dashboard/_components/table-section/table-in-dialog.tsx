@@ -7,22 +7,23 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
+import React, { forwardRef } from "react";
+
 interface TableInDialogProps<T> {
     headers: string[];
     data: T[];
     renderRow: (item: T, index: number) => React.ReactNode[];
 }
 
-export function TableInDialog<T>({
-    headers,
-    data,
-    renderRow,
-}: TableInDialogProps<T>) {
+function TableInDialogComponent<T>(
+    { headers, data, renderRow }: TableInDialogProps<T>,
+    ref: React.Ref<HTMLDivElement>
+) {
     if (!data.length) return null;
 
     return (
         <div className="relative h-full border rounded-md">
-            <div className="absolute inset-0 overflow-auto">
+            <div ref={ref} className="absolute inset-0 overflow-auto">
                 <Table>
                     <TableHeader className="bg-gray-100">
                         <TableRow>
@@ -54,3 +55,7 @@ export function TableInDialog<T>({
         </div>
     );
 }
+
+export const TableInDialog = forwardRef(TableInDialogComponent) as <T>(
+    props: TableInDialogProps<T> & { ref?: React.Ref<HTMLDivElement> }
+) => ReturnType<typeof TableInDialogComponent>;
