@@ -348,6 +348,7 @@ export type EventBasicInfo = Omit<
     userStatus: UserEventStatus;
     stripe_price_ids: StripePriceIds | null;
     original_event_id: string; // For multi-team support
+    user_team_count?: number; // Number of teams user is registered for in this event
 };
 
 export interface EventsData {
@@ -376,4 +377,22 @@ export interface PaymentRequestData {
 export enum LeagueType {
     COLLEGE = "COLLEGE",
     FREETEAM = "FREETEAM",
+}
+
+// New types for register team flow
+export interface RegisterTeamData {
+    event_id: string;
+    team_id: string;
+    user_email: string;
+    first_name: string;
+    last_name: string;
+}
+
+export interface JoinTeamData {
+    registration_id: string;
+    event_id: string;
+    user_email: string;
+    first_name: string;
+    last_name: string;
+    jersey_number: number;
 }

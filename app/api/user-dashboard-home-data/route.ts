@@ -69,12 +69,16 @@ export async function GET(req: Request) {
                 }
             }
 
+            // Calculate user_team_count (how many teams user is on for this event)
+            const userTeamCount = userPlayerRecordsForEvent.length;
+
             // If user has no registrations for this event, return single entry with no team
             if (userPlayerRecordsForEvent.length === 0) {
                 return [
                     {
                         ...event,
                         original_event_id: event.event_id,
+                        user_team_count: 0,
                         userStatus: {
                             isRegistered: false,
                             registration_id: undefined,
@@ -104,6 +108,7 @@ export async function GET(req: Request) {
                     // Add unique identifier for multi-team scenarios
                     event_id: `${event.event_id}_${team_id || "no_team"}`,
                     original_event_id: event.event_id,
+                    user_team_count: userTeamCount,
                     userStatus: {
                         isRegistered: true,
                         registration_id: userRegistration?.registration_id,

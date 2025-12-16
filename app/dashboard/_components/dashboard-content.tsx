@@ -4,6 +4,7 @@ import { useDashboardHomeData } from "@/app/dashboard/_hooks/useDashboardHomeDat
 
 import { useCallback } from "react";
 
+import { JoinRegistrationGlobal } from "./join-registration-global";
 import { EventsTable } from "./table-section/events-table";
 
 export const DashboardContent = () => {
@@ -15,6 +16,8 @@ export const DashboardContent = () => {
 
     return (
         <div className="space-y-6">
+            {/* Global Join Team Section */}
+            <JoinRegistrationGlobal />
             {/* Available Events */}
             <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="p-4 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">

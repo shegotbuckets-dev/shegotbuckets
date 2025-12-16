@@ -132,6 +132,7 @@ export type Database = {
             events: {
                 Row: {
                     active: boolean;
+                    allow_multi_team: boolean | null;
                     date: string | null;
                     description: string | null;
                     event_id: string;
@@ -147,6 +148,7 @@ export type Database = {
                 };
                 Insert: {
                     active: boolean;
+                    allow_multi_team?: boolean | null;
                     date?: string | null;
                     description?: string | null;
                     event_id?: string;
@@ -162,6 +164,7 @@ export type Database = {
                 };
                 Update: {
                     active?: boolean;
+                    allow_multi_team?: boolean | null;
                     date?: string | null;
                     description?: string | null;
                     event_id?: string;
