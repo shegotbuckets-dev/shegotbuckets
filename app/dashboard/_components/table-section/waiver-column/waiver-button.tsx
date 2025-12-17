@@ -23,7 +23,7 @@ export const WaiverButton = ({ event, onButtonSuccess }: WaiverCellProps) => {
             <DialogTrigger asChild>
                 <span>Sign Waiver</span>
             </DialogTrigger>
-            <DialogContent className="max-w-[50rem] max-h-svh overflow-auto">
+            <DialogContent className="max-w-[95vw] sm:max-w-[95vw] md:max-w-[50rem] max-h-svh overflow-auto">
                 <DialogDescription className="sr-only">
                     Waiver signing interface
                 </DialogDescription>

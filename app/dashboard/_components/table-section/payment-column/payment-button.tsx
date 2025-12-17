@@ -49,7 +49,7 @@ export function PaymentButton({
                 <span>Pay Now</span>
             </DialogTrigger>
 
-            <DialogContent className="max-w-[60rem] flex flex-col">
+            <DialogContent className="max-w-[95vw] sm:max-w-[95vw] md:max-w-[60rem] flex flex-col">
                 <DialogHeader>
                     <DialogTitle className="text-xl">
                         Payment for{" "}

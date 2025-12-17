@@ -11,7 +11,10 @@ import { memo } from "react";
 import { WaiverButton } from "./waiver-button";
 
 const WaiverCellComponent = ({ event, onButtonSuccess }: WaiverCellProps) => {
-    if (!event.userStatus.isRegistered) {
+    // Only allow waiver access if payment is complete
+    const isPaid = event.userStatus.paymentStatus;
+
+    if (!isPaid) {
         return (
             <Badge variant="secondary" className={STATUS_BADGE_CLASSNAME}>
                 {BADGE_TEXT.NA}

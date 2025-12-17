@@ -17,11 +17,13 @@ export async function POST(req: Request) {
     try {
         const {
             event_id,
-            registration_id,
+            registration_id, // Optional now - for existing registrations
             team_id,
             team_name,
             user_email,
             email,
+            first_name,
+            last_name,
             eventName,
             hasTeam2,
             stripe_price_ids,
@@ -69,20 +71,43 @@ export async function POST(req: Request) {
             }
         }
 
+        // Build metadata - include user info for new registrations
+        const metadata: Record<string, string> = {
+            event_id,
+            team_id,
+            team_name: team_name || "Unknown Team",
+            user_email: user_email || email,
+        };
+
+        // Add registration_id if it exists (for multi-team registrations)
+        if (registration_id) {
+            metadata.registration_id = registration_id;
+        }
+
+        // Add user details for new registrations (when no registration_id)
+        if (!registration_id && first_name && last_name) {
+            metadata.first_name = first_name;
+            metadata.last_name = last_name;
+        }
+
+        // Build success URL based on whether registration exists
+        const successParams = new URLSearchParams({
+            success: "true",
+            event_id,
+            team_id,
+        });
+        if (registration_id) {
+            successParams.append("registration_id", registration_id);
+        }
+
         const session = await stripe.checkout.sessions.create({
             line_items,
             ...(optional_items && { optional_items }),
             allow_promotion_codes: true,
-            metadata: {
-                event_id,
-                registration_id,
-                team_id,
-                team_name: team_name || "Unknown Team",
-                user_email,
-            },
+            metadata,
             customer_email: email,
             mode: "payment",
-            success_url: `${baseUrl}${successUrl}?success=true`,
+            success_url: `${baseUrl}${successUrl}?${successParams.toString()}`,
             cancel_url: `${baseUrl}${cancelUrl}?canceled=true`,
             // payment_method_types: ["card", "us_bank_account"],
             payment_method_types: ["us_bank_account", "card"],

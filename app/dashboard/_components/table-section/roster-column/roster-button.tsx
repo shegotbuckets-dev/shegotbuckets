@@ -9,11 +9,12 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { fetchFromTable, updateRoster } from "@/utils/actions/supabase";
 
 import { useCallback, useRef, useState } from "react";
 
-import { Trash2 } from "lucide-react";
+import { Copy, Trash2 } from "lucide-react";
 
 import { WaiverCellInRoster } from "../simple-cells";
 import { TableInDialog } from "../table-in-dialog";
@@ -30,6 +31,7 @@ interface RosterPlayer {
 const ADMIN_EMAIL = "webadmin@shegotbuckets.org";
 
 export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
+    const { toast } = useToast();
     const [roster, setRoster] = useState<RosterPlayer[]>([]);
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -83,7 +85,6 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const emailSet = new Set<string>();
         const jerseySet = new Set<string>();
-        let nonAdminPlayerCount = 0;
 
         for (let i = 0; i < editedRoster.length; i++) {
             const player = editedRoster[i];
@@ -94,8 +95,6 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
 
             // Skip validation for admin account
             if (player.user_email === ADMIN_EMAIL) continue;
-
-            nonAdminPlayerCount++;
 
             // Validate required fields
             if (!player.first_name || player.first_name.trim() === "") {
@@ -143,11 +142,6 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
                 return `Duplicate jersey number found: #${jerseyStr}`;
             }
             jerseySet.add(jerseyStr);
-        }
-
-        // Check minimum player count
-        if (nonAdminPlayerCount < 5) {
-            return `Roster must have at least 5 players (currently ${nonAdminPlayerCount})`;
         }
 
         return null;
@@ -303,11 +297,20 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
         setEditedRoster(updated);
     };
 
+    const handleCopyRegistrationId = () => {
+        const registrationId = event.userStatus.registration_id;
+        if (registrationId) {
+            const shortId = registrationId.substring(0, 8);
+            navigator.clipboard.writeText(shortId);
+            toast({
+                title: "Copied!",
+                description: "Registration ID copied to clipboard",
+            });
+        }
+    };
+
     const displayRoster = isEditing ? editedRoster : roster;
-    const canEdit =
-        !isEditing && event.active && event.userStatus.edited_count < 3;
-    const editLimitReached =
-        !isEditing && event.active && event.userStatus.edited_count >= 3;
+    const canEdit = !isEditing && event.active;
 
     const handleDialogOpenChange = (open: boolean) => {
         if (open) {
@@ -326,7 +329,7 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
             <DialogTrigger asChild>
                 <span>View Roster</span>
             </DialogTrigger>
-            <DialogContent className="h-[60vh] max-w-[60rem] flex flex-col">
+            <DialogContent className="h-[60vh] max-w-[95vw] sm:max-w-[95vw] md:max-w-[60rem] flex flex-col">
                 <DialogHeader>
                     <DialogTitle className="text-xl pr-8">
                         Roster for{" "}
@@ -344,6 +347,30 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
                             ? "Make changes to the roster. Click Save when done or Cancel to discard changes."
                             : "View the current roster of players registered for this event."}
                     </DialogDescription>
+                    {event.userStatus.registration_id && event.active && (
+                        <div className="flex items-center gap-2 mt-3 p-2 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-800">
+                            <div className="flex-1">
+                                <p className="text-xs font-semibold text-blue-900 dark:text-blue-100">
+                                    Registration ID:
+                                </p>
+                                <p className="font-mono text-sm text-blue-700 dark:text-blue-300">
+                                    {event.userStatus.registration_id.substring(
+                                        0,
+                                        8
+                                    )}
+                                </p>
+                            </div>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={handleCopyRegistrationId}
+                                className="gap-2"
+                            >
+                                <Copy className="h-4 w-4" />
+                                Copy
+                            </Button>
+                        </div>
+                    )}
                     <div className="flex gap-2 pt-2">
                         {canEdit && (
                             <Button
@@ -351,15 +378,8 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
                                 variant="outline"
                                 size="sm"
                             >
-                                Edit ({3 - event.userStatus.edited_count}{" "}
-                                remaining)
+                                Edit Roster
                             </Button>
-                        )}
-                        {editLimitReached && (
-                            <div className="text-sm text-muted-foreground bg-yellow-50 p-2 rounded border border-yellow-200">
-                                Edit limit reached (3/3 edits used). Contact
-                                support if you need to make additional changes.
-                            </div>
                         )}
                         {isEditing && (
                             <>
