@@ -3,6 +3,7 @@
 import { useRegisterTeam } from "@/app/dashboard/_hooks/useRegisterTeam";
 import { EventBasicInfo, TeamOption } from "@/app/dashboard/types";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogContent,
@@ -36,6 +37,7 @@ export const RegisterTeamButton = ({
 }: RegisterTeamButtonProps) => {
     const [teams, setTeams] = useState<TeamOption[]>([]);
     const [loading, setLoading] = useState(false);
+    const [hasTeam2, setHasTeam2] = useState(false);
 
     const {
         selectedTeam,
@@ -48,6 +50,7 @@ export const RegisterTeamButton = ({
     } = useRegisterTeam({
         event,
         teams,
+        hasTeam2,
         onSuccess: onButtonSuccess,
     });
 
@@ -140,21 +143,62 @@ export const RegisterTeamButton = ({
                         </SelectContent>
                     </Select>
 
-                    <div className="text-xs text-muted-foreground bg-blue-50 dark:bg-blue-950 p-3 rounded">
-                        <p className="font-semibold mb-1">What happens next?</p>
-                        <ul className="list-disc list-inside space-y-1">
-                            <li>You&apos;ll be added to the team roster</li>
-                            <li>
-                                You&apos;ll receive a Registration ID to share
-                                with teammates
-                            </li>
-                            <li>
-                                You can add more players by editing the roster
-                            </li>
-                            <li>
-                                Complete waiver signing and payment to finalize
-                            </li>
-                        </ul>
+                    <div className="space-y-3">
+                        <div className="text-xs text-muted-foreground bg-amber-50 dark:bg-amber-950 p-3 rounded border border-amber-200 dark:border-amber-800">
+                            <p className="font-semibold mb-1 text-amber-900 dark:text-amber-100">
+                                Payment Required
+                            </p>
+                            <p className="mb-2">
+                                Registration requires immediate payment of{" "}
+                                <span className="font-bold text-amber-900 dark:text-amber-100">
+                                    {event.price ?? "TBD"}
+                                </span>
+                            </p>
+                            <p className="text-xs">
+                                You&apos;ll be redirected to secure payment
+                                after clicking &quot;Register & Pay&quot;
+                            </p>
+                        </div>
+
+                        {/* Team 2 Checkbox */}
+                        {event.league_id !==
+                            "b4c3c012-ad36-48ac-a60c-8c1264f707b9" && (
+                            <div className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-900 rounded">
+                                <Checkbox
+                                    id="team2-register"
+                                    checked={hasTeam2}
+                                    onCheckedChange={(checked) =>
+                                        setHasTeam2(!!checked)
+                                    }
+                                />
+                                <label
+                                    htmlFor="team2-register"
+                                    className="text-sm cursor-pointer"
+                                >
+                                    I have a team 2 to participate
+                                </label>
+                            </div>
+                        )}
+
+                        <div className="text-xs text-muted-foreground bg-blue-50 dark:bg-blue-950 p-3 rounded">
+                            <p className="font-semibold mb-1">
+                                What happens next?
+                            </p>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>
+                                    You&apos;ll be redirected to complete
+                                    payment
+                                </li>
+                                <li>
+                                    After payment, you&apos;ll receive a
+                                    Registration ID
+                                </li>
+                                <li>
+                                    You can then add players, sign waivers, and
+                                    edit roster
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
@@ -173,7 +217,7 @@ export const RegisterTeamButton = ({
                         onClick={handleRegister}
                         disabled={!selectedTeam || isRegistering || loading}
                     >
-                        {isRegistering ? "Registering..." : "Register Team"}
+                        {isRegistering ? "Processing..." : "Register & Pay"}
                     </Button>
                 </div>
             </DialogContent>

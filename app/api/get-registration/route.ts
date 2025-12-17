@@ -2,6 +2,8 @@ import { createAdminClient } from "@/lib/supabase-admin";
 
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
@@ -14,7 +16,14 @@ export async function GET(req: Request) {
             );
         }
 
-        const supabase = await createAdminClient();
+        if (registration_id.length < 8) {
+            return NextResponse.json(
+                { error: "Registration ID must be at least 8 characters" },
+                { status: 400 }
+            );
+        }
+
+        const supabase = createAdminClient();
 
         // Fetch registration details using shortened ID (first 8 chars of UUID)
         // Use RPC function to cast UUID to text for LIKE comparison

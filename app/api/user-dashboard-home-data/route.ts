@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { StripePriceIds } from "@/app/dashboard/types";
-import { fetchFromTable } from "@/utils/actions/supabase";
+import { createAdminClient } from "@/lib/supabase-admin";
 
 import { NextResponse } from "next/server";
 
@@ -10,122 +10,68 @@ export async function GET(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
         const userEmail = searchParams.get("email");
+        const userId = searchParams.get("user_id"); // Optional - for future use
 
-        if (!userEmail) {
+        if (!userEmail && !userId) {
             return NextResponse.json(
-                { error: "User email is required" },
+                { error: "User email or ID is required" },
                 { status: 400 }
             );
         }
 
-        const [events, teams, registrations, currentUserPlayerRecords] =
-            await Promise.all([
-                fetchFromTable("events"),
-                fetchFromTable("teams"),
-                fetchFromTable("event_registrations"),
-                fetchFromTable("event_players", {
-                    eq: { column: "user_email", value: userEmail },
-                }),
-            ]);
+        const supabase = createAdminClient();
 
-        const teamMap = new Map(teams.map((team) => [team.team_id, team.name]));
-
-        const processedEvents = events.flatMap((event) => {
-            const eventRegistrations = registrations.filter(
-                (r) => r.event_id === event.event_id
-            );
-
-            // Find ALL player records for this user in this event (supports multi-team users)
-            const userPlayerRecordsForEvent = currentUserPlayerRecords.filter(
-                (playerRecord) =>
-                    eventRegistrations.some(
-                        (registration) =>
-                            registration.registration_id ===
-                            playerRecord.registration_id
-                    )
-            );
-
-            // Parse price IDs once for this event
-            let parsedPriceIds: StripePriceIds | null = null;
-            if (event.stripe_price_ids) {
-                try {
-                    const priceIds =
-                        typeof event.stripe_price_ids === "string"
-                            ? JSON.parse(event.stripe_price_ids)
-                            : event.stripe_price_ids;
-
-                    if (priceIds.required || priceIds.optional) {
-                        parsedPriceIds = {
-                            required: Array.isArray(priceIds.required)
-                                ? priceIds.required
-                                : [],
-                            optional: Array.isArray(priceIds.optional)
-                                ? priceIds.optional
-                                : [],
-                        };
-                    }
-                } catch (e) {
-                    console.error("Error parsing stripe_price_ids:", e);
-                }
-            }
-
-            // Calculate user_team_count (how many teams user is on for this event)
-            const userTeamCount = userPlayerRecordsForEvent.length;
-
-            // If user has no registrations for this event, return single entry with no team
-            if (userPlayerRecordsForEvent.length === 0) {
-                return [
-                    {
-                        ...event,
-                        original_event_id: event.event_id,
-                        user_team_count: 0,
-                        userStatus: {
-                            isRegistered: false,
-                            registration_id: undefined,
-                            team: undefined,
-                            team_id: undefined,
-                            waiverSigned: false,
-                            paymentStatus: false,
-                            edited_count: 0,
-                        },
-                        stripe_price_ids: parsedPriceIds,
-                    },
-                ];
-            }
-
-            // Create separate event entry for each team the user is registered with
-            return userPlayerRecordsForEvent.map((playerRecord) => {
-                const userRegistration = eventRegistrations.find(
-                    (registration) =>
-                        registration.registration_id ===
-                        playerRecord.registration_id
-                );
-
-                const team_id = userRegistration?.team_id || undefined;
-
-                return {
-                    ...event,
-                    // Add unique identifier for multi-team scenarios
-                    event_id: `${event.event_id}_${team_id || "no_team"}`,
-                    original_event_id: event.event_id,
-                    user_team_count: userTeamCount,
-                    userStatus: {
-                        isRegistered: true,
-                        registration_id: userRegistration?.registration_id,
-                        team: team_id ? teamMap.get(team_id) : undefined,
-                        team_id,
-                        waiverSigned: !!playerRecord?.waiver_signed,
-                        paymentStatus: userRegistration?.paid ?? false,
-                        edited_count: userRegistration?.edited_count ?? 0,
-                    },
-                    stripe_price_ids: parsedPriceIds,
-                };
-            });
+        // Use optimized RPC function
+        const { data, error } = await supabase.rpc("get_user_dashboard_data", {
+            p_user_id: userId || null,
+            p_user_email: userEmail || null,
         });
 
+        if (error) {
+            console.error("RPC error:", error);
+            throw error;
+        }
+
+        // Parse stripe_price_ids for each event
+        const parseStripePriceIds = (priceIds: any): StripePriceIds | null => {
+            if (!priceIds) return null;
+            try {
+                const parsed =
+                    typeof priceIds === "string"
+                        ? JSON.parse(priceIds)
+                        : priceIds;
+
+                if (parsed.required || parsed.optional) {
+                    return {
+                        required: Array.isArray(parsed.required)
+                            ? parsed.required
+                            : [],
+                        optional: Array.isArray(parsed.optional)
+                            ? parsed.optional
+                            : [],
+                    };
+                }
+            } catch (e) {
+                console.error("Error parsing stripe_price_ids:", e);
+            }
+            return null;
+        };
+
+        const activeEvents = (data?.activeEvents || []).map((event: any) => ({
+            ...event,
+            stripe_price_ids: parseStripePriceIds(event.stripe_price_ids),
+        }));
+
+        const previousEvents = (data?.previousEvents || []).map(
+            (event: any) => ({
+                ...event,
+                stripe_price_ids: parseStripePriceIds(event.stripe_price_ids),
+            })
+        );
+
         return NextResponse.json({
-            activeEvents: processedEvents.filter((e) => e.active),
-            previousEvents: processedEvents.filter((e) => !e.active),
+            activeEvents,
+            previousEvents,
         });
     } catch (error) {
         console.error("Error fetching dashboard data:", error);

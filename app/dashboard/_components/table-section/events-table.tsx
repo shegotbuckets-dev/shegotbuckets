@@ -14,6 +14,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { useToast } from "@/components/ui/use-toast";
 
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { FixedSizeList as List } from "react-window";
@@ -164,6 +165,7 @@ function EventsTableComponent({
 }: EventsTableProps & { loading: boolean }) {
     const searchParams = useSearchParams();
     const router = useRouter();
+    const { toast } = useToast();
     const [flashingEventId, setFlashingEventId] = useState<string | null>(null);
     const eventId = searchParams.get("eventId");
 
@@ -180,11 +182,51 @@ function EventsTableComponent({
     useEffect(() => {
         const success = searchParams.get("success");
         const eventId = searchParams.get("event_id");
-        if (success === "true" && eventId) {
+        const teamId = searchParams.get("team_id");
+        let registrationId = searchParams.get("registration_id");
+
+        const handlePaymentSuccess = async () => {
+            if (success !== "true" || !eventId) return;
+
+            // If no registration_id in URL, fetch it (new registration flow)
+            if (!registrationId && teamId) {
+                try {
+                    const response = await fetch(
+                        `/api/get-latest-registration?event_id=${eventId}&team_id=${teamId}`
+                    );
+                    const data = await response.json();
+                    if (data.registration_id) {
+                        registrationId = data.registration_id;
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch registration:", error);
+                }
+            }
+
+            // Show registration ID toast if available
+            if (registrationId) {
+                const registrationIdShort = registrationId.substring(0, 8);
+                toast({
+                    variant: "success",
+                    title: "Payment Successful!",
+                    description: `Registration ID: ${registrationIdShort}. Click to copy and share with teammates!`,
+                    duration: 10000, // Show for 10 seconds
+                    onClick: () => {
+                        navigator.clipboard.writeText(registrationIdShort);
+                        toast({
+                            title: "Copied!",
+                            description: "Registration ID copied to clipboard",
+                        });
+                    },
+                });
+            }
+
             memoizedOnButtonSuccess();
             handleSuccessRedirect();
-        }
-    }, [searchParams, memoizedOnButtonSuccess, handleSuccessRedirect]);
+        };
+
+        handlePaymentSuccess();
+    }, [searchParams, memoizedOnButtonSuccess, handleSuccessRedirect, toast]);
 
     useEffect(() => {
         if (eventId) {

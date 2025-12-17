@@ -26,13 +26,24 @@ const RegisterOrParticipatedCellComponent = ({
         );
     }
 
-    // For active events, check team limits
+    // For active events, check payment status first
+    const isPaid = event.userStatus.paymentStatus;
+    const isRegistered = event.userStatus.isRegistered;
     const userTeamCount = event.user_team_count ?? 0;
     const maxTeams = event.allow_multi_team ? 10 : 1; // this number matches the supabase.rpc function number
     const atTeamLimit = userTeamCount >= maxTeams;
 
-    // If user has reached team limit, show only "Registered" badge
-    if (atTeamLimit) {
+    // If user is registered but hasn't paid, show "Pending Payment"
+    if (isRegistered && !isPaid) {
+        return (
+            <Badge variant="pending" className={STATUS_BADGE_CLASSNAME}>
+                Pending Payment
+            </Badge>
+        );
+    }
+
+    // If user has paid and reached team limit, show only "Registered" badge
+    if (isPaid && atTeamLimit) {
         return (
             <Badge variant="green" className={STATUS_BADGE_CLASSNAME}>
                 {BADGE_TEXT.REGISTERED}
@@ -40,8 +51,8 @@ const RegisterOrParticipatedCellComponent = ({
         );
     }
 
-    // If user registered for at least one team but not at limit
-    if (userTeamCount > 0 && userTeamCount < maxTeams) {
+    // If user paid for at least one team but not at limit, show Registered + Register button
+    if (isPaid && userTeamCount > 0 && userTeamCount < maxTeams) {
         return (
             <div className="flex flex-col gap-1">
                 <Badge variant="green" className={STATUS_BADGE_CLASSNAME}>

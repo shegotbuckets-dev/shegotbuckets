@@ -15,7 +15,10 @@ interface RosterCellProps {
 }
 
 const RosterCellComponent = ({ event, onButtonSuccess }: RosterCellProps) => {
-    if (event.userStatus.isRegistered) {
+    // Only allow roster access if payment is complete
+    const isPaid = event.userStatus.paymentStatus;
+
+    if (isPaid) {
         return (
             <Badge variant="green" className={STATUS_BADGE_CLASSNAME_CLICKABLE}>
                 <RosterButton event={event} onButtonSuccess={onButtonSuccess} />

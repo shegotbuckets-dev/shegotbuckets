@@ -70,6 +70,7 @@ export type Database = {
                     registration_id: string | null;
                     updated_at: string | null;
                     user_email: string | null;
+                    user_id: string | null;
                     waiver_signed: boolean | null;
                 };
                 Insert: {
@@ -80,6 +81,7 @@ export type Database = {
                     registration_id?: string | null;
                     updated_at?: string | null;
                     user_email?: string | null;
+                    user_id?: string | null;
                     waiver_signed?: boolean | null;
                 };
                 Update: {
@@ -90,6 +92,7 @@ export type Database = {
                     registration_id?: string | null;
                     updated_at?: string | null;
                     user_email?: string | null;
+                    user_id?: string | null;
                     waiver_signed?: boolean | null;
                 };
                 Relationships: [
@@ -99,6 +102,13 @@ export type Database = {
                         isOneToOne: false;
                         referencedRelation: "event_registrations";
                         referencedColumns: ["registration_id"];
+                    },
+                    {
+                        foreignKeyName: "event_players_user_id_fkey";
+                        columns: ["user_id"];
+                        isOneToOne: false;
+                        referencedRelation: "users";
+                        referencedColumns: ["user_id"];
                     },
                 ];
             };
@@ -340,6 +350,29 @@ export type Database = {
         };
         Functions: {
             execute_sql: { Args: { sql: string }; Returns: undefined };
+            get_registration_by_short_id: {
+                Args: { short_id: string };
+                Returns: {
+                    event_id: string;
+                    registration_id: string;
+                    team_id: string;
+                }[];
+            };
+            get_user_dashboard_data: {
+                Args: { p_user_email: string; p_user_id: string };
+                Returns: Json;
+            };
+            join_team_with_registration_id: {
+                Args: {
+                    p_event_id: string;
+                    p_first_name: string;
+                    p_jersey_number: number;
+                    p_last_name: string;
+                    p_registration_id: string;
+                    p_user_email: string;
+                };
+                Returns: Json;
+            };
             on_after_payment_succeed: {
                 Args: {
                     p_amount: number;
@@ -357,9 +390,29 @@ export type Database = {
                 Args: { event_id: string; players: Json; team_id: string };
                 Returns: undefined;
             };
-            register_event_with_transaction: {
-                Args: { event_id: string; players: Json; team_id: string };
-                Returns: undefined;
+            register_team_for_event: {
+                Args: {
+                    p_event_id: string;
+                    p_first_name: string;
+                    p_last_name: string;
+                    p_team_id: string;
+                    p_user_email: string;
+                };
+                Returns: Json;
+            };
+            register_team_on_payment: {
+                Args: {
+                    p_amount: number;
+                    p_currency: string;
+                    p_event_id: string;
+                    p_first_name: string;
+                    p_last_name: string;
+                    p_metadata: Json;
+                    p_payment_id: string;
+                    p_team_id: string;
+                    p_user_email: string;
+                };
+                Returns: Json;
             };
         };
         Enums: {

@@ -32,6 +32,16 @@ export const useJoinTeam = ({ event, onSuccess }: UseJoinTeamProps) => {
                 return;
             }
 
+            if (registrationId.trim().length != 8) {
+                toast({
+                    variant: "destructive",
+                    title: "Invalid Registration ID",
+                    description:
+                        "Registration ID must be a 8 characters string",
+                });
+                return;
+            }
+
             const jerseyNum = parseInt(jerseyNumber, 10);
             if (isNaN(jerseyNum) || jerseyNum < 0 || jerseyNum >= 100) {
                 toast({
@@ -43,6 +53,7 @@ export const useJoinTeam = ({ event, onSuccess }: UseJoinTeamProps) => {
             }
 
             const userEmail = user?.emailAddresses[0]?.emailAddress;
+            const userId = user?.id;
             const firstName = user?.firstName;
             const lastName = user?.lastName;
 
@@ -63,6 +74,7 @@ export const useJoinTeam = ({ event, onSuccess }: UseJoinTeamProps) => {
                     registration_id: registrationId.trim(),
                     event_id: event.original_event_id,
                     user_email: userEmail,
+                    user_id: userId,
                     first_name: firstName,
                     last_name: lastName,
                     jersey_number: jerseyNum,

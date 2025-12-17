@@ -365,10 +365,13 @@ export interface PaymentButtonProps {
 
 export interface PaymentRequestData {
     event_id: string;
-    registration_id: string;
+    registration_id?: string; // Optional - only for multi-team registrations
     team_id: string;
     team_name?: string;
+    user_email?: string; // For new registrations (webhook needs this)
     email: string;
+    first_name?: string; // For new registrations
+    last_name?: string; // For new registrations
     eventName: string;
     hasTeam2: boolean;
     stripe_price_ids: StripePriceIds;
@@ -392,6 +395,7 @@ export interface JoinTeamData {
     registration_id: string;
     event_id: string;
     user_email: string;
+    user_id?: string;
     first_name: string;
     last_name: string;
     jersey_number: number;
