@@ -38,9 +38,19 @@ export default async function EventsCarousel({
             <Carousel className="overflow-visible">
                 <CarouselContent className="-ml-4">
                     {events
-                        .sort((a, b) =>
-                            a.active === b.active ? 0 : a.active ? -1 : 1
-                        )
+                        .sort((a, b) => {
+                            // First sort by active status
+                            if (a.active !== b.active) {
+                                return a.active ? -1 : 1;
+                            }
+                            // If both active, sort by reg_ddl ascending
+                            if (a.active && b.active) {
+                                if (!a.reg_ddl) return 1;
+                                if (!b.reg_ddl) return -1;
+                                return a.reg_ddl.localeCompare(b.reg_ddl);
+                            }
+                            return 0;
+                        })
                         .map((event) => (
                             <CarouselItem
                                 key={event.event_id}

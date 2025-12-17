@@ -44,7 +44,11 @@ export const useDashboardHomeData = () => {
 
     return {
         loading: query.isLoading,
-        eventsData: query.data ?? { activeEvents: [], previousEvents: [] },
+        eventsData: query.data ?? {
+            availableEvents: [],
+            comingSoonEvents: [],
+            previousEvents: [],
+        },
         refresh: memoizedRefresh,
     };
 };

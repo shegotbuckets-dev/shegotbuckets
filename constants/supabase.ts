@@ -143,8 +143,15 @@ export type Database = {
                 Row: {
                     active: boolean;
                     allow_multi_team: boolean | null;
+                    created_at: string | null;
                     date: string | null;
                     description: string | null;
+                    display_date: string | null;
+                    display_event_section_title_full: string | null;
+                    display_location_full: string | null;
+                    display_registration_status: string | null;
+                    display_title_full: string | null;
+                    event_external_url: string | null;
                     event_id: string;
                     image: string;
                     league_id: string | null;
@@ -159,8 +166,15 @@ export type Database = {
                 Insert: {
                     active: boolean;
                     allow_multi_team?: boolean | null;
+                    created_at?: string | null;
                     date?: string | null;
                     description?: string | null;
+                    display_date?: string | null;
+                    display_event_section_title_full?: string | null;
+                    display_location_full?: string | null;
+                    display_registration_status?: string | null;
+                    display_title_full?: string | null;
+                    event_external_url?: string | null;
                     event_id?: string;
                     image: string;
                     league_id?: string | null;
@@ -175,8 +189,15 @@ export type Database = {
                 Update: {
                     active?: boolean;
                     allow_multi_team?: boolean | null;
+                    created_at?: string | null;
                     date?: string | null;
                     description?: string | null;
+                    display_date?: string | null;
+                    display_event_section_title_full?: string | null;
+                    display_location_full?: string | null;
+                    display_registration_status?: string | null;
+                    display_title_full?: string | null;
+                    event_external_url?: string | null;
                     event_id?: string;
                     image?: string;
                     league_id?: string | null;
@@ -359,33 +380,21 @@ export type Database = {
                 }[];
             };
             get_user_dashboard_data: {
-                Args: { p_user_email: string; p_user_id: string };
+                Args: { p_user_email?: string; p_user_id?: string };
                 Returns: Json;
             };
-            join_team_with_registration_id:
-                | {
-                      Args: {
-                          p_event_id: string;
-                          p_first_name: string;
-                          p_jersey_number: number;
-                          p_last_name: string;
-                          p_registration_id: string;
-                          p_user_email: string;
-                      };
-                      Returns: Json;
-                  }
-                | {
-                      Args: {
-                          p_event_id: string;
-                          p_first_name: string;
-                          p_jersey_number: number;
-                          p_last_name: string;
-                          p_registration_id: string;
-                          p_user_email: string;
-                          p_user_id?: string;
-                      };
-                      Returns: Json;
-                  };
+            join_team_with_registration_id: {
+                Args: {
+                    p_event_id: string;
+                    p_first_name: string;
+                    p_jersey_number: number;
+                    p_last_name: string;
+                    p_registration_id: string;
+                    p_user_email: string;
+                    p_user_id?: string;
+                };
+                Returns: Json;
+            };
             on_after_payment_succeed: {
                 Args: {
                     p_amount: number;
@@ -403,28 +412,17 @@ export type Database = {
                 Args: { event_id: string; players: Json; team_id: string };
                 Returns: undefined;
             };
-            register_team_for_event:
-                | {
-                      Args: {
-                          p_event_id: string;
-                          p_first_name: string;
-                          p_last_name: string;
-                          p_team_id: string;
-                          p_user_email: string;
-                      };
-                      Returns: Json;
-                  }
-                | {
-                      Args: {
-                          p_event_id: string;
-                          p_first_name: string;
-                          p_last_name: string;
-                          p_team_id: string;
-                          p_user_email: string;
-                          p_user_id?: string;
-                      };
-                      Returns: Json;
-                  };
+            register_team_for_event: {
+                Args: {
+                    p_event_id: string;
+                    p_first_name: string;
+                    p_last_name: string;
+                    p_team_id: string;
+                    p_user_email: string;
+                    p_user_id?: string;
+                };
+                Returns: Json;
+            };
             register_team_on_payment: {
                 Args: {
                     p_amount: number;

@@ -65,7 +65,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <SidebarProvider>
             <div className="w-full flex flex-col min-h-screen">
                 <DashboardTopNav showSidebarTrigger={true} />
-                <div className="flex-1 flex overflow-hidden">
+                <div className="flex-1 flex">
                     <DashboardSidebar />
                     <main className="flex-1 w-full overflow-auto mt-16">
                         {children}

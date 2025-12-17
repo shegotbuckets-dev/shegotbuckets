@@ -1,10 +1,6 @@
 "use client";
 
-import {
-    EventBasicInfo,
-    EventsTableProps,
-    HEADERS,
-} from "@/app/dashboard/types";
+import { EventBasicInfo } from "@/app/dashboard/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
     Table,
@@ -16,8 +12,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { FixedSizeList as List } from "react-window";
+import { memo, useCallback, useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -27,38 +22,54 @@ import { RosterCell } from "./roster-column/roster-cell";
 import { TeamCell } from "./simple-cells";
 import { WaiverCell } from "./waiver-column/waiver-cell";
 
-// Memoize the prepareTableHeader function
-const prepareTableHeader = (events: EventBasicInfo[]) => {
-    const hasTeams = events.some(
-        (event) => event.userStatus.team !== undefined
-    );
-    const isActive = events[0]?.active ?? false;
+const HEADERS = [
+    "Event",
+    "Date",
+    "Location",
+    "Team",
+    "Register",
+    "Roster",
+    "Waiver",
+    "Payment",
+];
 
-    if (isActive) {
-        return hasTeams ? HEADERS.activeWithTeam : HEADERS.active;
-    }
-    return hasTeams ? HEADERS.previousWithTeam : HEADERS.previous;
-};
+interface RegisteredEventsTableProps {
+    events: EventBasicInfo[];
+    onButtonSuccess: () => void;
+    loading: boolean;
+}
 
-// Memoized table row component to prevent unnecessary re-renders
+// Memoized skeleton rows component
+const SkeletonRows = memo(() => (
+    <>
+        {Array.from({ length: 3 }).map((_, rowIndex) => (
+            <TableRow key={`skeleton-${rowIndex}`}>
+                {Array.from({ length: HEADERS.length }).map((_, cellIndex) => (
+                    <TableCell key={`cell-${cellIndex}`}>
+                        <Skeleton className="h-4 w-full" />
+                    </TableCell>
+                ))}
+            </TableRow>
+        ))}
+    </>
+));
+
+SkeletonRows.displayName = "SkeletonRows";
+
+// Memoized table row component
 const TableRowMemo = memo(
     ({
         event,
-        hasTeamColumn,
         onButtonSuccess,
         isFlashing,
         eventId,
-        style,
     }: {
         event: EventBasicInfo;
-        hasTeamColumn: boolean;
         onButtonSuccess: () => void;
         isFlashing: boolean;
         eventId: string | null;
-        style?: React.CSSProperties;
     }) => (
         <TableRow
-            style={style}
             className={
                 isFlashing && event.event_id === eventId
                     ? "animate-pulse bg-yellow-100 dark:bg-yellow-800 transition-colors duration-770 ease-in-out"
@@ -68,14 +79,11 @@ const TableRowMemo = memo(
             <TableCell className="font-medium">
                 {event.title_short ?? event.title}
             </TableCell>
-            <TableCell>{event.subtitle}</TableCell>
             <TableCell>{event.date}</TableCell>
             <TableCell>{event.location}</TableCell>
-            {hasTeamColumn && (
-                <TableCell>
-                    <TeamCell event={event} />
-                </TableCell>
-            )}
+            <TableCell>
+                <TeamCell event={event} />
+            </TableCell>
             <TableCell>
                 <RegisterOrParticipatedCell
                     event={event}
@@ -85,84 +93,23 @@ const TableRowMemo = memo(
             <TableCell>
                 <RosterCell event={event} onButtonSuccess={onButtonSuccess} />
             </TableCell>
-            {event.active && (
-                <TableCell>
-                    <WaiverCell
-                        event={event}
-                        onButtonSuccess={onButtonSuccess}
-                    />
-                </TableCell>
-            )}
-            {event.active && (
-                <TableCell>
-                    <PaymentCell event={event} />
-                </TableCell>
-            )}
+            <TableCell>
+                <WaiverCell event={event} onButtonSuccess={onButtonSuccess} />
+            </TableCell>
+            <TableCell>
+                <PaymentCell event={event} />
+            </TableCell>
         </TableRow>
     )
 );
 
 TableRowMemo.displayName = "TableRowMemo";
 
-// Memoized skeleton rows component
-const SkeletonRows = memo(
-    ({ tableHeadersLength }: { tableHeadersLength: number }) => (
-        <>
-            {Array.from({ length: 3 }).map((_, rowIndex) => (
-                <TableRow key={`skeleton-${rowIndex}`}>
-                    {Array.from({
-                        length: tableHeadersLength,
-                    }).map((_, cellIndex) => (
-                        <TableCell key={`cell-${cellIndex}`}>
-                            <Skeleton className="h-4 w-full" />
-                        </TableCell>
-                    ))}
-                </TableRow>
-            ))}
-        </>
-    )
-);
-
-SkeletonRows.displayName = "SkeletonRows";
-
-// Virtualized row renderer
-const VirtualizedRow = memo(
-    ({
-        index,
-        style,
-        data,
-    }: {
-        index: number;
-        style: React.CSSProperties;
-        data: {
-            events: EventBasicInfo[];
-            hasTeamColumn: boolean;
-            onButtonSuccess: () => void;
-            isFlashing: boolean;
-            eventId: string | null;
-        };
-    }) => {
-        const event = data.events[index];
-        return (
-            <TableRowMemo
-                event={event}
-                hasTeamColumn={data.hasTeamColumn}
-                onButtonSuccess={data.onButtonSuccess}
-                isFlashing={data.isFlashing}
-                eventId={data.eventId}
-                style={style}
-            />
-        );
-    }
-);
-
-VirtualizedRow.displayName = "VirtualizedRow";
-
-function EventsTableComponent({
+function RegisteredEventsTableComponent({
     events,
     onButtonSuccess,
     loading,
-}: EventsTableProps & { loading: boolean }) {
+}: RegisteredEventsTableProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
     const { toast } = useToast();
@@ -239,54 +186,33 @@ function EventsTableComponent({
         }
     }, [eventId]);
 
-    // Memoize expensive calculations
-    const tableHeaders = useMemo(() => prepareTableHeader(events), [events]);
-    const hasTeamColumn = useMemo(
-        () => events.some((event) => event.userStatus.team !== undefined),
-        [events]
-    );
-
-    // Determine if we should use virtual scrolling (more than 20 events)
-    const shouldUseVirtualization = events.length > 20;
-    const rowHeight = 60; // Approximate height of each row
-
     return (
         <div className="overflow-x-auto">
             <Table>
                 <TableHeader>
                     <TableRow>
-                        {tableHeaders.map((header) => (
+                        {HEADERS.map((header) => (
                             <TableHead key={header}>{header}</TableHead>
                         ))}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {loading ? (
-                        <SkeletonRows
-                            tableHeadersLength={tableHeaders.length}
-                        />
-                    ) : shouldUseVirtualization ? (
-                        <List
-                            height={Math.min(events.length * rowHeight, 600)} // Max height of 600px
-                            width="100%"
-                            itemCount={events.length}
-                            itemSize={rowHeight}
-                            itemData={{
-                                events,
-                                hasTeamColumn,
-                                onButtonSuccess: memoizedOnButtonSuccess,
-                                isFlashing: flashingEventId !== null,
-                                eventId: flashingEventId,
-                            }}
-                        >
-                            {VirtualizedRow}
-                        </List>
+                        <SkeletonRows />
+                    ) : events.length === 0 ? (
+                        <TableRow>
+                            <TableCell
+                                colSpan={HEADERS.length}
+                                className="text-center text-muted-foreground py-8"
+                            >
+                                No active registrations
+                            </TableCell>
+                        </TableRow>
                     ) : (
                         events.map((event) => (
                             <TableRowMemo
                                 key={event.event_id}
                                 event={event}
-                                hasTeamColumn={hasTeamColumn}
                                 onButtonSuccess={memoizedOnButtonSuccess}
                                 isFlashing={flashingEventId === event.event_id}
                                 eventId={flashingEventId}
@@ -300,6 +226,6 @@ function EventsTableComponent({
 }
 
 // Export memoized component
-export const EventsTable = memo(EventsTableComponent);
+export const RegisteredEventsTable = memo(RegisteredEventsTableComponent);
 
-EventsTable.displayName = "EventsTable";
+RegisteredEventsTable.displayName = "RegisteredEventsTable";

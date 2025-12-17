@@ -171,25 +171,43 @@ const EventCardActions = ({
 }: {
     event: Database["public"]["Tables"]["events"]["Row"];
 }) => {
+    const isRegistrationOpen = event.display_registration_status
+        ? event.display_registration_status.toLowerCase().startsWith("open")
+        : false;
+
     return (
         <div className="flex flex-row gap-4 mt-6">
             {event.active ? (
                 <>
-                    <Link href="/dashboard/home">
-                        <Button className="w-full">Register Now</Button>
-                    </Link>
-                    <div className="sm:w-[140px]">
-                        <DialogButton
-                            href={
-                                event.league_id
-                                    ? `/events/${event.league_id}`
-                                    : `/`
-                            }
-                            buttonText="Event Details"
-                            buttonVariant="outline"
-                            buttonClassName="w-full border-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                        />
-                    </div>
+                    {isRegistrationOpen ? (
+                        <Link href="/dashboard/home">
+                            <Button className="w-full">Register Now</Button>
+                        </Link>
+                    ) : (
+                        <Button
+                            variant="outline"
+                            className="w-full text-muted-foreground cursor-not-allowed opacity-50"
+                            disabled
+                        >
+                            Coming Soon
+                        </Button>
+                    )}
+                    {event.event_external_url && (
+                        <div className="sm:w-[140px]">
+                            <Link
+                                href={event.event_external_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <Button
+                                    variant="outline"
+                                    className="w-full border-2 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                                >
+                                    Event Details
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                 </>
             ) : (
                 <div className="sm:w-[140px]">

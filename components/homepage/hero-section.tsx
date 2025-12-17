@@ -56,7 +56,7 @@ export const HeroSection = () => {
                     unity, inclusion, and opportunity on and off the court.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm sm:max-w-none mx-auto">
-                    <Link href="/dashboard/home" className="w-full sm:w-auto">
+                    <Link href="/events" className="w-full sm:w-auto">
                         <HeartBeatButton className="w-full sm:w-auto py-3 px-6">
                             Become an Athlete
                         </HeartBeatButton>

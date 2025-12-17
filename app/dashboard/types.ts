@@ -89,12 +89,6 @@ export interface EventsTableProps {
     onButtonSuccess: () => void;
 }
 
-export interface EventsTableContainerProps {
-    loading: boolean;
-    events: EventBasicInfo[];
-    onButtonSuccess: () => void;
-}
-
 export const STATUS_BADGE_CLASSNAME =
     "w-24 h-6 truncate text-center justify-center cursor-default";
 export const STATUS_BADGE_CLASSNAME_CLICKABLE =
@@ -352,8 +346,9 @@ export type EventBasicInfo = Omit<
 };
 
 export interface EventsData {
-    activeEvents: EventBasicInfo[];
-    previousEvents: EventBasicInfo[];
+    availableEvents: EventBasicInfo[]; // Active events with registration open
+    comingSoonEvents: EventBasicInfo[]; // Active events with registration not yet open
+    previousEvents: EventBasicInfo[]; // Inactive events
 }
 
 export interface PaymentButtonProps {
