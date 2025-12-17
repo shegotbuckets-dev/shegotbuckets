@@ -172,7 +172,7 @@ export const RegisterTeamButton = ({
                 <span>Register</span>
             </DialogTrigger>
 
-            <DialogContent className="max-w-[40rem]">
+            <DialogContent className="max-w-[95vw] sm:max-w-[40rem]">
                 <DialogHeader>
                     <DialogTitle className="text-xl">
                         Register for{" "}

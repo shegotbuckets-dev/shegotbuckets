@@ -55,7 +55,7 @@ export const JoinTeamButton = ({
                 <span>Join Team</span>
             </DialogTrigger>
 
-            <DialogContent className="max-w-[40rem]">
+            <DialogContent className="max-w-[95vw] sm:max-w-[40rem]">
                 <DialogHeader>
                     <DialogTitle className="text-xl">
                         Join Team for{" "}

@@ -329,7 +329,7 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
             <DialogTrigger asChild>
                 <span>View Roster</span>
             </DialogTrigger>
-            <DialogContent className="h-[60vh] max-w-[60rem] flex flex-col">
+            <DialogContent className="h-[60vh] max-w-[95vw] sm:max-w-[95vw] md:max-w-[60rem] flex flex-col">
                 <DialogHeader>
                     <DialogTitle className="text-xl pr-8">
                         Roster for{" "}
