@@ -19,9 +19,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { Database } from "@/constants/supabase";
 import { cn } from "@/lib/utils";
-import { useLeagues } from "@/utils/hook/useLeagues";
 
 import * as React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -43,7 +41,7 @@ interface NavItem {
     children?: NavItemChild[];
 }
 
-const getNavItems = (eventChildren: NavItemChild[]): NavItem[] => {
+const getNavItems = (): NavItem[] => {
     return [
         {
             title: "Home",
@@ -54,9 +52,8 @@ const getNavItems = (eventChildren: NavItemChild[]): NavItem[] => {
             href: "/about",
         },
         {
-            title: "Events",
+            title: "Upcoming Events",
             href: "/events",
-            children: eventChildren,
         },
         {
             title: "Q&A",
@@ -69,25 +66,11 @@ const getNavItems = (eventChildren: NavItemChild[]): NavItem[] => {
     ];
 };
 
-const getLeagueComponents = (
-    leagues: Database["public"]["Tables"]["leagues"]["Row"][]
-): NavItemChild[] => {
-    return leagues
-        ?.filter((league) => league.show)
-        .map((league) => ({
-            id: league.league_id,
-            title: league.name,
-            subtitle: "",
-        }));
-};
-
 export default function NavBar() {
     const { theme, systemTheme } = useTheme();
     const { userId } = useAuth();
     const [mounted, setMounted] = React.useState(false);
-    const { data: leagues } = useLeagues();
-    const leagueComponents = getLeagueComponents(leagues);
-    const navItems = getNavItems(leagueComponents);
+    const navItems = getNavItems();
 
     React.useEffect(() => {
         setMounted(true);
@@ -155,7 +138,7 @@ export default function NavBar() {
                             variant="default"
                             className="animate-buttonheartbeat bg-orange-600 hover:bg-orange-500 text-white px-4 py-1"
                         >
-                            Become an Athlete
+                            Log In/Sign Up
                         </Button>
                     </Link>
                 )}

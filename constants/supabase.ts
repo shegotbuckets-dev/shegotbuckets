@@ -145,6 +145,12 @@ export type Database = {
                     allow_multi_team: boolean | null;
                     date: string | null;
                     description: string | null;
+                    display_date: string | null;
+                    display_event_section_title_full: string | null;
+                    display_location_full: string | null;
+                    display_registration_status: string | null;
+                    display_title_full: string | null;
+                    event_external_url: string | null;
                     event_id: string;
                     image: string;
                     league_id: string | null;
@@ -161,6 +167,12 @@ export type Database = {
                     allow_multi_team?: boolean | null;
                     date?: string | null;
                     description?: string | null;
+                    display_date?: string | null;
+                    display_event_section_title_full?: string | null;
+                    display_location_full?: string | null;
+                    display_registration_status?: string | null;
+                    display_title_full?: string | null;
+                    event_external_url?: string | null;
                     event_id?: string;
                     image: string;
                     league_id?: string | null;
@@ -177,6 +189,12 @@ export type Database = {
                     allow_multi_team?: boolean | null;
                     date?: string | null;
                     description?: string | null;
+                    display_date?: string | null;
+                    display_event_section_title_full?: string | null;
+                    display_location_full?: string | null;
+                    display_registration_status?: string | null;
+                    display_title_full?: string | null;
+                    event_external_url?: string | null;
                     event_id?: string;
                     image?: string;
                     league_id?: string | null;

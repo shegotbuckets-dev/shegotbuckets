@@ -1,0 +1,344 @@
+⏺ REVISED MIGRATION PLAN: Events Page Refactor
+
+Based on your responses, here's the updated plan:
+
+---
+
+Migration Strategy
+
+Phase 1: Database Schema Changes (Backward Compatible)
+
+Add new columns to events table:
+
+ALTER TABLE events ADD COLUMN event_external_url TEXT;
+ALTER TABLE events ADD COLUMN display_date TEXT; -- e.g., "Feb 7-8, 2026"
+ALTER TABLE events ADD COLUMN display_location_full TEXT; -- e.g., "Prime Time Basketball (address)"
+ALTER TABLE events ADD COLUMN display_title_full TEXT; -- Alternative to title for display
+ALTER TABLE events ADD COLUMN display_registration_status TEXT; -- e.g., "OPEN (Early Bird Available)"
+
+Fallback Strategy:
+
+-   If display_date is null → format date field
+-   If display_location_full is null → use location field
+-   If display_title_full is null → use title_short or title field
+-   If display_registration_status is null → derive from active and reg_ddl
+-   If event_external_url is null → "View More" button is hidden or disabled
+
+Existing columns kept unchanged:
+
+-   image - Still used by homepage carousel, dashboard, etc.
+-   title, subtitle, location, date, price, reg_ddl - Still used by dashboard
+-   active, league_id, event_id, stripe_price_ids, allow_multi_team - Critical for registration/payment flows
+
+---
+
+Phase 2: Create New Static Events Page & Remove Legacy
+
+New Route Structure:
+
+/app/events/page.tsx <- New static events page
+/app/events/\_components/event-section.tsx <- Component for each event section
+
+REMOVE:
+/app/events/[id]/page.tsx <- Delete this file
+/app/events/\_components/league-events.tsx <- Can be deleted (only used by [id] page)
+/app/events/\_components/event-registration.tsx <- Can be deleted (only used by [id] page)
+/app/events/\_components/league-hero.tsx <- Check if used elsewhere, if not delete
+/app/events/\_components/league-info.tsx <- Check if used elsewhere, if not delete
+
+Component Hierarchy:
+
+EventsPage (new static page at /app/events/page.tsx)
+├── Page Header/Title
+├── EventSection (foreach active event, sorted by date ascending)
+│ ├── Section Title (display_title_full || title_short || title)
+│ │ └── Example: "WEST COAST ELITE TOURNAMENT (2026 Feb 7-8, Los Angeles)"
+│ ├── Event Details
+│ │ ├── Event Title Label + Value (title)
+│ │ │ └── "2026 She Got Buckets West Coast Elite..."
+│ │ ├── Date Label + Value (display_date || formatted date)
+│ │ │ └── "February 7-8, 2026"
+│ │ ├── Location Label + Value (display_location_full || location)
+│ │ │ └── "Prime Time Basketball Association (16101 Old Valley Blvd...)"
+│ │ ├── Registration Label + Value (display_registration_status || derived)
+│ │ │ └── "OPEN (Early Bird Available)"
+│ ├── Action Buttons
+│ │ ├── Register Button (links to /dashboard/home)
+│ │ └── View More Button (opens event_external_url in new tab)
+│ │ └── Only shown if event_external_url exists
+
+Data Fetching:
+
+-   Query events table directly: SELECT \* FROM events WHERE active = true ORDER BY date ASC
+-   Server-side rendering for SEO
+-   No need to join with leagues table
+
+---
+
+Phase 3: Navbar Simplification
+
+Update /components/wrapper/navbar.tsx:
+
+REMOVE:
+
+-   useLeagues() hook call (no longer needed for events dropdown)
+-   getLeagueComponents() function call
+-   Dropdown logic for Events menu item
+-   Dynamic children for Events nav item
+
+CHANGE:
+
+-   Events nav item: Simple link href="/events" (no dropdown)
+-   Desktop navigation: Regular link instead of NavigationMenu dropdown
+-   Mobile navigation: Regular link instead of expandable section
+
+---
+
+Phase 4: Update Types
+
+Update constants/supabase.ts:
+
+events: {
+Row: {
+// ... existing fields ...
+event_external_url: string | null;
+display_date: string | null;
+display_location_full: string | null;
+display_title_full: string | null;
+display_registration_status: string | null;
+}
+}
+
+---
+
+Detailed Migration Steps
+
+Step 1: Database Migration (15-30 min)
+
+1. Run SQL migration to add 5 new columns
+2. Update constants/supabase.ts with new column types
+3. Run TypeScript type check: npm run type-check or tsc --noEmit
+
+Step 2: Create New Static Events Page (2-3 hours)
+
+1. Create /app/events/page.tsx:
+
+
+    - Server component
+    - Fetch active events sorted by date
+    - Import and render EventSection for each event
+
+2. Create /app/events/\_components/event-section.tsx:
+
+
+    - Accept event data as prop
+    - Display section title with fallback logic
+    - Display event details (title, date, location, registration status)
+    - Register button → /dashboard/home
+    - View More button → event_external_url (new tab, conditional render)
+    - NO image display in this component
+
+3. Implement fallback logic:
+   const sectionTitle = event.display_title_full || event.title_short || event.title;
+   const displayDate = event.display_date || formatDate(event.date);
+   const displayLocation = event.display_location_full || event.location;
+   const registrationStatus = event.display_registration_status ||
+   (event.active ? "OPEN" : "CLOSED");
+
+Step 3: Remove Legacy Pages (30 min)
+
+1. Delete /app/events/[id]/page.tsx
+2. Check and delete unused components:
+
+
+    - /app/events/_components/league-events.tsx
+    - /app/events/_components/event-registration.tsx
+    - Search codebase to verify these aren't imported elsewhere
+
+3. Check if these are used elsewhere before deleting:
+
+
+    - /app/events/_components/league-hero.tsx
+    - /app/events/_components/league-info.tsx
+    - /app/events/_components/hall-of-record.tsx
+
+Step 4: Update Navbar (30 min)
+
+1. Open /components/wrapper/navbar.tsx
+2. Remove useLeagues() hook usage for Events
+3. Change Events nav item to simple link:
+   {
+   title: "Events",
+   href: "/events",
+   // No children property
+   }
+4. Update desktop navigation rendering (remove dropdown for Events)
+5. Update mobile navigation rendering (remove expandable section for Events)
+
+Step 5: Testing (1-2 hours)
+
+New Functionality:
+
+-   New /events page loads successfully
+-   Active events are displayed sorted by date ascending
+-   Section titles display correctly with fallbacks
+-   Event details display correctly (title, date, location, registration)
+-   Register button navigates to /dashboard/home
+-   View More button opens external URL in new tab (if URL exists)
+-   View More button hidden if event_external_url is null
+-   Fallback values work when display columns are null
+-   Page is SEO-friendly (view source shows content)
+
+Navbar:
+
+-   Desktop: Events is a simple link, no dropdown
+-   Mobile: Events is a simple link, no expandable section
+-   Events link navigates to /events
+
+Critical Unchanged Functionality:
+
+-   Homepage events carousel still works
+-   Dashboard events table displays correctly
+-   Dashboard "Register" buttons work
+-   Payment flow works (create checkout, webhook)
+-   Registration flow works (register team, join team)
+-   Waiver signing works
+-   User can view roster
+
+Removed Functionality (Expected):
+
+-   /events/[league_id] returns 404 (expected, no longer supported)
+-   No league-specific event pages
+
+Step 6: Data Population (Post-Deployment - Variable time)
+
+Populate new columns for existing active events:
+
+-- Example update for an event
+UPDATE events
+SET
+display_title_full = 'WEST COAST ELITE TOURNAMENT (2026 Feb 7-8, Los Angeles)',
+display_date = 'February 7-8, 2026',
+display_location_full = 'Prime Time Basketball Association (16101 Old Valley Blvd, La Puente, CA 91744)',
+display_registration_status = 'OPEN (Early Bird Available)',
+event_external_url = 'https://example.com/tournament-details'
+WHERE event_id = 'your-event-id';
+
+Can be done manually via Supabase dashboard or via script.
+
+---
+
+Rollback Strategy
+
+If critical issues arise:
+
+Code Rollback:
+
+1. Restore /app/events/[id]/page.tsx from git
+2. Restore deleted components from git
+3. Restore navbar with dropdown from git
+4. Remove new /app/events/page.tsx
+5. All dashboard/payment/registration functionality intact
+
+Database Rollback (if needed):
+ALTER TABLE events DROP COLUMN event_external_url;
+ALTER TABLE events DROP COLUMN display_date;
+ALTER TABLE events DROP COLUMN display_location_full;
+ALTER TABLE events DROP COLUMN display_title_full;
+ALTER TABLE events DROP COLUMN display_registration_status;
+
+---
+
+Risk Assessment
+
+Low Risk ✅
+
+-   Adding new database columns (nullable, no breaking changes)
+-   Creating new /app/events/page.tsx route
+
+Medium Risk ⚠️
+
+-   Removing /events/[id] dynamic route
+    -   Impact: Existing bookmarks/links to /events/[league_id] will 404
+    -   Mitigation: Consider if any external links point to these pages
+    -   Note: You confirmed this is acceptable
+-   Simplifying navbar (removing dropdown)
+    -   Impact: Users lose quick access to league-specific pages
+    -   Mitigation: Test thoroughly on staging
+    -   Note: Since league pages are being removed, this is required
+
+No Risk (Unchanged) ✅
+
+-   Dashboard events table
+-   Payment integration
+-   Registration flow
+-   API routes
+-   RPC functions
+-   Homepage carousel
+
+---
+
+Breaking Changes (By Design)
+
+1. URLs that will 404:
+
+
+    - /events/[any-league-id] → All league-specific event pages removed
+    - Any bookmarked or external links to these pages will break
+
+2. Removed Features:
+
+
+    - League-specific event pages with detailed conference cards
+    - League hero sections
+    - League info and eligibility rules
+    - Hall of Record sections
+    - Multi-event selection on league pages
+
+3. User Impact:
+
+
+    - Users can no longer view events grouped by league
+    - All event information now on single page
+    - Simpler navigation (pro: easier, con: less granular)
+
+---
+
+Timeline
+
+Step 1 (Database): 15-30 minutes
+Step 2 (New Page): 2-3 hours
+Step 3 (Remove Legacy): 30 minutes
+Step 4 (Navbar): 30 minutes
+Step 5 (Testing): 1-2 hours
+Step 6 (Data Population): Variable (1-2 hours for multiple events)
+
+Total Estimated Time: 5-7 hours development + testing
+
+---
+
+Success Criteria
+
+✅ New static /events page displays all active events sorted by date
+✅ Each event section shows properly formatted details
+✅ Fallback logic works when display columns are null
+✅ "View More" button opens external URL in new tab (when URL exists)
+✅ "View More" button hidden when event_external_url is null
+✅ Register button navigates to dashboard
+✅ Navbar Events link goes directly to /events (no dropdown)
+✅ Mobile navigation updated consistently
+✅ /events/[id] routes return 404 (legacy pages removed)
+✅ Dashboard events table works unchanged
+✅ Payment flow works unchanged
+✅ Registration flow works unchanged
+✅ Homepage carousel works unchanged
+
+---
+
+Key Differences from Previous Plan
+
+1. No backward compatibility for league pages - We're removing them entirely
+2. No image display in event sections - Simplified design
+3. Simpler navbar - No need to consider dropdown alternatives
+4. Cleaner codebase - Delete unused components
+5. One canonical events page - /events is the only events route

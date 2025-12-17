@@ -1,7 +1,7 @@
 import Footer from "@/components/wrapper/footer";
 import NavBar from "@/components/wrapper/navbar";
 
-export default function EventPageLayout({
+export default function EventsPageLayout({
     children,
 }: {
     children: React.ReactNode;
@@ -9,7 +9,7 @@ export default function EventPageLayout({
     return (
         <div>
             <NavBar />
-            <main>{children}</main>
+            {children}
             <Footer />
         </div>
     );
