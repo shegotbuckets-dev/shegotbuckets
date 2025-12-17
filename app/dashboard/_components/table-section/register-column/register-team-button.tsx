@@ -3,7 +3,6 @@
 import { useRegisterTeam } from "@/app/dashboard/_hooks/useRegisterTeam";
 import { EventBasicInfo, TeamOption } from "@/app/dashboard/types";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogContent,
@@ -12,6 +11,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -38,6 +38,10 @@ export const RegisterTeamButton = ({
     const [teams, setTeams] = useState<TeamOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasTeam2, setHasTeam2] = useState(false);
+    const [isCreatingTeam, setIsCreatingTeam] = useState(false);
+    const [newTeamName, setNewTeamName] = useState("");
+    const [createTeamError, setCreateTeamError] = useState<string | null>(null);
+    const [isCreatingInProgress, setIsCreatingInProgress] = useState(false);
 
     const {
         selectedTeam,
@@ -78,12 +82,88 @@ export const RegisterTeamButton = ({
         }
     }, [open, event.league_id]);
 
+    const handleCreateTeam = async () => {
+        // Reset error
+        setCreateTeamError(null);
+
+        // Validate team name
+        const trimmedName = newTeamName.trim();
+        if (!trimmedName) {
+            setCreateTeamError("Team name is required");
+            return;
+        }
+
+        if (trimmedName.length > 100) {
+            setCreateTeamError("Team name must be 100 characters or less");
+            return;
+        }
+
+        // Check for duplicate locally (case-insensitive)
+        const duplicate = teams.find(
+            (t) => t.name.toLowerCase() === trimmedName.toLowerCase()
+        );
+        if (duplicate) {
+            setCreateTeamError(
+                "A team with this name already exists in this league"
+            );
+            return;
+        }
+
+        setIsCreatingInProgress(true);
+        try {
+            const response = await fetch("/api/teams", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: trimmedName,
+                    league_id: event.league_id,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                setCreateTeamError(data.error || "Failed to create team");
+                return;
+            }
+
+            // Add new team to the list
+            const newTeam: TeamOption = {
+                team_id: data.team_id,
+                name: data.name,
+            };
+            setTeams([...teams, newTeam]);
+
+            // Auto-select the new team
+            setSelectedTeam(newTeam.name);
+
+            // Exit creation mode
+            setIsCreatingTeam(false);
+            setNewTeamName("");
+            setCreateTeamError(null);
+        } catch (error) {
+            console.error("Error creating team:", error);
+            setCreateTeamError(
+                "An unexpected error occurred. Please try again."
+            );
+        } finally {
+            setIsCreatingInProgress(false);
+        }
+    };
+
+    const handleCancelCreate = () => {
+        setIsCreatingTeam(false);
+        setNewTeamName("");
+        setCreateTeamError(null);
+    };
+
     return (
         <Dialog
             open={open}
             onOpenChange={(open) => {
                 if (!open) {
                     resetForm();
+                    handleCancelCreate();
                 }
                 setOpen(open);
             }}
@@ -107,6 +187,9 @@ export const RegisterTeamButton = ({
                                 date={event.date ?? "TBD"}
                                 location={event.location ?? "TBD"}
                                 price={event.price ?? "TBD"}
+                                hasTeam2={hasTeam2}
+                                setHasTeam2={setHasTeam2}
+                                leagueId={event.league_id}
                             />
                         </DialogDescription>
                         <Separator />
@@ -115,33 +198,86 @@ export const RegisterTeamButton = ({
 
                 <div className="space-y-4">
                     <div className="text-sm font-medium">
-                        Select your team to register for this event
+                        {isCreatingTeam
+                            ? "Create a new team"
+                            : "Select your team to register for this event"}
                     </div>
-                    <Select
-                        onValueChange={setSelectedTeam}
-                        value={selectedTeam}
-                        disabled={loading || isRegistering}
-                    >
-                        <SelectTrigger autoFocus={false}>
-                            <SelectValue
-                                placeholder={
-                                    loading ? "Loading teams..." : "Select team"
-                                }
+
+                    {!isCreatingTeam ? (
+                        <>
+                            <Select
+                                onValueChange={setSelectedTeam}
+                                value={selectedTeam}
+                                disabled={loading || isRegistering}
+                            >
+                                <SelectTrigger autoFocus={false}>
+                                    <SelectValue
+                                        placeholder={
+                                            loading
+                                                ? "Loading teams..."
+                                                : "Select team"
+                                        }
+                                    />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {teams
+                                        .sort((a, b) =>
+                                            a.name.localeCompare(b.name)
+                                        )
+                                        .map((team) => (
+                                            <SelectItem
+                                                key={team.team_id}
+                                                value={team.name}
+                                            >
+                                                {team.name}
+                                            </SelectItem>
+                                        ))}
+                                </SelectContent>
+                            </Select>
+                            <Button
+                                variant="outline"
+                                onClick={() => setIsCreatingTeam(true)}
+                                disabled={loading || isRegistering}
+                                className="w-full"
+                            >
+                                + Create New Team
+                            </Button>
+                        </>
+                    ) : (
+                        <div className="space-y-3">
+                            <Input
+                                placeholder="Enter team name (e.g., Lakers, Warriors)"
+                                value={newTeamName}
+                                onChange={(e) => setNewTeamName(e.target.value)}
+                                disabled={isCreatingInProgress}
+                                autoFocus
                             />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {teams
-                                .sort((a, b) => a.name.localeCompare(b.name))
-                                .map((team) => (
-                                    <SelectItem
-                                        key={team.team_id}
-                                        value={team.name}
-                                    >
-                                        {team.name}
-                                    </SelectItem>
-                                ))}
-                        </SelectContent>
-                    </Select>
+                            {createTeamError && (
+                                <p className="text-sm text-red-600 bg-red-50 p-2 rounded">
+                                    {createTeamError}
+                                </p>
+                            )}
+                            <div className="flex gap-2">
+                                <Button
+                                    onClick={handleCreateTeam}
+                                    disabled={isCreatingInProgress}
+                                    className="flex-1"
+                                >
+                                    {isCreatingInProgress
+                                        ? "Creating..."
+                                        : "Create Team"}
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={handleCancelCreate}
+                                    disabled={isCreatingInProgress}
+                                    className="flex-1"
+                                >
+                                    Cancel
+                                </Button>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="space-y-3">
                         <div className="text-xs text-muted-foreground bg-amber-50 dark:bg-amber-950 p-3 rounded border border-amber-200 dark:border-amber-800">
@@ -159,26 +295,6 @@ export const RegisterTeamButton = ({
                                 after clicking &quot;Register & Pay&quot;
                             </p>
                         </div>
-
-                        {/* Team 2 Checkbox */}
-                        {event.league_id !==
-                            "b4c3c012-ad36-48ac-a60c-8c1264f707b9" && (
-                            <div className="flex items-center space-x-2 p-3 bg-gray-50 dark:bg-gray-900 rounded">
-                                <Checkbox
-                                    id="team2-register"
-                                    checked={hasTeam2}
-                                    onCheckedChange={(checked) =>
-                                        setHasTeam2(!!checked)
-                                    }
-                                />
-                                <label
-                                    htmlFor="team2-register"
-                                    className="text-sm cursor-pointer"
-                                >
-                                    I have a team 2 to participate
-                                </label>
-                            </div>
-                        )}
 
                         <div className="text-xs text-muted-foreground bg-blue-50 dark:bg-blue-950 p-3 rounded">
                             <p className="font-semibold mb-1">

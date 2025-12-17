@@ -85,7 +85,6 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const emailSet = new Set<string>();
         const jerseySet = new Set<string>();
-        let nonAdminPlayerCount = 0;
 
         for (let i = 0; i < editedRoster.length; i++) {
             const player = editedRoster[i];
@@ -96,8 +95,6 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
 
             // Skip validation for admin account
             if (player.user_email === ADMIN_EMAIL) continue;
-
-            nonAdminPlayerCount++;
 
             // Validate required fields
             if (!player.first_name || player.first_name.trim() === "") {
@@ -145,11 +142,6 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
                 return `Duplicate jersey number found: #${jerseyStr}`;
             }
             jerseySet.add(jerseyStr);
-        }
-
-        // Check minimum player count
-        if (nonAdminPlayerCount < 5) {
-            return `Roster must have at least 5 players (currently ${nonAdminPlayerCount})`;
         }
 
         return null;
@@ -355,7 +347,7 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
                             ? "Make changes to the roster. Click Save when done or Cancel to discard changes."
                             : "View the current roster of players registered for this event."}
                     </DialogDescription>
-                    {event.userStatus.registration_id && (
+                    {event.userStatus.registration_id && event.active && (
                         <div className="flex items-center gap-2 mt-3 p-2 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-800">
                             <div className="flex-1">
                                 <p className="text-xs font-semibold text-blue-900 dark:text-blue-100">

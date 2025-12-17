@@ -226,7 +226,8 @@ function EventsTableComponent({
         };
 
         handlePaymentSuccess();
-    }, [searchParams, memoizedOnButtonSuccess, handleSuccessRedirect, toast]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchParams, memoizedOnButtonSuccess, handleSuccessRedirect]);
 
     useEffect(() => {
         if (eventId) {
