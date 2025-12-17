@@ -21,32 +21,32 @@ export default function EventSection({ event }: EventSectionProps) {
         event.display_registration_status || (event.active ? "OPEN" : "CLOSED");
 
     return (
-        <section className="py-5 border-b last:border-b-0">
+        <section className="py-5">
             {/* Section Title */}
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-purple-900 dark:text-purple-400">
+            <h2 className="text-xl md:text-2xl font-semibold mb-4 text-purple-900 dark:text-purple-400">
                 {sectionTitle}
             </h2>
 
             {/* Event Details */}
-            <div className="space-y-2 mb-4 text-gray-800 dark:text-gray-200">
+            <div className="space-y-2 mb-4 text-[15px] font-semibold text-gray-800 dark:text-gray-200">
                 <div>
-                    <span className="font-semibold">EVENT TITLE: </span>
-                    <span>{event.title}</span>
+                    <span>EVENT TITLE: </span>
+                    <span className="font-normal">{event.title}</span>
                 </div>
 
                 <div>
-                    <span className="font-semibold">DATE: </span>
-                    <span>{displayDate}</span>
+                    <span>DATE: </span>
+                    <span className="font-normal">{displayDate}</span>
                 </div>
 
                 <div>
-                    <span className="font-semibold">LOCATION: </span>
-                    <span>{displayLocation}</span>
+                    <span>LOCATION: </span>
+                    <span className="font-normal">{displayLocation}</span>
                 </div>
 
                 <div>
-                    <span className="font-semibold">REGISTRATION: </span>
-                    <span className="font-semibold text-purple-900 dark:text-purple-400">
+                    <span>REGISTRATION: </span>
+                    <span className="text-purple-900 dark:text-purple-400">
                         {registrationStatus}
                     </span>
                 </div>
@@ -54,27 +54,27 @@ export default function EventSection({ event }: EventSectionProps) {
 
             {/* Action Buttons - only show if external URL exists */}
             {event.event_external_url && (
-                <div className="flex flex-wrap gap-4">
+                <div className="flex gap-1 w-full">
                     <Button
                         asChild
-                        size="lg"
-                        className="bg-purple-700 hover:bg-purple-800"
+                        size="default"
+                        className="flex-1 bg-purple-700 hover:bg-purple-800 h-9 uppercase"
                     >
-                        <Link href="/dashboard/home">Register Now</Link>
+                        <Link href="/dashboard/home">REGISTER NOW</Link>
                     </Button>
 
                     <Button
                         asChild
-                        size="lg"
+                        size="default"
                         variant="outline"
-                        className="border-purple-700 text-purple-700 hover:bg-purple-50 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-950"
+                        className="flex-1 border-purple-700 text-purple-700 hover:bg-purple-50 dark:border-purple-400 dark:text-purple-400 dark:hover:bg-purple-950 h-9 uppercase"
                     >
                         <Link
                             href={event.event_external_url}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            VIEW MORE
+                            VIEW MORE INFO
                         </Link>
                     </Button>
                 </div>

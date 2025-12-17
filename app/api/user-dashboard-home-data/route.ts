@@ -69,8 +69,21 @@ export async function GET(req: Request) {
             })
         );
 
+        // Split active events into available and coming soon
+        const availableEvents = activeEvents.filter((event: any) =>
+            event.display_registration_status?.toLowerCase().startsWith("open")
+        );
+
+        const comingSoonEvents = activeEvents.filter(
+            (event: any) =>
+                !event.display_registration_status
+                    ?.toLowerCase()
+                    .startsWith("open")
+        );
+
         return NextResponse.json({
-            activeEvents,
+            availableEvents,
+            comingSoonEvents,
             previousEvents,
         });
     } catch (error) {

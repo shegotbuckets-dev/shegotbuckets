@@ -22,9 +22,9 @@ export default async function EventsPage() {
     const activeEvents = allEvents
         .filter((event) => event.active === true)
         .sort((a, b) => {
-            if (!a.date) return 1;
-            if (!b.date) return -1;
-            return a.date.localeCompare(b.date);
+            if (!a.reg_ddl) return 1;
+            if (!b.reg_ddl) return -1;
+            return a.reg_ddl.localeCompare(b.reg_ddl);
         });
 
     return (
@@ -34,7 +34,7 @@ export default async function EventsPage() {
 
             {/* Events section */}
             <div className="flex w-full justify-center items-center bg-white/10">
-                <div className="w-full max-w-5xl px-6 py-12 md:py-16 lg:py-20">
+                <div className="w-full max-w-5xl px-6 py-8 md:py-10">
                     {/* Events List */}
                     {activeEvents.length > 0 ? (
                         <div>

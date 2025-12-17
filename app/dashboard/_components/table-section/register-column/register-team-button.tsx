@@ -20,6 +20,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
 import { fetchFromTable } from "@/utils/actions/supabase";
 
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ export const RegisterTeamButton = ({
     event,
     onButtonSuccess,
 }: RegisterTeamButtonProps) => {
+    const { toast } = useToast();
     const [teams, setTeams] = useState<TeamOption[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasTeam2, setHasTeam2] = useState(false);
@@ -123,7 +125,13 @@ export const RegisterTeamButton = ({
             const data = await response.json();
 
             if (!response.ok) {
-                setCreateTeamError(data.error || "Failed to create team");
+                const errorMessage = data.error || "Failed to create team";
+                setCreateTeamError(errorMessage);
+                toast({
+                    variant: "destructive",
+                    title: "Failed to create team",
+                    description: errorMessage,
+                });
                 return;
             }
 
@@ -137,15 +145,27 @@ export const RegisterTeamButton = ({
             // Auto-select the new team
             setSelectedTeam(newTeam.name);
 
+            // Show success toast
+            toast({
+                variant: "success",
+                title: "Team created successfully",
+                description: `"${newTeam.name}" has been added to the team list.`,
+            });
+
             // Exit creation mode
             setIsCreatingTeam(false);
             setNewTeamName("");
             setCreateTeamError(null);
         } catch (error) {
             console.error("Error creating team:", error);
-            setCreateTeamError(
-                "An unexpected error occurred. Please try again."
-            );
+            const errorMessage =
+                "An unexpected error occurred. Please try again.";
+            setCreateTeamError(errorMessage);
+            toast({
+                variant: "destructive",
+                title: "Error creating team",
+                description: errorMessage,
+            });
         } finally {
             setIsCreatingInProgress(false);
         }
