@@ -21,14 +21,14 @@ export default function EventSection({ event }: EventSectionProps) {
         event.display_registration_status || (event.active ? "OPEN" : "CLOSED");
 
     return (
-        <section className="py-8 border-b last:border-b-0">
+        <section className="py-5 border-b last:border-b-0">
             {/* Section Title */}
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-purple-900 dark:text-purple-400">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-purple-900 dark:text-purple-400">
                 {sectionTitle}
             </h2>
 
             {/* Event Details */}
-            <div className="space-y-3 mb-6 text-gray-800 dark:text-gray-200">
+            <div className="space-y-2 mb-4 text-gray-800 dark:text-gray-200">
                 <div>
                     <span className="font-semibold">EVENT TITLE: </span>
                     <span>{event.title}</span>
@@ -52,17 +52,17 @@ export default function EventSection({ event }: EventSectionProps) {
                 </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4">
-                <Button
-                    asChild
-                    size="lg"
-                    className="bg-purple-700 hover:bg-purple-800"
-                >
-                    <Link href="/dashboard/home">Register Now</Link>
-                </Button>
+            {/* Action Buttons - only show if external URL exists */}
+            {event.event_external_url && (
+                <div className="flex flex-wrap gap-4">
+                    <Button
+                        asChild
+                        size="lg"
+                        className="bg-purple-700 hover:bg-purple-800"
+                    >
+                        <Link href="/dashboard/home">Register Now</Link>
+                    </Button>
 
-                {event.event_external_url && (
                     <Button
                         asChild
                         size="lg"
@@ -77,8 +77,8 @@ export default function EventSection({ event }: EventSectionProps) {
                             VIEW MORE
                         </Link>
                     </Button>
-                )}
-            </div>
+                </div>
+            )}
         </section>
     );
 }
