@@ -87,7 +87,7 @@ export async function POST(req: Request) {
                 currency: "usd",
                 unit_amount: Math.round(processingFee * 100), // Convert to cents
                 product_data: {
-                    name: "Payment Processing Fee",
+                    name: `Payment Processing Fee ($${subtotal.toFixed(2)} × ${(feeRate * 100).toFixed(1)}% + $${feeFixed.toFixed(2)} = $${processingFeeFormatted})`,
                 },
             });
 
