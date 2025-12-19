@@ -81,6 +81,10 @@ The commit message type must be one of the following:
 -   Stripe Processing Fees: Configure payment processing fee surcharge by copying `.env.stripe` to your local `.env` or `.env.local` file and adjusting settings as needed.
 -   Customize the landing page, dashboard, and other components as needed.
 
+## Database Management
+
+-   **Supabase Migrations**: We use SQL version control to manage database schema changes. See [SUPABASE_WORKFLOW.md](./SUPABASE_WORKFLOW.md) for detailed instructions on working with migrations, RPC functions, and local development with Supabase CLI.
+
 ## Important Security Notes
 
 -   Enable Row Level Security (RLS) in your Supabase project to ensure data protection at the database level.
