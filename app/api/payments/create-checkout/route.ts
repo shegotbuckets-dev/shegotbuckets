@@ -152,8 +152,7 @@ export async function POST(req: Request) {
             mode: "payment",
             success_url: `${baseUrl}${successUrl}?${successParams.toString()}`,
             cancel_url: `${baseUrl}${cancelUrl}?canceled=true`,
-            // payment_method_types: ["card", "us_bank_account"],
-            payment_method_types: ["us_bank_account", "card"],
+            payment_method_types: ["card"],
             billing_address_collection: "auto",
             // Custom text for checkout page
             custom_text: {
@@ -170,7 +169,7 @@ export async function POST(req: Request) {
             // Description that appears on receipts and invoices
             payment_intent_data: {
                 description: `SGB Tournament Registration - ${eventNameFull} - Team: ${team_name || "Unknown Team"}`,
-                statement_descriptor: "SGB TOURNAMENT",
+                statement_descriptor: "She Got Buckets Inc",
             },
         });
 
