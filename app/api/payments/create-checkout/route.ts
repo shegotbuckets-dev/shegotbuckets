@@ -25,7 +25,6 @@ export async function POST(req: Request) {
             first_name,
             last_name,
             eventName,
-            hasTeam2,
             stripe_price_ids,
         } = await req.json();
 
@@ -43,33 +42,13 @@ export async function POST(req: Request) {
             quantity: 1,
         }));
 
-        // Handle optional items based on hasTeam2
-        let optional_items = undefined;
-
-        if (stripe_price_ids.optional?.length) {
-            if (hasTeam2) {
-                // Pre-select the optional items in the cart with adjustable quantity
-                stripe_price_ids.optional.forEach((priceId: string) => {
-                    line_items.push({
-                        price: priceId,
-                        quantity: 1, // Pre-selected with quantity 1
-                        adjustable_quantity: {
-                            enabled: true,
-                            minimum: 0, // Can be removed
-                            maximum: 10,
-                        },
-                    });
-                });
-            } else {
-                // Show as suggested items only
-                optional_items = stripe_price_ids.optional.map(
-                    (priceId: string) => ({
-                        price: priceId,
-                        quantity: 1,
-                    })
-                );
-            }
-        }
+        // Handle optional items - show as suggested items in checkout
+        const optional_items = stripe_price_ids.optional?.length
+            ? stripe_price_ids.optional.map((priceId: string) => ({
+                  price: priceId,
+                  quantity: 1,
+              }))
+            : undefined;
 
         // Build metadata - include user info for new registrations
         const metadata: Record<string, string> = {

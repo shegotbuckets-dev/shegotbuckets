@@ -354,7 +354,7 @@ export interface EventsData {
 export interface PaymentButtonProps {
     event: EventBasicInfo;
     paymentStatus: boolean | undefined;
-    onPaymentClick: (hasTeam2: boolean) => void;
+    onPaymentClick: () => void;
     isLoading: boolean;
 }
 
@@ -368,7 +368,6 @@ export interface PaymentRequestData {
     first_name?: string; // For new registrations
     last_name?: string; // For new registrations
     eventName: string;
-    hasTeam2: boolean;
     stripe_price_ids: StripePriceIds;
 }
 

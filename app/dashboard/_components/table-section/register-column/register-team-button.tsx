@@ -39,7 +39,6 @@ export const RegisterTeamButton = ({
     const { toast } = useToast();
     const [teams, setTeams] = useState<TeamOption[]>([]);
     const [loading, setLoading] = useState(false);
-    const [hasTeam2, setHasTeam2] = useState(false);
     const [isCreatingTeam, setIsCreatingTeam] = useState(false);
     const [newTeamName, setNewTeamName] = useState("");
     const [createTeamError, setCreateTeamError] = useState<string | null>(null);
@@ -56,7 +55,6 @@ export const RegisterTeamButton = ({
     } = useRegisterTeam({
         event,
         teams,
-        hasTeam2,
         onSuccess: onButtonSuccess,
     });
 
@@ -207,9 +205,6 @@ export const RegisterTeamButton = ({
                                 date={event.date ?? "TBD"}
                                 location={event.location ?? "TBD"}
                                 price={event.price ?? "TBD"}
-                                hasTeam2={hasTeam2}
-                                setHasTeam2={setHasTeam2}
-                                leagueId={event.league_id}
                             />
                         </DialogDescription>
                         <Separator />

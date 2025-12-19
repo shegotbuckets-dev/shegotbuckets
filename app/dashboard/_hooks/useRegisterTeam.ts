@@ -29,14 +29,12 @@ const getStripe = () => {
 interface UseRegisterTeamProps {
     event: EventBasicInfo;
     teams: TeamOption[];
-    hasTeam2: boolean;
     onSuccess: () => void;
 }
 
 export const useRegisterTeam = ({
     event,
     teams,
-    hasTeam2,
     onSuccess,
 }: UseRegisterTeamProps) => {
     const { user } = useUser();
@@ -101,7 +99,6 @@ export const useRegisterTeam = ({
                 first_name: firstName,
                 last_name: lastName,
                 eventName: `${event.title_short ?? event.title} - ${event.subtitle}`,
-                hasTeam2,
                 stripe_price_ids: event.stripe_price_ids,
             };
 
