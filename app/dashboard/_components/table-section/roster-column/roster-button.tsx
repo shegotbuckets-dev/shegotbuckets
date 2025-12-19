@@ -244,7 +244,7 @@ export const RosterButton = ({ event, onButtonSuccess }: RosterButtonProps) => {
             await fetchRoster();
             setIsEditing(false);
 
-            // Trigger parent refresh to update edited_count
+            // Trigger parent refresh
             onButtonSuccess();
         } catch (err) {
             setError(

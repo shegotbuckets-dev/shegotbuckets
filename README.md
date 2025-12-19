@@ -78,6 +78,7 @@ The commit message type must be one of the following:
 ## Additional Configuration
 
 -   Webhooks: Set up webhooks for Clerk (if using auth) at `/api/auth/webhook` and for Stripe (if using payments) at `/api/payments/webhook`.
+-   Stripe Processing Fees: Configure payment processing fee surcharge by copying `.env.stripe` to your local `.env` or `.env.local` file and adjusting settings as needed.
 -   Customize the landing page, dashboard, and other components as needed.
 
 ## Important Security Notes

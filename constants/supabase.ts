@@ -115,7 +115,6 @@ export type Database = {
             event_registrations: {
                 Row: {
                     created_at: string;
-                    edited_count: number | null;
                     event_id: string | null;
                     paid: boolean;
                     registration_id: string;
@@ -123,7 +122,6 @@ export type Database = {
                 };
                 Insert: {
                     created_at?: string;
-                    edited_count?: number | null;
                     event_id?: string | null;
                     paid?: boolean;
                     registration_id?: string;
@@ -131,7 +129,6 @@ export type Database = {
                 };
                 Update: {
                     created_at?: string;
-                    edited_count?: number | null;
                     event_id?: string | null;
                     paid?: boolean;
                     registration_id?: string;
@@ -150,7 +147,6 @@ export type Database = {
                     display_event_section_title_full: string | null;
                     display_location_full: string | null;
                     display_registration_status: string | null;
-                    display_title_full: string | null;
                     event_external_url: string | null;
                     event_id: string;
                     image: string;
@@ -173,7 +169,6 @@ export type Database = {
                     display_event_section_title_full?: string | null;
                     display_location_full?: string | null;
                     display_registration_status?: string | null;
-                    display_title_full?: string | null;
                     event_external_url?: string | null;
                     event_id?: string;
                     image: string;
@@ -196,7 +191,6 @@ export type Database = {
                     display_event_section_title_full?: string | null;
                     display_location_full?: string | null;
                     display_registration_status?: string | null;
-                    display_title_full?: string | null;
                     event_external_url?: string | null;
                     event_id?: string;
                     image?: string;
@@ -224,9 +218,6 @@ export type Database = {
                     description: string | null;
                     image: string | null;
                     league_id: string;
-                    league_type:
-                        | Database["public"]["Enums"]["league_type"]
-                        | null;
                     name: string;
                     show: boolean;
                 };
@@ -234,9 +225,6 @@ export type Database = {
                     description?: string | null;
                     image?: string | null;
                     league_id?: string;
-                    league_type?:
-                        | Database["public"]["Enums"]["league_type"]
-                        | null;
                     name: string;
                     show?: boolean;
                 };
@@ -244,9 +232,6 @@ export type Database = {
                     description?: string | null;
                     image?: string | null;
                     league_id?: string;
-                    league_type?:
-                        | Database["public"]["Enums"]["league_type"]
-                        | null;
                     name?: string;
                     show?: boolean;
                 };
@@ -439,7 +424,7 @@ export type Database = {
             };
         };
         Enums: {
-            league_type: "COLLEGE" | "FREETEAM";
+            [_ in never]: never;
         };
         CompositeTypes: {
             [_ in never]: never;
@@ -569,8 +554,6 @@ export type CompositeTypes<
 
 export const Constants = {
     public: {
-        Enums: {
-            league_type: ["COLLEGE", "FREETEAM"],
-        },
+        Enums: {},
     },
 } as const;
