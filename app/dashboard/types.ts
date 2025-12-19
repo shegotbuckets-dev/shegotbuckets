@@ -326,7 +326,6 @@ export type UserEventStatus = {
     team_id: string | undefined;
     waiverSigned: boolean;
     paymentStatus: boolean;
-    edited_count: number;
 };
 
 export interface StripePriceIds {
@@ -370,11 +369,6 @@ export interface PaymentRequestData {
     eventName: string; // Short name for display
     eventNameFull: string; // Full name for receipts
     stripe_price_ids: StripePriceIds;
-}
-
-export enum LeagueType {
-    COLLEGE = "COLLEGE",
-    FREETEAM = "FREETEAM",
 }
 
 // New types for register team flow
