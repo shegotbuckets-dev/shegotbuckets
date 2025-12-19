@@ -25,6 +25,7 @@ export async function POST(req: Request) {
             first_name,
             last_name,
             eventName,
+            eventNameFull,
             stripe_price_ids,
         } = await req.json();
 
@@ -42,6 +43,61 @@ export async function POST(req: Request) {
             quantity: 1,
         }));
 
+        // Calculate processing fee if enabled
+        const processingFeeEnabled =
+            process.env.STRIPE_PROCESSING_FEE_ENABLED === "true";
+
+        let processingFee = 0;
+        let processingFeeFormatted = "0.00";
+
+        if (processingFeeEnabled) {
+            // Fetch price amounts to calculate subtotal
+            const priceAmounts = await Promise.all(
+                stripe_price_ids.required.map(async (priceId: string) => {
+                    const price = await stripe.prices.retrieve(priceId);
+                    return price.unit_amount || 0;
+                })
+            );
+
+            // Calculate subtotal in dollars
+            const subtotalCents = priceAmounts.reduce(
+                (sum, amount) => sum + amount,
+                0
+            );
+            const subtotal = subtotalCents / 100;
+
+            // Calculate processing fee using grossed-up formula
+            // This ensures we pass 100% of Stripe's fees to the customer
+            const feeRate = parseFloat(
+                process.env.STRIPE_PROCESSING_FEE_RATE || "0.029"
+            );
+            const feeFixed = parseFloat(
+                process.env.STRIPE_PROCESSING_FEE_FIXED || "0.30"
+            );
+
+            // Grossed-up formula: ((subtotal + fixed_fee) / (1 - rate)) - subtotal
+            processingFee = (subtotal + feeFixed) / (1 - feeRate) - subtotal;
+
+            // Round to 2 decimal places (standard for currency)
+            processingFee = Math.round(processingFee * 100) / 100;
+            processingFeeFormatted = processingFee.toFixed(2);
+
+            // Create dynamic price for processing fee
+            const feePrice = await stripe.prices.create({
+                currency: "usd",
+                unit_amount: Math.round(processingFee * 100), // Convert to cents
+                product_data: {
+                    name: "Payment Processing Fee",
+                },
+            });
+
+            // Add processing fee to line items
+            line_items.push({
+                price: feePrice.id,
+                quantity: 1,
+            });
+        }
+
         // Handle optional items - show as suggested items in checkout
         const optional_items = stripe_price_ids.optional?.length
             ? stripe_price_ids.optional.map((priceId: string) => ({
@@ -56,6 +112,8 @@ export async function POST(req: Request) {
             team_id,
             team_name: team_name || "Unknown Team",
             user_email: user_email || email,
+            event_name_short: eventName,
+            event_name_full: eventNameFull,
         };
 
         // Add registration_id if it exists (for multi-team registrations)
@@ -67,6 +125,12 @@ export async function POST(req: Request) {
         if (!registration_id && first_name && last_name) {
             metadata.first_name = first_name;
             metadata.last_name = last_name;
+        }
+
+        // Add processing fee info to metadata for tracking
+        if (processingFeeEnabled && processingFee > 0) {
+            metadata.processing_fee = processingFeeFormatted;
+            metadata.processing_fee_enabled = "true";
         }
 
         // Build success URL based on whether registration exists
@@ -94,7 +158,9 @@ export async function POST(req: Request) {
             // Custom text for checkout page
             custom_text: {
                 submit: {
-                    message: `Registration fee for SGB ${eventName} for team: ${team_name || "Unknown Team"}. Please enter your team name in the 'Full name' field. You will receive a confirmation email after payment.`,
+                    message: processingFeeEnabled
+                        ? `Registration fee for SGB ${eventName} for team: ${team_name || "Unknown Team"}. Includes $${processingFeeFormatted} payment processing fee.`
+                        : `Registration fee for SGB ${eventName} for team: ${team_name || "Unknown Team"}.`,
                 },
             },
             // Tax settings
@@ -103,7 +169,7 @@ export async function POST(req: Request) {
             },
             // Description that appears on receipts and invoices
             payment_intent_data: {
-                description: `SGB Tournament Registration - ${eventName} - Team: ${team_name || "Unknown Team"}`,
+                description: `SGB Tournament Registration - ${eventNameFull} - Team: ${team_name || "Unknown Team"}`,
                 statement_descriptor: "SGB TOURNAMENT",
             },
         });

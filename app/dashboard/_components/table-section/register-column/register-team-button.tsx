@@ -299,16 +299,23 @@ export const RegisterTeamButton = ({
                             <p className="font-semibold mb-1 text-amber-900 dark:text-amber-100">
                                 Payment Required
                             </p>
-                            <p className="mb-2">
-                                Registration requires immediate payment of{" "}
-                                <span className="font-bold text-amber-900 dark:text-amber-100">
-                                    {event.price ?? "TBD"}
-                                </span>
-                            </p>
-                            <p className="text-xs">
-                                You&apos;ll be redirected to secure payment
-                                after clicking &quot;Register & Pay&quot;
-                            </p>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>
+                                    Registration requires immediate payment of{" "}
+                                    <span className="font-bold text-amber-900 dark:text-amber-100">
+                                        {event.price ?? "TBD"}
+                                    </span>
+                                </li>
+                                <li>
+                                    You&apos;ll be redirected to secure payment
+                                    after clicking &quot;Register & Pay&quot;
+                                </li>
+                                <li className="italic">
+                                    Early bird pricing (if applicable) can be
+                                    applied using a promo code on the checkout
+                                    page
+                                </li>
+                            </ul>
                         </div>
 
                         <div className="text-xs text-muted-foreground bg-blue-50 dark:bg-blue-950 p-3 rounded">
@@ -325,8 +332,9 @@ export const RegisterTeamButton = ({
                                     Registration ID
                                 </li>
                                 <li>
-                                    You can then add players, sign waivers, and
-                                    edit roster
+                                    Share the ID with teammates to register
+                                    themselves, or manage your roster directly
+                                    (add players, sign waivers, edit roster)
                                 </li>
                             </ul>
                         </div>

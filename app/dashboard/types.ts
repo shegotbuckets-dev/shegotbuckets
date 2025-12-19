@@ -367,7 +367,8 @@ export interface PaymentRequestData {
     email: string;
     first_name?: string; // For new registrations
     last_name?: string; // For new registrations
-    eventName: string;
+    eventName: string; // Short name for display
+    eventNameFull: string; // Full name for receipts
     stripe_price_ids: StripePriceIds;
 }
 

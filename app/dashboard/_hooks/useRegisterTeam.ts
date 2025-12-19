@@ -99,6 +99,7 @@ export const useRegisterTeam = ({
                 first_name: firstName,
                 last_name: lastName,
                 eventName: `${event.title_short ?? event.title} - ${event.subtitle}`,
+                eventNameFull: `${event.title} - ${event.subtitle}`,
                 stripe_price_ids: event.stripe_price_ids,
             };
 
