@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getMediaUrl } from "@/lib/utils";
-import { fetchMemberDetailById } from "@/utils/actions/supabase";
+import { fetchMemberDetailBySlug } from "@/utils/actions/supabase";
 import { SupabaseStorageBucket } from "@/utils/types";
 
 import { Suspense } from "react";
@@ -11,11 +11,15 @@ import { ArrowLeft, Instagram, Linkedin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export const MemberDetailPage = ({ params }: { params: { id: string } }) => {
+export const MemberDetailPage = ({
+    params,
+}: {
+    params: { memberSlug: string };
+}) => {
     return (
         <div className="bg-background text-foreground">
             <Suspense fallback={<MemberDetailSkeleton />}>
-                <MemberDetailContent id={params.id} />
+                <MemberDetailContent slug={params.memberSlug} />
             </Suspense>
         </div>
     );
@@ -55,8 +59,8 @@ const MemberDetailSkeleton = () => {
     );
 };
 
-const MemberDetailContent = async ({ id }: { id: string }) => {
-    const memberDetail = await fetchMemberDetailById(id);
+const MemberDetailContent = async ({ slug }: { slug: string }) => {
+    const memberDetail = await fetchMemberDetailBySlug(slug);
 
     if (!memberDetail) {
         return <div>Member not found</div>;
@@ -69,7 +73,7 @@ const MemberDetailContent = async ({ id }: { id: string }) => {
                 {/* Back Link */}
                 <div className="mb-8">
                     <Link
-                        href="/about#team-section"
+                        href="/about/members"
                         className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
                     >
                         <ArrowLeft className="h-4 w-4" />
