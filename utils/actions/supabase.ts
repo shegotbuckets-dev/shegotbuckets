@@ -240,32 +240,4 @@ export async function updateRoster(
             );
         }
     }
-
-    // Increment edited_count in event_registrations after successful updates
-    // First fetch the current edited_count
-    const { data: currentRegistration, error: fetchError } = await supabase
-        .from("event_registrations")
-        .select("edited_count")
-        .eq("registration_id", registrationId)
-        .single();
-
-    if (fetchError) {
-        throw new Error(
-            `Failed to fetch registration data: ${fetchError.message}`
-        );
-    }
-
-    // Update with incremented value
-    const { error: incrementError } = await supabase
-        .from("event_registrations")
-        .update({
-            edited_count: (currentRegistration?.edited_count ?? 0) + 1,
-        })
-        .eq("registration_id", registrationId);
-
-    if (incrementError) {
-        throw new Error(
-            `Failed to increment edit count: ${incrementError.message}`
-        );
-    }
 }
