@@ -5,11 +5,11 @@ import { QAStory } from "./_components/qa-story";
 import { ResourcesSection } from "./_components/resources-section";
 
 export const metadata: Metadata = {
-    title: "Q&A",
+    title: "FAQ",
     description:
         "Find answers to commonly asked questions about team registration, waivers, and payments",
     openGraph: {
-        title: "Q&A and Resources - She Got Buckets",
+        title: "FAQ and Resources - She Got Buckets",
         description:
             "Find answers to commonly asked questions about team registration, waivers, and payments",
     },
@@ -19,7 +19,7 @@ export default function QnAPage() {
     return (
         <main className="min-h-screen pt-20">
             {/* Add an H1 that can be visually hidden if needed */}
-            <h1 className="sr-only">Q&A and Resources - She Got Buckets</h1>
+            <h1 className="sr-only">FAQ and Resources - She Got Buckets</h1>
 
             {/* Q&A Accordion - white/transparent background */}
             <div className="flex w-full justify-center items-center bg-white/10">

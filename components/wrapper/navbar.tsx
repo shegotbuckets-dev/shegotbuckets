@@ -69,7 +69,7 @@ const getNavItems = (): NavItem[] => {
             href: "/events",
         },
         {
-            title: "Q&A",
+            title: "FAQ",
             href: "/qna",
         },
         // {
