@@ -15,6 +15,7 @@ interface InvolvementOption {
     title: string;
     description: string;
     action: string;
+    href: string;
 }
 
 const involvementOptions: InvolvementOption[] = [
@@ -24,6 +25,7 @@ const involvementOptions: InvolvementOption[] = [
         description:
             "All of your donations will go straight into the funding for our basketball tournaments and training programs. By donating, you’ll be directly supporting our growth and helping us make an even greater impact!",
         action: "Donate Here",
+        href: "/donate",
     },
     {
         icon: <Users className="w-12 h-12" />,
@@ -31,6 +33,7 @@ const involvementOptions: InvolvementOption[] = [
         description:
             "She Got Buckets is a 100% volunteer-based nonprofit organization supported by our 25 dedicated members along with a team of long-term, active volunteers.",
         action: "Join Us",
+        href: "/get-involved",
     },
     {
         icon: <HandshakeIcon className="w-12 h-12" />,
@@ -38,6 +41,7 @@ const involvementOptions: InvolvementOption[] = [
         description:
             "We extend our deepest gratitude to all the corporations and organizations that have supported our past events and contributed to our growth. We always welcome new partners to join us in advancing our mission for the Asian female athlete community.",
         action: "Partner Up",
+        href: "/get-involved",
     },
     {
         icon: <BriefcaseBusiness className="w-12 h-12" />,
@@ -45,6 +49,7 @@ const involvementOptions: InvolvementOption[] = [
         description:
             "Double Your Impact- Many companies offer employee matching programs, allowing you to increase the power of your donation to support our mission. Check with your HR or corporate giving department to see if your company offers matching gifts and for any details on the process.",
         action: "Contact Us",
+        href: "/get-involved",
     },
 ];
 
@@ -73,7 +78,7 @@ export const GetInvolvedSection = () => {
                                     {option.description}
                                 </p>
                             </div>
-                            <Link href="/get-involved">
+                            <Link href={option.href}>
                                 <Button
                                     variant="expandIcon"
                                     className="w-full max-w-[130px] flex gap-1 text-gray-800 dark:text-white hover:text-black dark:hover:text-gray-300 text-sm py-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground"

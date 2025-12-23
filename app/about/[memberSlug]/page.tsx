@@ -1,5 +1,5 @@
 import { getMediaUrl } from "@/lib/utils";
-import { fetchMemberDetailById } from "@/utils/actions/supabase";
+import { fetchMemberDetailBySlug } from "@/utils/actions/supabase";
 import { SupabaseStorageBucket } from "@/utils/types";
 
 import { Metadata } from "next";
@@ -11,10 +11,12 @@ import { MemberDetailPage } from "../_components/about-member-detail";
 export async function generateMetadata({
     params,
 }: {
-    params: { id: string };
+    params: { memberSlug: string };
 }): Promise<Metadata> {
     // Fetch the member data
-    const member = await fetchMemberDetailById(params.id).catch(() => null);
+    const member = await fetchMemberDetailBySlug(params.memberSlug).catch(
+        () => null
+    );
 
     // Default metadata if member not found
     if (!member) {
@@ -51,7 +53,7 @@ export async function generateMetadata({
 export default function AboutMemberPage({
     params,
 }: {
-    params: { id: string };
+    params: { memberSlug: string };
 }) {
     return (
         <main>

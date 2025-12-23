@@ -33,6 +33,7 @@ interface NavItemChild {
     id: string;
     title: string;
     subtitle?: string;
+    href?: string;
 }
 
 interface NavItem {
@@ -50,13 +51,25 @@ const getNavItems = (): NavItem[] => {
         {
             title: "About Us",
             href: "/about",
+            children: [
+                {
+                    id: "story",
+                    title: "Story",
+                    href: "/about",
+                },
+                {
+                    id: "members",
+                    title: "Meet Our Members",
+                    href: "/about/members",
+                },
+            ],
         },
         {
             title: "Upcoming Events",
             href: "/events",
         },
         {
-            title: "Q&A",
+            title: "FAQ",
             href: "/qna",
         },
         // {
@@ -176,7 +189,10 @@ const MobileMenu = ({ navItems }: { navItems: NavItem[] }) => (
                                     {item.children.map((child) => (
                                         <DialogClose key={child.id} asChild>
                                             <Link
-                                                href={`${item.href}/${child.id}`}
+                                                href={
+                                                    child.href ??
+                                                    `${item.href}/${child.id}`
+                                                }
                                                 className="px-4 py-1 hover:underline"
                                                 replace
                                             >
@@ -220,7 +236,9 @@ const DesktopMenuItems = ({ navItems }: { navItems: NavItem[] }) => (
                                 <ListItem
                                     key={child.title}
                                     title={child.title}
-                                    href={`${item.href}/${child.id}`}
+                                    href={
+                                        child.href ?? `${item.href}/${child.id}`
+                                    }
                                     replace
                                 >
                                     {child.subtitle}
@@ -262,7 +280,9 @@ const ListItem = React.forwardRef<
                 <div className="mb-[5px] font-medium leading-[1.2] text-violet12">
                     {title}
                 </div>
-                <p className="leading-[1.4] text-mauve11">{children}</p>
+                {children ? (
+                    <p className="leading-[1.4] text-mauve11">{children}</p>
+                ) : null}
             </Link>
         </NavigationMenuLink>
     </li>

@@ -5,6 +5,7 @@ import {
     createServerClient,
     createServiceRoleClient,
 } from "@/lib/supabase-server";
+import { slugifyMemberName } from "@/lib/utils";
 
 type TableNames = keyof Database["public"]["Tables"];
 type TableRow<T extends TableNames> = Database["public"]["Tables"][T]["Row"];
@@ -103,9 +104,25 @@ export async function fetchSingleFromTable<T extends TableNames>(
     return data;
 }
 
-export async function fetchMemberDetailById(memberID: string) {
-    if (!memberID) throw new Error("Member ID is required");
-    return fetchSingleFromTable("members", "member_id", memberID);
+export async function fetchMemberDetailBySlug(memberSlug: string) {
+    const normalizedSlug = slugifyMemberName(memberSlug);
+
+    if (!normalizedSlug) throw new Error("Member slug is required");
+
+    const members = await fetchMembers();
+
+    const matchedMember =
+        members.find((member) =>
+            member.name
+                ? slugifyMemberName(member.name) === normalizedSlug
+                : false
+        ) ?? null;
+
+    if (matchedMember) {
+        return matchedMember;
+    }
+
+    return fetchSingleFromTable("members", "member_id", memberSlug);
 }
 
 // Keep the existing insertMultipleRowsToTable function
